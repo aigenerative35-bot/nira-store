@@ -7,6 +7,7 @@ import CartDrawer from './components/CartDrawer'
 import SearchOverlay from './components/SearchOverlay'
 import QuickView from './components/QuickView'
 import Toasts from './components/Toasts'
+import CommentSheet from './components/CommentSheet'
 import Home from './pages/Home'
 import Shop from './pages/Shop'
 import Product from './pages/Product'
@@ -27,13 +28,13 @@ function ScrollTop() {
 
 export default function App() {
   const location = useLocation()
-  const { drawer, search, quickView } = useShop()
+  const { drawer, search, quickView, commentFor } = useShop()
   const { scrollYProgress } = useScroll()
   const bar = useSpring(scrollYProgress, { stiffness: 140, damping: 26, mass: 0.3 })
 
   useEffect(() => {
-    document.body.classList.toggle('lock', drawer || search || !!quickView)
-  }, [drawer, search, quickView])
+    document.body.classList.toggle('lock', drawer || search || !!quickView || !!commentFor)
+  }, [drawer, search, quickView, commentFor])
 
   return (
     <>
@@ -64,6 +65,7 @@ export default function App() {
       <CartDrawer />
       <SearchOverlay />
       <QuickView />
+      <CommentSheet />
       <Toasts />
     </>
   )
