@@ -734,3 +734,102 @@ h1, h2, h3, h4 { font-family: var(--display); font-weight: 400; line-height: 1.0
   .tcard { flex: 0 0 62vw; }
   .carousel__meta h3 { font-size: 1.1rem; }
 }
+
+/* ============================================================
+   Refinement pass — drag cursors, card meta, carousel chrome
+   ============================================================ */
+
+/* ---- hero meta stats ---- */
+.hero__stats { display: flex; gap: clamp(20px, 3vw, 44px); margin-top: 34px; flex-wrap: wrap; }
+.hero__stats div { display: flex; flex-direction: column; gap: 2px; padding-left: 14px; border-left: 1px solid rgba(255, 255, 255, 0.32); }
+.hero__stats b { font-family: var(--display); font-size: 1.15rem; font-weight: 400; color: #fff; line-height: 1.1; }
+.hero__stats span { font-size: 0.56rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.62); }
+
+/* ---- product card meta ---- */
+.pcard__info { padding-top: 14px; display: grid; gap: 7px; }
+.pcard__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.pcard__sub { align-items: center; }
+.pcard__name { font-family: var(--display); font-size: 0.98rem; line-height: 1.28; }
+.pcard__price { font-size: 0.86rem; white-space: nowrap; }
+.pcard__price s { display: inline; margin-right: 6px; color: var(--muted-2); font-size: 0.72rem; }
+.pcard__cat { font-size: 0.54rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-2); }
+.pcard__rate { display: inline-flex; align-items: center; gap: 6px; }
+.pcard__rate em { font-style: normal; font-size: 0.66rem; color: var(--muted); }
+.pcard__rate .stars { margin-top: 0; }
+.pcard .social { margin-top: 10px; }
+
+/* ---- carousel: grab affordance ---- */
+.carousel { position: relative; }
+.carousel:focus-visible { outline: 1px solid var(--maroon); outline-offset: 8px; }
+.carousel__vp {
+  cursor: grab; -webkit-user-select: none; user-select: none;
+  scroll-snap-type: x mandatory; touch-action: pan-y;
+}
+/* let the first and last slide sit dead centre */
+.carousel__track { --cw: clamp(250px, 33%, 420px); padding-inline: calc(50% - var(--cw) / 2); }
+.carousel__vp.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.carousel__vp.is-dragging img { pointer-events: none; }
+.cslide img { -webkit-user-drag: none; user-drag: none; }
+.cslide { transition: opacity 0.45s var(--ease), flex-basis 0.45s var(--ease), transform 0.45s var(--ease); }
+.cslide:not(.on) { transform: scale(0.96); }
+.cslide__idx {
+  position: absolute; top: 12px; left: 12px; font-size: 0.56rem; letter-spacing: 0.18em;
+  color: #fff; mix-blend-mode: difference; opacity: 0.9;
+}
+.cslide__tag {
+  background: rgba(250, 247, 241, 0.92); color: var(--ink-2);
+  font-size: 0.5rem; letter-spacing: 0.22em;
+}
+
+/* arrows sit over the stage */
+.carousel__arrows {
+  position: absolute; top: 34%; left: -6px; right: -6px; display: flex;
+  justify-content: space-between; pointer-events: none; z-index: 4;
+}
+.cbtn {
+  pointer-events: auto; width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(250, 247, 241, 0.94); border: 1px solid var(--line);
+  backdrop-filter: blur(6px); display: grid; place-items: center; transition: 0.22s;
+}
+.cbtn:hover:not([disabled]) { background: var(--ink); color: var(--paper); border-color: var(--ink); transform: scale(1.04); }
+.cbtn[disabled] { opacity: 0; pointer-events: none; }
+
+/* caption block */
+.carousel__meta { text-align: center; margin-top: clamp(20px, 2.6vw, 34px); display: grid; gap: 10px; justify-items: center; }
+.carousel__meta h3 { font-size: clamp(1.3rem, 2.4vw, 2rem); }
+.carousel__price { font-size: 0.86rem; color: var(--muted); letter-spacing: 0.06em; }
+.carousel__cta { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+
+.carousel__dots { display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 24px; }
+.carousel__dots button { width: 22px; height: 2px; background: var(--line-strong); transition: 0.3s; }
+.carousel__dots button.on { background: var(--maroon); width: 40px; }
+.carousel__hint {
+  margin-left: 14px; font-size: 0.54rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted-2);
+}
+
+/* ---- ticker: grab + frame ---- */
+.ticker { cursor: grab; -webkit-user-select: none; user-select: none; touch-action: pan-y; }
+.ticker.is-dragging { cursor: grabbing; }
+.ticker.is-dragging .tcard { pointer-events: none; }
+.tcard { border: 1px solid rgba(20, 17, 14, 0.06); }
+.tcard img { -webkit-user-drag: none; }
+.tcard__badge { width: 28px; height: 28px; font-size: 0.82rem; }
+
+/* ---- section heads: hairline eyebrow ---- */
+.sec-head .label { display: inline-flex; align-items: center; gap: 10px; }
+.sec-head .label::before { content: ''; width: 26px; height: 1px; background: currentColor; opacity: 0.5; }
+.sec-head h2 { letter-spacing: -0.015em; }
+
+/* ---- small screens ---- */
+@media (max-width: 900px) {
+  .carousel__arrows { position: static; margin-top: 18px; justify-content: center; gap: 12px; }
+  .cbtn[disabled] { opacity: 0.3; }
+  .carousel__hint { display: none; }
+  .hero__stats { gap: 16px; margin-top: 26px; }
+}
+@media (max-width: 640px) {
+  .pcard__name { font-size: 0.9rem; }
+  .pcard__price { font-size: 0.78rem; }
+  .cslide__idx { display: none; }
+}
