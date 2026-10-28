@@ -8,14 +8,15 @@ import { money } from '../data'
 export default function ProductCard({ product: p, index = 0 }) {
   const { add, wish, toggleWish, setQuickView } = useShop()
   const liked = wish.includes(p.id)
+  const off = p.mrp > p.price ? Math.round((1 - p.price / p.mrp) * 100) : 0
 
   return (
     <motion.article
       className="pcard"
-      initial={{ opacity: 0, y: 22 }}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-6%' }}
-      transition={{ duration: 0.75, delay: Math.min(index * 0.05, 0.3), ease: [0.22, 0.7, 0.2, 1] }}
+      viewport={{ once: true, margin: '-4%' }}
+      transition={{ duration: 0.5, delay: Math.min(index * 0.03, 0.2) }}
     >
       <div className="pcard__media">
         <Link to={`/product/${p.id}`} aria-label={p.name}>
@@ -31,30 +32,39 @@ export default function ProductCard({ product: p, index = 0 }) {
           <Icon.heart />
         </button>
         <div className="pcard__quick">
-          <button className="btn" onClick={() => add(p.id)}>
-            <span>Add to bag</span>
-          </button>
+          <button className="btn" onClick={() => add(p.id)}><span>Add to cart</span></button>
           <button className="qv" onClick={() => setQuickView(p)} aria-label="Quick view">
             <Icon.eye />
           </button>
         </div>
       </div>
+
       <div className="pcard__info">
         <Link to={`/product/${p.id}`} className="pcard__row">
           <span className="pcard__name">{p.name}</span>
+        </Link>
+
+        <div className="pcard__row pcard__sub">
+          <span className="pcard__rate">
+            <span className="pill-rate">
+              {p.rating} <Icon.star />
+            </span>
+            <span className="pcard__reviews num">({p.reviews.toLocaleString('en-IN')})</span>
+          </span>
+          <span className="pcard__cat">{p.catName}</span>
+        </div>
+
+        <div className="pcard__row">
           <span className="pcard__price num">
             {p.mrp > p.price && <s>{money(p.mrp)}</s>}
             {money(p.price)}
           </span>
-        </Link>
-        <div className="pcard__row pcard__sub">
-          <span className="pcard__cat">{p.catName}</span>
-          <span className="pcard__rate">
-            <Stars value={p.rating} size={9} />
-            <em className="num">{p.rating}</em>
-          </span>
+          {off > 0 && <span className="pcard__off num">{off}% off</span>}
         </div>
+
+        <span className="pcard__del">Free delivery · {p.short}</span>
       </div>
+
       <SocialBar product={p} />
     </motion.article>
   )
