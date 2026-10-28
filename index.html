@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIRA — Beauty &amp; Atelier</title>
+<meta name="description" content="Skincare, body care, makeup, bags, suits and heels. Fewer, better things, made to be used daily.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body data-page="home">
+<div id="site-header"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="assets/img/hero-portrait.jpg" alt="Autumn campaign portrait">
+  <div class="shell hero-in">
+    <p class="label">Autumn 2026 · The edit</p>
+    <h1>Skin that looks like <em>you slept.</em></h1>
+    <p>Clinical actives in a formula light enough for Indian humidity. Dermat-tested, fragrance-light, built for a three-step routine you will actually finish.</p>
+    <div class="hero-cta">
+      <a class="btn btn--light" href="shop.html">Shop the edit</a>
+      <a class="btn btn--ghost" href="shop.html?cat=skincare" style="border-color:rgba(255,255,255,.6);color:#fff">Explore skincare</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="sec">
+  <div class="shell">
+    <div class="sec-h" data-reveal>
+      <div>
+        <p class="label label--maroon">Shop by category</p>
+        <h2>Six edits, one wardrobe</h2>
+      </div>
+      <a class="link-arrow" href="shop.html">All products</a>
+    </div>
+    <div class="cats" id="catGrid" data-reveal></div>
+  </div>
+</section>
+
+<!-- NEW IN -->
+<section class="sec sec--paper">
+  <div class="shell">
+    <div class="sec-h" data-reveal>
+      <div>
+        <p class="label label--maroon">New in</p>
+        <h2>This week's arrivals</h2>
+        <p>Ranked by what gets reordered, not by what we want to push.</p>
+      </div>
+      <a class="link-arrow" href="shop.html">View all 16 products</a>
+    </div>
+    <div class="pgrid" id="newGrid" data-reveal></div>
+  </div>
+</section>
+
+<!-- EDITORIAL -->
+<section class="sec">
+  <div class="shell split">
+    <div class="ph" data-reveal>
+      <img src="assets/img/lip-apply.jpg" alt="Applying makeup">
+    </div>
+    <div data-reveal style="--d:120ms">
+      <p class="label label--maroon">The ritual</p>
+      <h2>Three steps, twice a day. Nothing more.</h2>
+      <p>We build short routines because long ones get abandoned. Every formula in this edit is fragrance-light, non-comedogenic and tested in Indian humidity.</p>
+      <ol class="steps">
+        <li><span class="step-n">01</span><div><div class="step-t">Cleanse</div><div class="step-d">Amino-acid face wash that does not strip.</div></div></li>
+        <li><span class="step-n">02</span><div><div class="step-t">Treat</div><div class="step-d">Vitamin C in the morning, retinol twice a week.</div></div></li>
+        <li><span class="step-n">03</span><div><div class="step-t">Seal</div><div class="step-d">Shea body butter on damp skin, always.</div></div></li>
+      </ol>
+      <div style="margin-top:26px"><a class="btn btn--ghost" href="shop.html?cat=skincare">Shop the ritual</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILM -->
+<section class="film">
+  <video id="film" muted loop playsinline autoplay preload="metadata" poster="assets/video/poster.jpg">
+    <source src="assets/video/film.mp4" type="video/mp4">
+  </video>
+  <div class="scrim"></div>
+  <div class="shell film-in">
+    <p class="label">Campaign film · 2026</p>
+    <h2>Four drops. <em>Thirty seconds.</em></h2>
+    <p>Shot in one take at our Bengaluru studio — the whole ritual, no filters, no retouching. This is what week four actually looks like.</p>
+    <div class="film-ctl">
+      <button class="fctl" id="filmToggle"><svg><use href="#i-pause"/></svg><span id="filmToggleText">Pause film</span></button>
+      <button class="fctl" id="muteToggle"><svg><use href="#i-mute"/></svg><span id="muteText">Sound off</span></button>
+      <a class="fctl" href="shop.html">Shop the film</a>
+    </div>
+  </div>
+</section>
+
+<!-- MAROON BAND -->
+<section class="band">
+  <div class="shell">
+    <div data-reveal>
+      <p class="label">The house</p>
+      <h2>Built like a house, <em>not a shop.</em></h2>
+      <p>One palette, one typeface, one rule: nothing goes on the shelf unless it earns a second order. That is the whole brand.</p>
+    </div>
+    <div class="band-grid">
+      <div data-reveal><h4>Formulated in-house</h4><p>Every formula is developed with our own lab partners, never white-labelled from a catalogue.</p></div>
+      <div data-reveal style="--d:100ms"><h4>Small batch, always</h4><p>120 pieces per style for handloom, 500 units per run for skincare. No dead stock.</p></div>
+      <div data-reveal style="--d:200ms"><h4>Maroon as a signature</h4><p>Oxblood and gold, on ivory. You will find it on the seal of every box.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec">
+  <div class="shell">
+    <div class="sec-h" data-reveal>
+      <div>
+        <p class="label label--maroon">Verified reviews</p>
+        <h2>12,400 reviews, 4.8 average</h2>
+      </div>
+      <a class="link-arrow" href="shop.html">Shop bestsellers</a>
+    </div>
+    <div class="pgrid" id="reviewGrid" data-reveal></div>
+  </div>
+</section>
+
+<!-- JOURNAL -->
+<section class="sec sec--paper" id="journal">
+  <div class="shell">
+    <div class="sec-h" data-reveal>
+      <div>
+        <p class="label label--maroon">The journal</p>
+        <h2>Read before you buy</h2>
+      </div>
+      <a class="link-arrow" href="about.html">Our story</a>
+    </div>
+    <div class="jgrid" id="journalGrid"></div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="news">
+  <div class="shell" data-reveal>
+    <p class="label label--maroon">The list</p>
+    <h2>₹200 off, and first access</h2>
+    <p>One email a week: new drops, restocks and the occasional skincare note. Unsubscribe in one click.</p>
+    <form class="nform" data-news>
+      <input type="email" placeholder="Your email address" aria-label="Email">
+      <button type="submit">Join</button>
+    </form>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  /* categories are rendered here so every page shares one source */
+  document.addEventListener("DOMContentLoaded", function () {
+    var g = document.getElementById("catGrid");
+    if (g) g.innerHTML = NIRA.categories.map(function (c) {
+      return '<a class="cat" href="shop.html?cat=' + c.id + '"><img src="' + c.img + '" alt="' + c.name + '"><span>' + c.name + '</span></a>';
+    }).join("");
+  });
+</script>
+</body>
+</html>
