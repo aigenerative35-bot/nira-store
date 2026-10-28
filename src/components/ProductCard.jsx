@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Icon, Stars } from '../ui'
+import SocialBar from './SocialBar'
 import { useShop } from '../store'
 import { money } from '../data'
 
@@ -51,6 +52,7 @@ export default function ProductCard({ product: p, index = 0 }) {
           {money(p.price)}
         </div>
       </div>
+      <SocialBar product={p} />
     </motion.article>
   )
 }
