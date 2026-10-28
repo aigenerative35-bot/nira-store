@@ -14,19 +14,30 @@
 <body data-page="home">
 <div id="site-header"></div>
 
-<!-- HERO -->
-<section class="hero">
-  <img src="assets/img/hero-portrait.jpg" alt="Autumn campaign portrait">
-  <div class="shell hero-in">
-    <p class="label">Autumn 2026 · The edit</p>
+<!-- VIDEO HERO -->
+<section class="vhero">
+  <video class="vhero-v" id="heroVideo" muted loop playsinline autoplay preload="auto"
+         poster="assets/video/hero-poster.jpg">
+    <source src="assets/video/hero.mp4" type="video/mp4">
+  </video>
+  <div class="vhero-scrim"></div>
+  <div class="shell vhero-in">
+    <p class="label">Autumn 2026 — the edit</p>
     <h1>Skin that looks like <em>you slept.</em></h1>
     <p>Clinical actives in a formula light enough for Indian humidity. Dermat-tested, fragrance-light, built for a three-step routine you will actually finish.</p>
-    <div class="hero-cta">
+    <div class="vhero-cta">
       <a class="btn btn--light" href="shop.html">Shop the edit</a>
       <a class="btn btn--ghost" href="shop.html?cat=skincare" style="border-color:rgba(255,255,255,.6);color:#fff">Explore skincare</a>
     </div>
   </div>
-  <div class="hero-scroll">Scroll</div>
+  <div class="vhero-foot">
+    <div class="shell">
+      <span class="vscroll"><i></i>Scroll</span>
+      <button class="vsound" id="heroSound" aria-label="Toggle sound">
+        <svg><use href="#i-mute"/></svg><span id="heroSoundText">Sound off</span>
+      </button>
+    </div>
+  </div>
 </section>
 
 <!-- CATEGORIES -->
