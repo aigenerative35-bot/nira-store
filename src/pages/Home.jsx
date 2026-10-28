@@ -1,21 +1,33 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Icon, Marquee, Reveal, Stars } from '../ui'
+import { Icon } from '../ui'
 import ProductCard from '../components/ProductCard'
-import Carousel from '../components/Carousel'
 import Ticker from '../components/Ticker'
 import { useShop } from '../store'
-import { asset, categories, journal, products, reviews } from '../data'
+import { asset, categories, products } from '../data'
 
-const words = ['Skin', 'that', 'looks', 'like']
-const RUNWAY = [
-  { title: 'Silk Saree — Emerald', img: asset('img/saree-jewel.jpg'), tag: 'Runway style', to: '/product/p9', price: 8499 },
-  { title: 'Structured Tote — Tan', img: asset('img/bag-brown.jpg'), tag: 'Runway style', to: '/product/p4', price: 4499 },
-  { title: 'Block Heels — Nude', img: asset('img/heels-pink.jpg'), tag: 'Runway style', to: '/product/p6', price: 3199 },
-  { title: 'Handloom Saree — Indigo', img: asset('img/saree-street.jpg'), tag: 'Runway style', to: '/product/p16', price: 6499 },
-  { title: 'Matte Lipstick — Rosewood', img: asset('img/lip-apply.jpg'), tag: 'Runway style', to: '/product/p3', price: 749 },
-  { title: 'Cotton Co-ord — Sage', img: asset('img/saree-back.jpg'), tag: 'Runway style', to: '/product/p5', price: 2899 }
+const BANNERS = [
+  {
+    img: asset('img/hero-portrait.jpg'),
+    kicker: 'Autumn edit 2026',
+    title: 'Skin that looks like you slept.',
+    text: 'Clinical actives, light enough for Indian humidity. Up to 30% off the ritual.',
+    to: '/shop?cat=skincare'
+  },
+  {
+    img: asset('img/saree-jewel.jpg'),
+    kicker: 'Festive handloom',
+    title: 'Woven in Bhagalpur, made to last.',
+    text: 'Small batch sarees and co-ords — 120 pieces per style.',
+    to: '/shop?cat=suits'
+  },
+  {
+    img: asset('img/bag-brown.jpg'),
+    kicker: 'Atelier',
+    title: 'Bags that survive the monsoon.',
+    text: 'Full-grain vegan leather, two-year stitch warranty.',
+    to: '/shop?cat=bags'
+  }
 ]
 
 const CAMPAIGN = [
@@ -26,334 +38,274 @@ const CAMPAIGN = [
   { title: 'Advent', img: asset('img/jar-flowers.jpg'), badge: 'N' }
 ]
 
-const NOTES = ['Clean formulas', 'Made in India', 'Cruelty-free', 'Dermat-tested', '26,000 pincodes', '14-day returns', 'Small batch']
+/* ---------- drag-scroll rail ---------- */
+function Rail({ items, render }) {
+  const vp = useRef(null)
+  const drag = useRef({ active: false, x: 0, left: 0, moved: false })
+  const [grabbing, setGrabbing] = useState(false)
+
+  const onDown = (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return
+    drag.current = { active: true, x: e.clientX, left: vp.current.scrollLeft, moved: false }
+    setGrabbing(true)
+    vp.current.setPointerCapture?.(e.pointerId)
+  }
+  const onMove = (e) => {
+    if (!drag.current.active) return
+    const dx = e.clientX - drag.current.x
+    if (Math.abs(dx) > 5) drag.current.moved = true
+    vp.current.scrollLeft = drag.current.left - dx
+  }
+  const onUp = (e) => {
+    drag.current.active = false
+    setGrabbing(false)
+    vp.current.releasePointerCapture?.(e.pointerId)
+  }
+  const nudge = (dir) => vp.current.scrollBy({ left: dir * vp.current.clientWidth * 0.7, behavior: 'smooth' })
+
+  return (
+    <div className="rail">
+      <div
+        className={`rail__vp ${grabbing ? 'is-dragging' : ''}`}
+        ref={vp}
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        onPointerCancel={onUp}
+        onPointerLeave={onUp}
+      >
+        {items.map((it, i) => (
+          <div key={it.id || i} onClickCapture={(e) => { if (drag.current.moved) { e.preventDefault(); e.stopPropagation() } }}>
+            {render(it, i)}
+          </div>
+        ))}
+      </div>
+      <button className="rail__nav l" onClick={() => nudge(-1)} aria-label="Scroll left">
+        <Icon.arrow style={{ transform: 'rotate(180deg)' }} />
+      </button>
+      <button className="rail__nav r" onClick={() => nudge(1)} aria-label="Scroll right">
+        <Icon.arrow />
+      </button>
+    </div>
+  )
+}
+
+function Countdown() {
+  const [left, setLeft] = useState(6 * 3600 + 42 * 60)
+  useEffect(() => {
+    const t = setInterval(() => setLeft((v) => (v > 0 ? v - 1 : 0)), 1000)
+    return () => clearInterval(t)
+  }, [])
+  const pad = (n) => String(n).padStart(2, '0')
+  return (
+    <span className="clock">
+      Ends in&nbsp;
+      <b>{pad(Math.floor(left / 3600))}</b>:<b>{pad(Math.floor((left % 3600) / 60))}</b>:<b>{pad(left % 60)}</b>
+    </span>
+  )
+}
 
 export default function Home() {
-  const heroRef = useRef(null)
-  const filmRef = useRef(null)
-  const videoRef = useRef(null)
-  const filmVideo = useRef(null)
-  const [muted, setMuted] = useState(true)
-  const [filmPaused, setFilmPaused] = useState(false)
   const { toast } = useShop()
+  const [slide, setSlide] = useState(0)
   const [email, setEmail] = useState('')
 
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '16%'])
+  useEffect(() => {
+    const t = setInterval(() => setSlide((s) => (s + 1) % BANNERS.length), 6000)
+    return () => clearInterval(t)
+  }, [])
 
-  const toggleSound = () => {
-    const v = videoRef.current
-    if (!v) return
-    v.muted = !v.muted
-    if (!v.muted && v.paused) v.play()
-    setMuted(v.muted)
-  }
-
-  const toggleFilm = () => {
-    const v = filmVideo.current
-    if (!v) return
-    if (v.paused) {
-      v.play()
-      setFilmPaused(false)
-    } else {
-      v.pause()
-      setFilmPaused(true)
-    }
-  }
+  const deals = products.filter((p) => p.mrp > p.price).slice(0, 5)
+  const skincare = products.filter((p) => p.cat === 'skincare' || p.cat === 'body')
+  const atelier = products.filter((p) => p.cat === 'bags' || p.cat === 'heels' || p.cat === 'suits')
 
   return (
     <>
-      {/* ---------------- hero ---------------- */}
-      <section className="hero" ref={heroRef}>
-        <motion.div className="hero__video" style={{ y: heroY }}>
-          <video ref={videoRef} src={asset('video/hero.mp4')} poster={asset('video/hero-poster.jpg')} autoPlay muted loop playsInline preload="auto" />
-        </motion.div>
-        <div className="hero__scrim" />
-
-        <div className="container hero__in">
-          <div className="hero__eyebrow label rise" style={{ '--d': '0.15s' }}>
-            <i /> Autumn 2026 — the edit
-          </div>
-
-          <h1>
-            {words.map((w, i) => (
-              <span key={w} className="rise-word" style={{ '--d': `${0.24 + i * 0.07}s` }}>
-                {w}
-              </span>
-            ))}
-            <em className="rise-word" style={{ '--d': '0.52s' }}>you slept.</em>
-          </h1>
-
-          <p className="rise" style={{ '--d': '0.62s' }}>
-            Clinical actives in a formula light enough for Indian humidity. Dermat-tested, fragrance-light,
-            built for a three-step routine you will actually finish.
-          </p>
-
-          <div className="hero__cta rise" style={{ '--d': '0.74s' }}>
-            <Link className="btn btn--light" to="/shop"><span>Shop the edit</span></Link>
-            <Link className="btn btn--onDark" to="/shop?cat=skincare"><span>Explore skincare</span></Link>
-          </div>
-
-          <div className="hero__stats rise" style={{ '--d': '0.86s' }}>
-            <div><b className="num">4.8</b><span>avg rating</span></div>
-            <div><b className="num">12,400</b><span>reviews</span></div>
-            <div><b className="num">1.2 lakh</b><span>orders shipped</span></div>
-          </div>
-        </div>
-
-        <div className="container hero__foot">
-          <span className="hero__scroll"><i /> Scroll</span>
-          <button className="sound-btn" onClick={toggleSound} aria-label="Toggle sound">
-            {muted ? <Icon.mute /> : <Icon.sound />}
-            <span>{muted ? 'Sound off' : 'Sound on'}</span>
-          </button>
-        </div>
-      </section>
-
-      <Marquee items={NOTES} />
-
-      {/* ---------------- categories ---------------- */}
-      <section className="sec">
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <div>
-                <p className="label label--maroon">Shop by category</p>
-                <h2>Six edits, one wardrobe</h2>
-              </div>
-              <Link className="link-arrow" to="/shop">
-                All products <Icon.arrow />
+      {/* category rail */}
+      <div className="container sec sec--tight">
+        <div className="catrail">
+          <div className="catrail__in">
+            {categories.map((c) => (
+              <Link className="ctile" to={`/shop?cat=${c.id}`} key={c.id}>
+                <span className="ctile__ph"><img src={c.img} alt="" loading="lazy" /></span>
+                <span>{c.name}<small>{c.note}</small></span>
               </Link>
-            </div>
-          </Reveal>
-          <div className="cats">
-            {categories.map((c, i) => (
-              <motion.div
-                className="catwrap"
-                key={c.id}
-                initial={{ opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-6%' }}
-                transition={{ duration: 0.8, delay: i * 0.06 }}
-              >
-                <Link className="cat" to={`/shop?cat=${c.id}`}>
-                  <img src={c.img} alt={c.name} loading="lazy" />
-                  <span className="cat__in">
-                    <b>{c.name}</b>
-                    <span>{c.note}</span>
-                  </span>
-                </Link>
-              </motion.div>
             ))}
+            <Link className="ctile" to="/shop?sort=low">
+              <span className="ctile__ph"><img src={asset('img/flatlay.jpg')} alt="" loading="lazy" /></span>
+              <span>Under ₹1,000<small>Best value</small></span>
+            </Link>
+            <Link className="ctile" to="/shop?sort=rating">
+              <span className="ctile__ph"><img src={asset('img/lip-red.jpg')} alt="" loading="lazy" /></span>
+              <span>Top rated<small>4.7+ only</small></span>
+            </Link>
+            <Link className="ctile" to="/shop">
+              <span className="ctile__ph"><img src={asset('img/brushes.jpg')} alt="" loading="lazy" /></span>
+              <span>All products<small>16 pieces</small></span>
+            </Link>
+            <Link className="ctile" to="/shop?wish=1">
+              <span className="ctile__ph"><img src={asset('img/lips.jpg')} alt="" loading="lazy" /></span>
+              <span>Wishlist<small>Saved</small></span>
+            </Link>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ---------------- new in ---------------- */}
-      <section className="sec sec--paper">
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <div>
-                <p className="label label--maroon">New in</p>
-                <h2>This week's arrivals</h2>
-                <p>Ranked by what gets reordered, not by what we want to push.</p>
-              </div>
-              <Link className="link-arrow" to="/shop">
-                View all {products.length} products <Icon.arrow />
-              </Link>
+      {/* banner */}
+      <div className="container sec sec--tight">
+        <div className="banner">
+          <div className="bmain">
+            <div className="bmain__vp" style={{ transform: `translateX(-${slide * 100}%)` }}>
+              {BANNERS.map((b) => (
+                <div className="bslide" key={b.title}>
+                  <img src={b.img} alt="" />
+                  <div className="bslide__in">
+                    <small>{b.kicker}</small>
+                    <h1>{b.title}</h1>
+                    <p>{b.text}</p>
+                    <div>
+                      <Link className="btn btn--light" to={b.to}><span>Shop now</span></Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </Reveal>
+            <button className="bnav l" onClick={() => setSlide((s) => (s - 1 + BANNERS.length) % BANNERS.length)} aria-label="Previous">
+              <Icon.arrow style={{ transform: 'rotate(180deg)' }} />
+            </button>
+            <button className="bnav r" onClick={() => setSlide((s) => (s + 1) % BANNERS.length)} aria-label="Next">
+              <Icon.arrow />
+            </button>
+            <div className="bdots">
+              {BANNERS.map((b, i) => (
+                <button key={b.title} className={i === slide ? 'on' : ''} onClick={() => setSlide(i)} aria-label={`Banner ${i + 1}`} />
+              ))}
+            </div>
+          </div>
+
+          <div className="bside">
+            <Link className="bpromo" to="/shop?sort=low">
+              <img src={asset('img/jar-silk.jpg')} alt="" />
+              <div className="bpromo__in">
+                <b>Body care from ₹649</b>
+                <span>Shea, kokum, vetiver</span>
+              </div>
+            </Link>
+            <Link className="bpromo" to="/shop?cat=heels">
+              <img src={asset('img/heels-pink.jpg')} alt="" />
+              <div className="bpromo__in">
+                <b>Heels, 3 inch</b>
+                <span>Cushioned · free size exchange</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* deals of the day */}
+      <div className="container sec">
+        <div className="slab">
+          <div className="sec-head">
+            <div>
+              <h2>Deals of the day</h2>
+              <p>Lowest prices on the pieces everyone reorders</p>
+            </div>
+            <div className="sec-head__r">
+              <Countdown />
+              <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
+            </div>
+          </div>
           <div className="pgrid">
-            {products.slice(0, 8).map((p, i) => (
+            {deals.map((p, i) => (
               <ProductCard key={p.id} product={p} index={i} />
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ---------------- runway carousel (slide one by one) ---------------- */}
-      <section className="sec sec--tight">
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <div>
-                <p className="label label--maroon">Runway</p>
-                <h2>Walk the edit, one look at a time</h2>
-                <p>Slide with the arrows, the dots, your keyboard or a drag — the stage follows you.</p>
-              </div>
+      {/* rail: skincare */}
+      <div className="container sec">
+        <div className="slab">
+          <div className="sec-head">
+            <div>
+              <h2>Trending in skincare</h2>
+              <p>Serums, mists and barrier creams</p>
             </div>
-          </Reveal>
-          <Carousel items={RUNWAY} viewAll="/shop" cta="Shop now" />
+            <Link className="link-arrow" to="/shop?cat=skincare">View all <Icon.arrow /></Link>
+          </div>
+          <Rail
+            items={skincare}
+            render={(p, i) => <ProductCard product={p} index={i} />}
+          />
         </div>
-      </section>
+      </div>
 
-      {/* ---------------- auto campaign ticker ---------------- */}
-      <Ticker items={CAMPAIGN} label="The campaign" to="/shop" cta="Shop the campaign" />
+      {/* campaign ticker */}
+      <div className="container sec">
+        <Ticker items={CAMPAIGN} label="The campaign" to="/shop" cta="Shop the campaign" />
+      </div>
 
-      {/* ---------------- editorial ---------------- */}
-      <section className="sec">
-        <div className="container split">
-          <Reveal>
-            <div className="split__ph">
-              <img src={asset('img/lip-apply.jpg')} alt="Applying makeup" loading="lazy" />
+      {/* rail: atelier */}
+      <div className="container sec">
+        <div className="slab">
+          <div className="sec-head">
+            <div>
+              <h2>Atelier — bags, suits, heels</h2>
+              <p>Hand-finished, small batch</p>
             </div>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="label label--maroon">The ritual</p>
-            <h2>Three steps, twice a day. Nothing more.</h2>
-            <p>
-              We build short routines because long ones get abandoned. Every formula in this edit is
-              fragrance-light, non-comedogenic and tested in Indian humidity.
-            </p>
-            <ol className="steps">
-              <li><b>01</b><div><strong>Cleanse</strong><span>Amino-acid face wash that does not strip.</span></div></li>
-              <li><b>02</b><div><strong>Treat</strong><span>Vitamin C in the morning, retinol twice a week.</span></div></li>
-              <li><b>03</b><div><strong>Seal</strong><span>Shea body butter on damp skin, always.</span></div></li>
-            </ol>
-            <div style={{ marginTop: 28 }}>
-              <Link className="btn btn--ghost" to="/shop?cat=skincare"><span>Shop the ritual</span></Link>
-            </div>
-          </Reveal>
+            <Link className="link-arrow" to="/shop?cat=bags">View all <Icon.arrow /></Link>
+          </div>
+          <Rail items={atelier} render={(p, i) => <ProductCard product={p} index={i} />} />
         </div>
-      </section>
+      </div>
 
-      {/* ---------------- film ---------------- */}
-      <section className="film" ref={filmRef}>
-        <video ref={filmVideo} src={asset('video/film.mp4')} poster={asset('video/poster.jpg')} muted loop playsInline autoPlay preload="metadata" />
-        <div className="film__scrim" />
-        <div className="container film__in">
-          <Reveal>
-            <p className="label">Campaign film · 2026</p>
-            <h2>Four drops. <em>Thirty seconds.</em></h2>
-            <p>
-              Shot in one take at our Bengaluru studio — the whole ritual, no filters, no retouching.
-              This is what week four actually looks like.
-            </p>
-            <div className="film__ctl">
-              <button className="btn btn--onDark btn--sm" onClick={toggleFilm}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                  {filmPaused ? <Icon.play width="12" height="12" /> : <Icon.pause width="12" height="12" />}
-                  {filmPaused ? 'Play film' : 'Pause film'}
-                </span>
-              </button>
-              <Link className="btn btn--onDark btn--sm" to="/shop"><span>Shop the film</span></Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ---------------- brand band ---------------- */}
-      <section className="band">
-        <div className="container">
-          <Reveal>
-            <p className="label">The house</p>
-            <h2>Built like a house, <em>not a shop.</em></h2>
-            <p>
-              One palette, one typeface, one rule: nothing goes on the shelf unless it earns a second order.
-              That is the whole brand.
-            </p>
-          </Reveal>
-          <div className="band__grid">
-            <Reveal delay={0.05}>
-              <h4>Formulated in-house</h4>
-              <p>Every formula is developed with our own lab partners, never white-labelled from a catalogue.</p>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <h4>Small batch, always</h4>
-              <p>120 pieces per style for handloom, 500 units per run for skincare. No dead stock.</p>
-            </Reveal>
-            <Reveal delay={0.19}>
-              <h4>Maroon as a signature</h4>
-              <p>Oxblood and gold on ivory. You will find it on the seal of every box.</p>
-            </Reveal>
+      {/* trust */}
+      <div className="container sec">
+        <div className="trust">
+          <div className="trust__i">
+            <Icon.truck />
+            <div><b>Free delivery</b><span>On orders above ₹1,499</span></div>
+          </div>
+          <div className="trust__i">
+            <Icon.check />
+            <div><b>14-day returns</b><span>Unopened, no questions</span></div>
+          </div>
+          <div className="trust__i">
+            <Icon.heart />
+            <div><b>Derm-tested</b><span>Safe for Indian skin</span></div>
+          </div>
+          <div className="trust__i">
+            <Icon.sound />
+            <div><b>COD available</b><span>Pan-India, no fee</span></div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ---------------- reviews ---------------- */}
-      <section className="sec">
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <div>
-                <p className="label label--maroon">Verified reviews</p>
-                <h2>12,400 reviews, 4.8 average</h2>
-              </div>
-              <Link className="link-arrow" to="/shop?sort=rating">
-                Shop bestsellers <Icon.arrow />
-              </Link>
-            </div>
-          </Reveal>
-          <div className="rgrid">
-            {reviews.map((r, i) => (
-              <Reveal key={r.name} delay={i * 0.07}>
-                <div className="review">
-                  <Stars value={r.rating} size={12} />
-                  <p>“{r.text}”</p>
-                  <footer>{r.name} · {r.city}</footer>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+      {/* newsletter */}
+      <div className="container sec">
+        <div className="news">
+          <h2>₹200 off your first order</h2>
+          <p>One email a week: new drops, restocks, and the occasional skincare note.</p>
+          <form
+            className="nform"
+            onSubmit={(e) => {
+              e.preventDefault()
+              if (!/^\S+@\S+\.\S+$/.test(email)) return toast('Enter a valid email')
+              toast("You're in — check your inbox")
+              setEmail('')
+            }}
+          >
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              aria-label="Email"
+            />
+            <button type="submit">Get code</button>
+          </form>
         </div>
-      </section>
-
-      {/* ---------------- journal ---------------- */}
-      <section className="sec sec--paper">
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <div>
-                <p className="label label--maroon">The journal</p>
-                <h2>Read before you buy</h2>
-              </div>
-              <Link className="link-arrow" to="/about">Our story <Icon.arrow /></Link>
-            </div>
-          </Reveal>
-          <div className="jgrid">
-            {journal.map((j, i) => (
-              <Reveal key={j.title} delay={i * 0.07}>
-                <article className="jcard">
-                  <div className="jcard__ph"><img src={j.img} alt="" loading="lazy" /></div>
-                  <span className="label">{j.cat}</span>
-                  <h4>{j.title}</h4>
-                  <p>{j.text}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------- newsletter ---------------- */}
-      <section className="news">
-        <div className="container">
-          <Reveal>
-            <p className="label label--maroon">The list</p>
-            <h2>₹200 off, and first access</h2>
-            <p>One email a week: new drops, restocks and the occasional skincare note. Unsubscribe in one click.</p>
-            <form
-              className="nform"
-              onSubmit={(e) => {
-                e.preventDefault()
-                if (!/^\S+@\S+\.\S+$/.test(email)) return toast('Enter a valid email')
-                toast("You're in — check your inbox for the code")
-                setEmail('')
-              }}
-            >
-              <input
-                type="email"
-                placeholder="Your email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-label="Email address"
-              />
-              <button type="submit">Join</button>
-            </form>
-          </Reveal>
-        </div>
-      </section>
+      </div>
     </>
   )
 }
