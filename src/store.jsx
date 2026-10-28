@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { products, getProduct, FREE_SHIP, SHIP_FEE, PROMO_CODE } from './data'
+import { products, getProduct, FREE_SHIP, SHIP_FEE, PROMO_CODE, money } from './data'
 
 const KEY = 'nira_cart_v2'
 const WISH = 'nira_wish_v2'
 const PROMO = 'nira_promo_v2'
+const LIKES = 'nira_likes_v2'
+const COMMENTS = 'nira_comments_v2'
 
 const read = (k, fallback) => {
   try {
@@ -19,6 +21,15 @@ const write = (k, v) => {
   } catch {}
 }
 
+const SEED_COMMENTS = {
+  p1: [
+    { name: 'Ananya R.', text: 'Six weeks in, pigmentation has visibly faded. Does not pill under sunscreen.', at: '2 days ago' },
+    { name: 'Ritika M.', text: 'Does this layer with retinol at night?', at: '1 day ago' }
+  ],
+  p4: [{ name: 'Meher K.', text: 'Hardware feels like a ₹12,000 bag. Fits my 14" laptop easily.', at: '4 days ago' }],
+  p3: [{ name: 'Sana', text: 'Rosewood is perfect for Indian skin tones, not too brown.', at: '6 days ago' }]
+}
+
 const ShopContext = createContext(null)
 export const useShop = () => useContext(ShopContext)
 
@@ -26,6 +37,9 @@ export function ShopProvider({ children }) {
   const [cart, setCart] = useState(() => read(KEY, []))
   const [wish, setWish] = useState(() => read(WISH, []))
   const [promo, setPromo] = useState(() => read(PROMO, ''))
+  const [likes, setLikes] = useState(() => read(LIKES, []))
+  const [comments, setComments] = useState(() => read(COMMENTS, SEED_COMMENTS))
+  const [commentFor, setCommentFor] = useState(null)
   const [drawer, setDrawer] = useState(false)
   const [search, setSearch] = useState(false)
   const [quickView, setQuickView] = useState(null)
@@ -35,6 +49,8 @@ export function ShopProvider({ children }) {
   useEffect(() => write(KEY, cart), [cart])
   useEffect(() => write(WISH, wish), [wish])
   useEffect(() => write(PROMO, promo), [promo])
+  useEffect(() => write(LIKES, likes), [likes])
+  useEffect(() => write(COMMENTS, comments), [comments])
 
   const toast = (msg) => {
     const id = ++idRef.current
@@ -79,6 +95,40 @@ export function ShopProvider({ children }) {
     })
   }
 
+  /* ---- social layer: likes, comments, share ---- */
+  const toggleLike = (id) => {
+    setLikes((l) => {
+      const has = l.includes(id)
+      if (!has) toast('Liked')
+      return has ? l.filter((x) => x !== id) : [...l, id]
+    })
+  }
+  const likeCount = (id) => (comments[id]?.length || 0) * 7 + (likes.includes(id) ? 1 : 0) + 24
+
+  const addComment = (id, text, name = 'You') => {
+    if (!text.trim()) return
+    setComments((c) => ({
+      ...c,
+      [id]: [{ name, text: text.trim(), at: 'just now' }, ...(c[id] || [])]
+    }))
+    toast('Comment posted')
+  }
+
+  const share = async (p) => {
+    const url = `${window.location.origin}${window.location.pathname}#/product/${p.id}`
+    const data = { title: `NIRA — ${p.name}`, text: `${p.name} · ${money(p.price)}`, url }
+    try {
+      if (navigator.share) {
+        await navigator.share(data)
+        return
+      }
+      await navigator.clipboard.writeText(url)
+      toast('Link copied — paste it anywhere')
+    } catch {
+      toast('Could not share — copy the link from the address bar')
+    }
+  }
+
   const applyPromo = (code) => {
     const c = (code || '').trim().toUpperCase()
     if (c === PROMO_CODE) {
@@ -95,10 +145,7 @@ export function ShopProvider({ children }) {
   }
 
   const lines = useMemo(
-    () =>
-      cart
-        .map((l, idx) => ({ ...l, idx, product: getProduct(l.id) }))
-        .filter((l) => l.product),
+    () => cart.map((l, idx) => ({ ...l, idx, product: getProduct(l.id) })).filter((l) => l.product),
     [cart]
   )
   const count = lines.reduce((n, l) => n + l.qty, 0)
@@ -117,6 +164,9 @@ export function ShopProvider({ children }) {
     total,
     promo,
     wish,
+    likes,
+    comments,
+    commentFor,
     drawer,
     search,
     quickView,
@@ -126,6 +176,11 @@ export function ShopProvider({ children }) {
     remove,
     clear,
     toggleWish,
+    toggleLike,
+    likeCount,
+    addComment,
+    share,
+    setCommentFor,
     applyPromo,
     setDrawer,
     setSearch,
