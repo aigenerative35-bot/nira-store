@@ -40,16 +40,19 @@ export default function ProductCard({ product: p, index = 0 }) {
         </div>
       </div>
       <div className="pcard__info">
-        <div>
-          <Link to={`/product/${p.id}`}>
-            <div className="pcard__name">{p.name}</div>
-          </Link>
-          <div className="pcard__cat">{p.catName}</div>
-          <Stars value={p.rating} />
-        </div>
-        <div className="pcard__price num">
-          {p.mrp > p.price && <s>{money(p.mrp)}</s>}
-          {money(p.price)}
+        <Link to={`/product/${p.id}`} className="pcard__row">
+          <span className="pcard__name">{p.name}</span>
+          <span className="pcard__price num">
+            {p.mrp > p.price && <s>{money(p.mrp)}</s>}
+            {money(p.price)}
+          </span>
+        </Link>
+        <div className="pcard__row pcard__sub">
+          <span className="pcard__cat">{p.catName}</span>
+          <span className="pcard__rate">
+            <Stars value={p.rating} size={9} />
+            <em className="num">{p.rating}</em>
+          </span>
         </div>
       </div>
       <SocialBar product={p} />
