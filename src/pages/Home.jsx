@@ -10,12 +10,12 @@ import { asset, categories, journal, products, reviews } from '../data'
 
 const words = ['Skin', 'that', 'looks', 'like']
 const RUNWAY = [
-  { title: 'Silk Saree — Emerald', img: asset('img/saree-jewel.jpg'), tag: 'Runway style', to: '/product/p9' },
-  { title: 'Structured Tote — Tan', img: asset('img/bag-brown.jpg'), tag: 'Runway style', to: '/product/p4' },
-  { title: 'Block Heels — Nude', img: asset('img/heels-pink.jpg'), tag: 'Runway style', to: '/product/p6' },
-  { title: 'Handloom Saree — Indigo', img: asset('img/saree-street.jpg'), tag: 'Runway style', to: '/product/p16' },
-  { title: 'Matte Lipstick — Rosewood', img: asset('img/lip-apply.jpg'), tag: 'Runway style', to: '/product/p3' },
-  { title: 'Cotton Co-ord — Sage', img: asset('img/saree-back.jpg'), tag: 'Runway style', to: '/product/p5' }
+  { title: 'Silk Saree — Emerald', img: asset('img/saree-jewel.jpg'), tag: 'Runway style', to: '/product/p9', price: 8499 },
+  { title: 'Structured Tote — Tan', img: asset('img/bag-brown.jpg'), tag: 'Runway style', to: '/product/p4', price: 4499 },
+  { title: 'Block Heels — Nude', img: asset('img/heels-pink.jpg'), tag: 'Runway style', to: '/product/p6', price: 3199 },
+  { title: 'Handloom Saree — Indigo', img: asset('img/saree-street.jpg'), tag: 'Runway style', to: '/product/p16', price: 6499 },
+  { title: 'Matte Lipstick — Rosewood', img: asset('img/lip-apply.jpg'), tag: 'Runway style', to: '/product/p3', price: 749 },
+  { title: 'Cotton Co-ord — Sage', img: asset('img/saree-back.jpg'), tag: 'Runway style', to: '/product/p5', price: 2899 }
 ]
 
 const CAMPAIGN = [
@@ -92,6 +92,12 @@ export default function Home() {
           <div className="hero__cta rise" style={{ '--d': '0.74s' }}>
             <Link className="btn btn--light" to="/shop"><span>Shop the edit</span></Link>
             <Link className="btn btn--onDark" to="/shop?cat=skincare"><span>Explore skincare</span></Link>
+          </div>
+
+          <div className="hero__stats rise" style={{ '--d': '0.86s' }}>
+            <div><b className="num">4.8</b><span>avg rating</span></div>
+            <div><b className="num">12,400</b><span>reviews</span></div>
+            <div><b className="num">1.2 lakh</b><span>orders shipped</span></div>
           </div>
         </div>
 
