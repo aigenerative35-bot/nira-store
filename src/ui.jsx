@@ -79,6 +79,17 @@ export const Icon = {
       <path d="M17 9a4 4 0 0 1 0 6" />
     </svg>
   ),
+  chat: (p) => (
+    <svg viewBox="0 0 24 24" {...s} {...p}>
+      <path d="M21 12a8 8 0 0 1-8 8H8l-4 3v-5.6A8 8 0 0 1 13 4a8 8 0 0 1 8 8z" />
+    </svg>
+  ),
+  share: (p) => (
+    <svg viewBox="0 0 24 24" {...s} {...p}>
+      <path d="M12 15V3M8 7l4-4 4 4" />
+      <path d="M4 13v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6" />
+    </svg>
+  ),
   truck: (p) => (
     <svg viewBox="0 0 24 24" {...s} {...p}>
       <path d="M2 7h11v9H2zM13 10h5l3 3v3h-8z" />
