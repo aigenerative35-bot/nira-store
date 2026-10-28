@@ -1,0 +1,138 @@
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { products, getProduct, FREE_SHIP, SHIP_FEE, PROMO_CODE } from './data'
+
+const KEY = 'nira_cart_v2'
+const WISH = 'nira_wish_v2'
+const PROMO = 'nira_promo_v2'
+
+const read = (k, fallback) => {
+  try {
+    const v = JSON.parse(localStorage.getItem(k))
+    return v ?? fallback
+  } catch {
+    return fallback
+  }
+}
+const write = (k, v) => {
+  try {
+    localStorage.setItem(k, JSON.stringify(v))
+  } catch {}
+}
+
+const ShopContext = createContext(null)
+export const useShop = () => useContext(ShopContext)
+
+export function ShopProvider({ children }) {
+  const [cart, setCart] = useState(() => read(KEY, []))
+  const [wish, setWish] = useState(() => read(WISH, []))
+  const [promo, setPromo] = useState(() => read(PROMO, ''))
+  const [drawer, setDrawer] = useState(false)
+  const [search, setSearch] = useState(false)
+  const [quickView, setQuickView] = useState(null)
+  const [toasts, setToasts] = useState([])
+  const idRef = useRef(0)
+
+  useEffect(() => write(KEY, cart), [cart])
+  useEffect(() => write(WISH, wish), [wish])
+  useEffect(() => write(PROMO, promo), [promo])
+
+  const toast = (msg) => {
+    const id = ++idRef.current
+    setToasts((t) => [...t, { id, msg }])
+    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 2400)
+  }
+
+  const add = (id, qty = 1, size, shade) => {
+    const p = getProduct(id)
+    if (!p) return
+    const s = size ?? p.sizes?.[0] ?? ''
+    const sh = shade ?? p.shades?.[0]?.name ?? ''
+    setCart((c) => {
+      const i = c.findIndex((l) => l.id === id && l.size === s && l.shade === sh)
+      if (i > -1) {
+        const next = [...c]
+        next[i] = { ...next[i], qty: next[i].qty + qty }
+        return next
+      }
+      return [...c, { id, qty, size: s, shade: sh }]
+    })
+    toast(`${p.name} added to bag`)
+    setDrawer(true)
+  }
+
+  const setQty = (idx, delta) =>
+    setCart((c) => {
+      const next = [...c]
+      if (!next[idx]) return c
+      next[idx] = { ...next[idx], qty: next[idx].qty + delta }
+      return next.filter((l) => l.qty > 0)
+    })
+
+  const remove = (idx) => setCart((c) => c.filter((_, i) => i !== idx))
+  const clear = () => setCart([])
+
+  const toggleWish = (id) => {
+    setWish((w) => {
+      const has = w.includes(id)
+      toast(has ? 'Removed from wishlist' : 'Saved to wishlist')
+      return has ? w.filter((x) => x !== id) : [...w, id]
+    })
+  }
+
+  const applyPromo = (code) => {
+    const c = (code || '').trim().toUpperCase()
+    if (c === PROMO_CODE) {
+      setPromo(c)
+      toast(`${c} applied — 10% off`)
+      return true
+    }
+    if (!c) {
+      setPromo('')
+      return true
+    }
+    toast('That code is not valid')
+    return false
+  }
+
+  const lines = useMemo(
+    () =>
+      cart
+        .map((l, idx) => ({ ...l, idx, product: getProduct(l.id) }))
+        .filter((l) => l.product),
+    [cart]
+  )
+  const count = lines.reduce((n, l) => n + l.qty, 0)
+  const subtotal = lines.reduce((n, l) => n + l.product.price * l.qty, 0)
+  const discount = promo ? Math.round(subtotal * 0.1) : 0
+  const shipping = subtotal - discount >= FREE_SHIP || subtotal === 0 ? 0 : SHIP_FEE
+  const total = Math.max(0, subtotal - discount + shipping)
+
+  const value = {
+    products,
+    cart: lines,
+    count,
+    subtotal,
+    discount,
+    shipping,
+    total,
+    promo,
+    wish,
+    drawer,
+    search,
+    quickView,
+    toasts,
+    add,
+    setQty,
+    remove,
+    clear,
+    toggleWish,
+    applyPromo,
+    setDrawer,
+    setSearch,
+    setQuickView,
+    toast,
+    freeShip: FREE_SHIP
+  }
+
+  return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>
+}
