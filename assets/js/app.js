@@ -614,9 +614,20 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanels(); });
     if ($("#veil")) $("#veil").addEventListener("click", closePanels);
 
-    /* header shadow */
+    /* header: floats over the home hero, solid once scrolled */
     var hdr = $("#hdr");
-    if (hdr) window.addEventListener("scroll", function () { hdr.classList.toggle("stuck", window.scrollY > 8); }, { passive: true });
+    if (hdr) {
+      var heroEl = $(".vhero");
+      var overMode = document.body.getAttribute("data-page") === "home" && !!heroEl;
+      if (overMode) hdr.classList.add("over");
+      window.addEventListener("scroll", function () {
+        hdr.classList.toggle("stuck", window.scrollY > 8);
+        if (overMode) {
+          var limit = 80;
+          hdr.classList.toggle("over", window.scrollY < limit);
+        }
+      }, { passive: true });
+    }
 
     /* utility rotator */
     var rots = $$("#utilRot span"), ri = 0;
@@ -640,6 +651,20 @@
       mt.addEventListener("click", function () { film.muted = !film.muted; if (!film.muted && film.paused) film.play(); sync(); });
       film.addEventListener("play", sync); film.addEventListener("pause", sync);
       var pr = film.play(); if (pr && pr.catch) pr.catch(function () {}); sync();
+    }
+
+    /* hero video */
+    var hv = $("#heroVideo");
+    if (hv) {
+      var hs = $("#heroSound"), hsT = $("#heroSoundText");
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) hv.pause();
+      if (hs) hs.addEventListener("click", function () {
+        hv.muted = !hv.muted;
+        if (!hv.muted && hv.paused) hv.play();
+        hsT.textContent = hv.muted ? "Sound off" : "Sound on";
+        hs.querySelector("use").setAttribute("href", hv.muted ? "#i-mute" : "#i-sound");
+      });
+      var hp = hv.play(); if (hp && hp.catch) hp.catch(function () {});
     }
 
     /* newsletter + generic forms */
