@@ -3,10 +3,29 @@ import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Icon, Marquee, Reveal, Stars } from '../ui'
 import ProductCard from '../components/ProductCard'
+import Carousel from '../components/Carousel'
+import Ticker from '../components/Ticker'
 import { useShop } from '../store'
 import { asset, categories, journal, products, reviews } from '../data'
 
 const words = ['Skin', 'that', 'looks', 'like']
+const RUNWAY = [
+  { title: 'Silk Saree — Emerald', img: asset('img/saree-jewel.jpg'), tag: 'Runway style', to: '/product/p9' },
+  { title: 'Structured Tote — Tan', img: asset('img/bag-brown.jpg'), tag: 'Runway style', to: '/product/p4' },
+  { title: 'Block Heels — Nude', img: asset('img/heels-pink.jpg'), tag: 'Runway style', to: '/product/p6' },
+  { title: 'Handloom Saree — Indigo', img: asset('img/saree-street.jpg'), tag: 'Runway style', to: '/product/p16' },
+  { title: 'Matte Lipstick — Rosewood', img: asset('img/lip-apply.jpg'), tag: 'Runway style', to: '/product/p3' },
+  { title: 'Cotton Co-ord — Sage', img: asset('img/saree-back.jpg'), tag: 'Runway style', to: '/product/p5' }
+]
+
+const CAMPAIGN = [
+  { title: 'La Nuit', img: asset('img/hero-portrait.jpg'), badge: 'N' },
+  { title: 'Good Girl', img: asset('img/hero-bag.jpg'), badge: 'N' },
+  { title: '212 Atelier', img: asset('img/bag-blue.jpg'), badge: 'N' },
+  { title: 'Makeup Edit', img: asset('img/lips.jpg'), badge: 'N' },
+  { title: 'Advent', img: asset('img/jar-flowers.jpg'), badge: 'N' }
+]
+
 const NOTES = ['Clean formulas', 'Made in India', 'Cruelty-free', 'Dermat-tested', '26,000 pincodes', '14-day returns', 'Small batch']
 
 export default function Home() {
@@ -146,6 +165,25 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ---------------- runway carousel (slide one by one) ---------------- */}
+      <section className="sec sec--tight">
+        <div className="container">
+          <Reveal>
+            <div className="sec-head">
+              <div>
+                <p className="label label--maroon">Runway</p>
+                <h2>Walk the edit, one look at a time</h2>
+                <p>Slide with the arrows, the dots, your keyboard or a drag — the stage follows you.</p>
+              </div>
+            </div>
+          </Reveal>
+          <Carousel items={RUNWAY} viewAll="/shop" cta="Shop now" />
+        </div>
+      </section>
+
+      {/* ---------------- auto campaign ticker ---------------- */}
+      <Ticker items={CAMPAIGN} label="The campaign" to="/shop" cta="Shop the campaign" />
 
       {/* ---------------- editorial ---------------- */}
       <section className="sec">
