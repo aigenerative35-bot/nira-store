@@ -17,17 +17,19 @@ export default function Shop() {
   const [params, setParams] = useSearchParams()
   const { wish } = useShop()
   const cat = params.get('cat') || 'all'
+  const q = (params.get('q') || '').toLowerCase().trim()
   const [sort, setSort] = useState(params.get('sort') || 'featured')
   const onlyWish = params.get('wish') === '1'
 
   const list = useMemo(() => {
     let out = products.filter((p) => cat === 'all' || p.cat === cat)
+    if (q) out = out.filter((p) => `${p.name} ${p.catName} ${p.short}`.toLowerCase().includes(q))
     if (onlyWish) out = out.filter((p) => wish.includes(p.id))
     if (sort === 'low') out = [...out].sort((a, b) => a.price - b.price)
     if (sort === 'high') out = [...out].sort((a, b) => b.price - a.price)
     if (sort === 'rating') out = [...out].sort((a, b) => b.rating - a.rating)
     return out
-  }, [cat, sort, onlyWish, wish])
+  }, [cat, sort, onlyWish, wish, q])
 
   const setCat = (id) => {
     const next = new URLSearchParams(params)
@@ -44,7 +46,15 @@ export default function Shop() {
       </div>
 
       <div className="phead">
-        <h1>{onlyWish ? 'Your wishlist' : cat === 'all' ? 'The edit' : categories.find((c) => c.id === cat)?.name}</h1>
+        <h1>
+          {onlyWish
+            ? 'Your wishlist'
+            : q
+            ? `Results for “${params.get('q')}”`
+            : cat === 'all'
+            ? 'All products'
+            : categories.find((c) => c.id === cat)?.name}
+        </h1>
         <p>
           {onlyWish
             ? 'Everything you have saved. Move a piece to the bag when you are ready.'
@@ -62,7 +72,12 @@ export default function Shop() {
           ))}
         </div>
         <div className="sortbar">
-          <span className="num">{list.length} pieces</span>
+          {q && (
+            <button className="chip" onClick={() => { const n = new URLSearchParams(params); n.delete('q'); setParams(n) }}>
+              “{params.get('q')}” ✕
+            </button>
+          )}
+          <span className="num">{list.length} items</span>
           <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort">
             {SORTS.map((s) => (
               <option key={s.id} value={s.id}>{s.label}</option>
