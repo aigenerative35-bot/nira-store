@@ -63,7 +63,16 @@ export default function Shop() {
       </div>
 
       <div className="shopbar">
-        <div className="chips">
+        <div className="shop-search">
+            <Icon.search />
+            <input
+              value={q}
+              onChange={(e) => setParams((prev) => { const n = new URLSearchParams(prev); if (e.target.value) n.set('q', e.target.value); else n.delete('q'); return n })}
+              placeholder="Search products, categories…"
+              aria-label="Search"
+            />
+          </div>
+          <div className="chips">
           <button className={`chip ${cat === 'all' && !onlyWish ? 'on' : ''}`} onClick={() => setCat('all')}>All</button>
           {categories.map((c) => (
             <button key={c.id} className={`chip ${cat === c.id ? 'on' : ''}`} onClick={() => setCat(c.id)}>
