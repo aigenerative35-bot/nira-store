@@ -6,9 +6,15 @@ import ProductCard from '../components/ProductCard'
 import Carousel from '../components/Carousel'
 import Ticker from '../components/Ticker'
 import { useShop } from '../store'
-import { asset, categories, products } from '../data'
+import { asset, journal, products } from '../data'
 
-const NOTES = ['Complimentary shipping over ₹1,499', 'New: the autumn handloom edit', 'Private appointments, Bengaluru studio']
+const NOTES = ['Complimentary shipping over ₹1,499', 'The autumn handloom edit — now live', 'Private appointments, Bengaluru studio']
+
+const COLLECTIONS = [
+  { id: 'skincare', name: 'Skincare', line: 'Six formulas, one ritual', img: asset('img/serum.jpg') },
+  { id: 'bags', name: 'The atelier', line: 'Bags, heels, small leathers', img: asset('img/bag-brown.jpg') },
+  { id: 'suits', name: 'Handloom', line: 'Woven in Bhagalpur', img: asset('img/saree-jewel.jpg') }
+]
 
 const RUNWAY = [
   { title: 'Silk Saree — Emerald', img: asset('img/saree-jewel.jpg'), tag: 'Runway', to: '/product/p9', price: 8499 },
@@ -24,6 +30,13 @@ const CAMPAIGN = [
   { title: '212 Atelier', img: asset('img/bag-blue.jpg'), badge: 'N' },
   { title: 'Makeup Edit', img: asset('img/lips.jpg'), badge: 'N' },
   { title: 'Advent', img: asset('img/jar-flowers.jpg'), badge: 'N' }
+]
+
+const LOOKS = [
+  { img: asset('img/saree-jewel.jpg'), cap: 'Look 01 — Emerald silk' },
+  { img: asset('img/heels-out.jpg'), cap: 'Look 02 — Block heel' },
+  { img: asset('img/bag-blue.jpg'), cap: 'Look 03 — Sling, linen' },
+  { img: asset('img/hero-portrait.jpg'), cap: 'Look 04 — Evening skin' }
 ]
 
 export default function Home() {
@@ -45,40 +58,22 @@ export default function Home() {
     if (!v.muted && v.paused) v.play()
     setMuted(v.muted)
   }
-
   const toggleFilm = () => {
     const v = filmRef.current
     if (!v) return
-    if (v.paused) {
-      v.play()
-      setFilmPaused(false)
-    } else {
-      v.pause()
-      setFilmPaused(true)
-    }
+    if (v.paused) { v.play(); setFilmPaused(false) } else { v.pause(); setFilmPaused(true) }
   }
 
   return (
     <>
-      {/* ---------------- hero ---------------- */}
+      {/* hero */}
       <section className="hero" ref={heroRef}>
         <motion.div className="hero__video" style={{ y: heroY }}>
-          <video
-            ref={videoRef}
-            src={asset('video/hero.mp4')}
-            poster={asset('video/hero-poster.jpg')}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          />
+          <video ref={videoRef} src={asset('video/hero.mp4')} poster={asset('video/hero-poster.jpg')} autoPlay muted loop playsInline preload="auto" />
         </motion.div>
         <div className="hero__scrim" />
         <div className="container hero__in">
-          <div className="hero__eyebrow label rise" style={{ '--d': '0.15s' }}>
-            <i /> Autumn 2026 — the edit
-          </div>
+          <div className="hero__eyebrow label rise" style={{ '--d': '0.15s' }}><i /> Autumn 2026 — the edit</div>
           <h1>
             <span className="rise" style={{ '--d': '0.24s', display: 'inline-block' }}>Skin that looks</span>{' '}
             <em className="rise" style={{ '--d': '0.36s', display: 'inline-block' }}>like you slept.</em>
@@ -89,7 +84,7 @@ export default function Home() {
           </p>
           <div className="hero__cta rise" style={{ '--d': '0.62s' }}>
             <Link className="btn btn--light" to="/shop"><span>Shop the edit</span></Link>
-            <Link className="btn btn--onDark" to="/shop?cat=skincare"><span>Explore skincare</span></Link>
+            <Link className="btn btn--onDark" to="/lookbook"><span>View the lookbook</span></Link>
           </div>
           <div className="hero__stats rise" style={{ '--d': '0.74s' }}>
             <div><b className="num">4.8</b><span>Average rating</span></div>
@@ -108,21 +103,49 @@ export default function Home() {
 
       <Marquee items={NOTES} />
 
-      {/* ---------------- categories ---------------- */}
-      <section className="catrail">
+      {/* statement */}
+      <section className="statement">
         <div className="container">
-          <div className="catrail__in">
-            {categories.map((c) => (
-              <Link className="ctile" to={`/shop?cat=${c.id}`} key={c.id}>
-                <span className="ctile__ph"><img src={c.img} alt="" loading="lazy" /></span>
-                <span>{c.name}</span>
+          <span className="label label--maroon">The house — est. 2019</span>
+          <p>
+            We make <em>fewer things</em>, properly. Six formulas, one atelier of bags and heels, and a handloom
+            practice with forty-one weavers. Nothing goes on the shelf unless it earns a second order.
+          </p>
+          <div className="statement__meta">
+            <div><b className="num">16</b><span>Pieces in the edit</span></div>
+            <div><b className="num">41</b><span>Weavers, two co-ops</span></div>
+            <div><b className="num">2</b><span>Years, stitch warranty</span></div>
+            <div><b className="num">26,000</b><span>Pincodes served</span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* collections */}
+      <section className="sec sec--tight">
+        <div className="container">
+          <div className="sec-head">
+            <div>
+              <p className="label label--maroon">Collections</p>
+              <h2>Three houses under one roof</h2>
+            </div>
+            <Link className="link-arrow" to="/shop">All 16 pieces <Icon.arrow /></Link>
+          </div>
+          <div className="collections">
+            {COLLECTIONS.map((c) => (
+              <Link className="collection" to={`/shop?cat=${c.id}`} key={c.id}>
+                <div className="collection__ph"><img src={c.img} alt={c.name} loading="lazy" /></div>
+                <div className="collection__in">
+                  <span>{c.line}</span>
+                  <h3>{c.name}</h3>
+                  <i>Discover</i>
+                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ---------------- new in ---------------- */}
+      {/* new arrivals */}
       <section className="sec">
         <div className="container">
           <div className="sec-head">
@@ -131,43 +154,18 @@ export default function Home() {
               <h2>This week's arrivals</h2>
               <p>Ranked by what gets reordered, not by what we want to push.</p>
             </div>
-            <Link className="link-arrow" to="/shop">View all 16 pieces <Icon.arrow /></Link>
+            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
           </div>
           <div className="pgrid">
-            {products.slice(0, 8).map((p, i) => (
+            {products.slice(0, 4).map((p, i) => (
               <ProductCard key={p.id} product={p} index={i} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ---------------- editorial ---------------- */}
+      {/* runway carousel */}
       <section className="sec sec--tight">
-        <div className="container split">
-          <div className="split__ph">
-            <img src={asset('img/lip-apply.jpg')} alt="Applying makeup" loading="lazy" />
-          </div>
-          <div>
-            <p className="label label--maroon">The ritual</p>
-            <h2>Three steps, twice a day. Nothing more.</h2>
-            <p>
-              We build short routines because long ones get abandoned. Every formula in this edit is
-              fragrance-light, non-comedogenic and tested in Indian humidity.
-            </p>
-            <ol className="steps">
-              <li><b>01</b><div><strong>Cleanse</strong><span>Amino-acid face wash that does not strip.</span></div></li>
-              <li><b>02</b><div><strong>Treat</strong><span>Vitamin C in the morning, retinol twice a week.</span></div></li>
-              <li><b>03</b><div><strong>Seal</strong><span>Shea body butter on damp skin, always.</span></div></li>
-            </ol>
-            <div style={{ marginTop: 28 }}>
-              <Link className="btn btn--ghost" to="/shop?cat=skincare"><span>Shop the ritual</span></Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------- runway carousel ---------------- */}
-      <section className="sec">
         <div className="container">
           <div className="sec-head">
             <div>
@@ -179,7 +177,56 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------- film ---------------- */}
+      {/* atelier (dark) */}
+      <section className="atelier">
+        <div className="container atelier__grid">
+          <div className="atelier__ph">
+            <img src={asset('img/jar-silk.jpg')} alt="Atelier" loading="lazy" />
+          </div>
+          <div>
+            <p className="label">The atelier</p>
+            <h2>Formulated in-house, <em>never white-labelled.</em></h2>
+            <p>
+              Every formula is developed with our own lab partners and tested on Indian skin in Indian humidity.
+              The handloom comes from two co-operatives we have worked with since 2019.
+            </p>
+            <ul className="atelier__list">
+              <li><b>01</b> Amino-acid cleansers, THD vitamin C, ceramide barrier creams</li>
+              <li><b>02</b> 120 pieces per handloom style — when it sells out, it sells out</li>
+              <li><b>03</b> Vegan leather, hand-finished edges, two-year stitch warranty</li>
+            </ul>
+            <div style={{ marginTop: 30 }}>
+              <Link className="btn btn--onDark" to="/about"><span>Read the house story</span></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* lookbook */}
+      <section className="sec">
+        <div className="container">
+          <div className="sec-head">
+            <div>
+              <p className="label label--maroon">Lookbook</p>
+              <h2>Autumn, shot on the street</h2>
+            </div>
+            <Link className="link-arrow" to="/lookbook">Open the lookbook <Icon.arrow /></Link>
+          </div>
+          <div className="lookbook">
+            {LOOKS.map((l) => (
+              <Link className="look" to="/lookbook" key={l.cap}>
+                <div className="look__ph"><img src={l.img} alt={l.cap} loading="lazy" /></div>
+                <figcaption>{l.cap}</figcaption>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* campaign ticker */}
+      <Ticker items={CAMPAIGN} label="The campaign" to="/shop" cta="Shop the campaign" />
+
+      {/* film */}
       <section className="film">
         <video ref={filmRef} src={asset('video/film.mp4')} poster={asset('video/poster.jpg')} muted loop playsInline autoPlay preload="metadata" />
         <div className="film__scrim" />
@@ -196,45 +243,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------- ticker ---------------- */}
-      <Ticker items={CAMPAIGN} label="The campaign" to="/shop" cta="Shop the campaign" />
-
-      {/* ---------------- band ---------------- */}
-      <section className="band">
-        <div className="container">
-          <p className="label">The house</p>
-          <h2>Built like a house, <em>not a shop.</em></h2>
-          <p>
-            One palette, one typeface, one rule: nothing goes on the shelf unless it earns a second order.
-            That is the whole brand.
-          </p>
-          <div className="band__grid">
-            <div><h4>Formulated in-house</h4><p>Every formula is developed with our own lab partners, never white-labelled.</p></div>
-            <div><h4>Small batch, always</h4><p>120 pieces per style for handloom, 500 units per run for skincare.</p></div>
-            <div><h4>Maroon as a signature</h4><p>Oxblood and gold on ivory. You will find it on the seal of every box.</p></div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------- the edit ---------------- */}
+      {/* journal */}
       <section className="sec">
         <div className="container">
           <div className="sec-head">
             <div>
-              <p className="label label--maroon">The edit</p>
-              <h2>Everything, in one place</h2>
+              <p className="label label--maroon">The journal</p>
+              <h2>Read before you buy</h2>
             </div>
-            <Link className="link-arrow" to="/shop">Shop all <Icon.arrow /></Link>
+            <Link className="link-arrow" to="/journal">All entries <Icon.arrow /></Link>
           </div>
-          <div className="pgrid">
-            {products.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
+          <div className="jlist">
+            {journal.map((j, i) => (
+              <Link className="jrow" to="/journal" key={j.title}>
+                <span className="jrow__num num">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{j.title}</h3>
+                  <p>{j.text}</p>
+                </div>
+                <span className="jrow__meta">{j.cat}</span>
+                <div className="jrow__ph"><img src={j.img} alt="" loading="lazy" /></div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ---------------- trust ---------------- */}
+      {/* services */}
       <section className="container">
         <div className="trust">
           <div className="trust__i"><Icon.truck /><div><b>Complimentary delivery</b><span>On orders above ₹1,499</span></div></div>
@@ -244,7 +279,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------- newsletter ---------------- */}
+      {/* newsletter */}
       <section className="news">
         <div className="container">
           <p className="label label--maroon">The list</p>
