@@ -6,9 +6,9 @@ import { useShop } from '../store'
 import { categories, asset } from '../data'
 
 const NOTES = [
-  'Trade assurance on every order',
-  'MOQ from 1 piece · samples available',
-  'Ships to 26,000 pincodes in India'
+  'Complimentary shipping over ₹1,499',
+  'New: the autumn handloom edit',
+  'Private appointments, Bengaluru studio'
 ]
 
 export default function Header() {
@@ -55,7 +55,7 @@ export default function Header() {
           <div className="util__links">
             <Link to="/contact">Help centre</Link>
             <Link to="/contact">Track order</Link>
-            <Link to="/about">Sell on Nira</Link>
+            <Link to="/about">Our story</Link>
             <span>IN / INR</span>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function Header() {
 
           <Link className="logo" to="/">
             <span className="logo__mark">N</span>
-            <span className="logo__txt">Nira<span>trade</span></span>
+            <span className="logo__txt">Nira<span>beauty &amp; atelier</span></span>
           </Link>
 
           <form className="searchbar" onSubmit={submit} role="search">
@@ -80,20 +80,20 @@ export default function Header() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search serums, tote bags, handloom sarees, heels…"
+              placeholder="Search for serums, tote bags, sarees, heels…"
               aria-label="Search products"
             />
             <button type="submit" aria-label="Search"><Icon.search /></button>
           </form>
 
           <div className="hdr__acts">
-            <Link className="hact" to="/contact"><Icon.user /><span>Sign in</span></Link>
+            <Link className="hact" to="/contact"><Icon.user /><span>Account</span></Link>
             <Link className="hact" to="/shop?wish=1">
-              <Icon.heart /><span>Saved</span>
+              <Icon.heart /><span>Wishlist</span>
               {wish.length > 0 && <span className="badge">{wish.length}</span>}
             </Link>
             <button className="hact" onClick={() => setDrawer(true)}>
-              <Icon.bag /><span>Enquiry</span>
+              <Icon.bag /><span>Bag</span>
               {count > 0 && <span className="badge">{count}</span>}
             </button>
           </div>
@@ -110,12 +110,12 @@ export default function Header() {
             <ul>
               <li><Link to="/shop">All products <span>16</span></Link></li>
               {categories.map((c) => <li key={c.id}><Link to={`/shop?cat=${c.id}`}>{c.name} <span>{c.note}</span></Link></li>)}
-              <li><Link to="/about">Company <span>—</span></Link></li>
+              <li><Link to="/about">The house <span>—</span></Link></li>
               <li><Link to="/contact">Contact <span>—</span></Link></li>
             </ul>
             <div className="mnav__f">
-              <Link className="btn btn--block" to="/cart"><span>View enquiry list</span></Link>
-              <Link className="btn btn--ghost btn--block" to="/contact"><span>Request a sample</span></Link>
+              <Link className="btn btn--block" to="/cart"><span>View bag</span></Link>
+              <Link className="btn btn--ghost btn--block" to="/contact"><span>Book an appointment</span></Link>
             </div>
           </motion.nav>
         )}
