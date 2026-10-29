@@ -195,7 +195,7 @@ export default function Home() {
             </div>
             <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
           </div>
-          <Ring3D items={products.slice(0, 8)} radius={330} />
+          <Ring3D items={products.slice(0, 8)} radius={320} autoSpeed={7} />
         </div>
       </div>
 
