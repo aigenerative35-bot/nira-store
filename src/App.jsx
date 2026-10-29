@@ -40,6 +40,7 @@ export default function App() {
     <>
       <ScrollTop />
       <motion.div className="scroll-progress" style={{ scaleX: bar }} />
+
       <Header />
       <main key={location.pathname}>
         <Routes location={location}>
