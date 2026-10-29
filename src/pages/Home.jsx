@@ -4,6 +4,9 @@ import { Icon, Stars } from '../ui'
 import ProductCard from '../components/ProductCard'
 import Ticker from '../components/Ticker'
 import { BannerSlider, StripSlider, WideSlider } from '../components/Banners'
+import Cinema from '../components/Cinema'
+import Ring3D from '../components/Ring3D'
+import TiltCard from '../components/TiltCard'
 import { useShop } from '../store'
 import { asset, categories, products } from '../data'
 
@@ -133,7 +136,7 @@ export default function Home() {
             <Link className="link-arrow" to="/shop">View all 16 <Icon.arrow /></Link>
           </div>
           <div className="pgrid">
-            {top.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+            {top.map((p, i) => <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>)}
           </div>
         </div>
       </div>
@@ -169,6 +172,31 @@ export default function Home() {
       {/* ticker */}
       <div className="container sec">
         <Ticker items={CAMPAIGN} label="Campaign" to="/shop" cta="Shop the campaign" />
+      </div>
+
+      {/* cinematic band */}
+      <Cinema
+        src={asset('video/film.mp4')}
+        poster={asset('video/poster.jpg')}
+        label="Campaign film · 2026"
+        lines={['Four drops.', 'Thirty seconds.']}
+        text="Shot in one take at our Bengaluru studio — the whole ritual, no filters, no retouching."
+        cta="Shop the film"
+        to="/shop"
+      />
+
+      {/* 3D ring */}
+      <div className="container sec">
+        <div className="slab" style={{ overflow: 'hidden' }}>
+          <div className="sec-head">
+            <div>
+              <h2>The ring</h2>
+              <p>Spin through the edit — drag it, or let it turn</p>
+            </div>
+            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
+          </div>
+          <Ring3D items={products.slice(0, 8)} radius={330} />
+        </div>
       </div>
 
       {/* the house band */}
@@ -236,7 +264,7 @@ export default function Home() {
             <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
           </div>
           <div className="pgrid">
-            {rest.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+            {rest.map((p, i) => <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>)}
           </div>
         </div>
       </div>
