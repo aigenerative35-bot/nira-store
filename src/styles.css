@@ -1653,3 +1653,9 @@ body { background: #f4f6f9; }
 }
 .pgrid--big .pcard__media img { padding: 4%; }
 .pgrid--big { row-gap: clamp(18px, 2.4vw, 34px); }
+
+/* match Herrera exactly: white media, tag on the left */
+.pgrid--big .pcard__media { background: #fff; }
+.pgrid--big .tag { left: 12px; right: auto; }
+.pgrid--big .pcard__cat { font-size: 11px; }
+.pgrid--big .pcard__info { padding-top: 14px; }
