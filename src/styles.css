@@ -1690,3 +1690,18 @@ body { background: #f4f6f9; }
 .worlds::-webkit-scrollbar { display: none; }
 .worlds .world { scroll-snap-align: start; }
 .worlds .world__ph { aspect-ratio: 4 / 3.6; }
+
+/* pagination — 10 per page */
+.pager {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: clamp(18px, 3vw, 40px) 0 clamp(30px, 4vw, 60px);
+}
+.pager button {
+  min-width: 38px; height: 38px; padding: 0 12px; border-radius: 4px;
+  background: #fff; border: 1px solid #e3e9f1; color: #16283c;
+  font-size: 12.5px; display: grid; place-items: center; transition: 0.2s;
+}
+.pager button:hover:not(:disabled) { border-color: var(--navy); color: var(--navy); }
+.pager button.on { background: #0f2a4a; border-color: #0f2a4a; color: #fff; }
+.pager button:disabled { opacity: 0.4; cursor: default; }
+.pager button svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
