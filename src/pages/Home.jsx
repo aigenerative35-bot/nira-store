@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Icon } from '../ui'
+import { Icon, Stars } from '../ui'
 import ProductCard from '../components/ProductCard'
 import Ticker from '../components/Ticker'
 import { BannerSlider, StripSlider, WideSlider } from '../components/Banners'
@@ -10,30 +10,30 @@ import { asset, categories, products } from '../data'
 const BANNERS = [
   {
     img: asset('img/hero-portrait.jpg'),
-    kicker: 'Autumn sourcing 2026',
-    title: 'Clinical skincare, factory-direct',
-    text: 'Six SKUs, MOQ from 2 pieces, private-label available from 500 units.',
+    kicker: 'Autumn 2026 — the edit',
+    title: 'Skin that looks like you slept.',
+    text: 'Six formulas, dermat-tested for Indian humidity. The three-step ritual, from ₹1,899.',
     to: '/shop?cat=skincare'
   },
   {
     img: asset('img/saree-jewel.jpg'),
-    kicker: 'Handloom co-operative',
-    title: 'Bhagalpur silk, 120 pieces per style',
-    text: 'Direct from two weaver co-ops. Sample yardage on request.',
+    kicker: 'The handloom edit',
+    title: 'Woven in Bhagalpur, made to last.',
+    text: 'Small batch sarees and co-ords — 120 pieces per style, then gone.',
     to: '/shop?cat=suits'
   },
   {
     img: asset('img/bag-brown.jpg'),
-    kicker: 'Atelier line',
-    title: 'Vegan leather bags, 2-year warranty',
-    text: 'Full-grain finish, hand-edged, custom hardware from 100 units.',
+    kicker: 'The atelier',
+    title: 'Bags that survive the monsoon.',
+    text: 'Full-grain vegan leather, hand-edged, two-year stitch warranty.',
     to: '/shop?cat=bags'
   }
 ]
 
 const PROMOS = [
-  { img: asset('img/jar-silk.jpg'), b: 'Body care', s: 'From ₹649 · MOQ 3' },
-  { img: asset('img/heels-pink.jpg'), b: 'Heels', s: 'Sample pair available' }
+  { img: asset('img/jar-silk.jpg'), b: 'Body care', s: 'Shea & kokum, from ₹649' },
+  { img: asset('img/heels-pink.jpg'), b: 'Heels', s: 'Cushioned, free size swap' }
 ]
 
 const CAMPAIGN = [
@@ -45,26 +45,26 @@ const CAMPAIGN = [
 ]
 
 const STRIPS = [
-  { img: asset('img/serum.jpg'), kicker: 'Skincare', title: '3-step ritual kit', text: 'MOQ 2 · from ₹1,899', to: '/shop?cat=skincare' },
-  { img: asset('img/saree-jewel.jpg'), kicker: 'Handloom', title: 'Silk saree, 120 pcs', text: 'Direct from Bhagalpur', to: '/shop?cat=suits' },
-  { img: asset('img/bag-brown.jpg'), kicker: 'Atelier', title: 'Structured tote', text: 'Custom hardware 100+', to: '/shop?cat=bags' },
-  { img: asset('img/heels-pink.jpg'), kicker: 'Heels', title: 'Block heel, 3 inch', text: 'Sample pair available', to: '/shop?cat=heels' },
-  { img: asset('img/lip-apply.jpg'), kicker: 'Makeup', title: 'Matte lipstick', text: '12 shades · MOQ 6', to: '/shop?cat=makeup' },
-  { img: asset('img/jar-flowers.jpg'), kicker: 'Body', title: 'Ceramide night cream', text: 'Private label from 500', to: '/shop?cat=body' }
+  { img: asset('img/serum.jpg'), kicker: 'Skincare', title: '3-step ritual kit', text: 'The ritual, from ₹1,899', to: '/shop?cat=skincare' },
+  { img: asset('img/saree-jewel.jpg'), kicker: 'Handloom', title: 'Silk saree', text: 'Woven in Bhagalpur', to: '/shop?cat=suits' },
+  { img: asset('img/bag-brown.jpg'), kicker: 'Atelier', title: 'The structured tote', text: 'Hand-edged, tan', to: '/shop?cat=bags' },
+  { img: asset('img/heels-pink.jpg'), kicker: 'Heels', title: 'Block heel', text: 'Three-inch, cushioned', to: '/shop?cat=heels' },
+  { img: asset('img/lip-apply.jpg'), kicker: 'Makeup', title: 'Matte lipstick', text: 'Twelve shades', to: '/shop?cat=makeup' },
+  { img: asset('img/jar-flowers.jpg'), kicker: 'Body', title: 'Ceramide night cream', text: 'Barrier repair, nightly', to: '/shop?cat=body' }
 ]
 
 const WIDES = [
-  { img: asset('img/hero-portrait.jpg'), kicker: 'Private label', title: 'Your brand, our lab. From 500 units.', text: 'Formula, filling, packaging and testing — handled end to end.', to: '/contact' },
-  { img: asset('img/hero-bag.jpg'), kicker: 'Wholesale', title: 'Bags at wholesale, samples first.', text: 'Order a sample pair before you commit to a run.', to: '/shop?cat=bags' },
-  { img: asset('img/saree-street.jpg'), kicker: 'Co-operative', title: '41 weavers, two co-ops, one price list.', text: 'No middlemen. Every order paid within 7 days.', to: '/about' },
-  { img: asset('img/brushes.jpg'), kicker: 'Tools', title: 'Brush sets with custom monogram.', text: 'MOQ 50 · 12-day lead time.', to: '/shop?cat=makeup' }
+  { img: asset('img/hero-portrait.jpg'), kicker: 'The ritual', title: 'Three steps, twice a day. Nothing more.', text: 'A cleanser, a serum, a barrier cream — and the skin that follows.', to: '/shop?cat=skincare' },
+  { img: asset('img/hero-bag.jpg'), kicker: 'The atelier', title: 'Bags, heels and small leathers.', text: 'Hand-finished, two-year stitch warranty, free size exchange.', to: '/shop?cat=bags' },
+  { img: asset('img/saree-street.jpg'), kicker: 'Handloom', title: 'Forty-one weavers, two co-ops.', text: 'Every saree paid for within seven days of weaving.', to: '/about' },
+  { img: asset('img/brushes.jpg'), kicker: 'Makeup', title: 'Twelve shades. One honest finish.', text: 'Buildable, transfer-proof, tested on Indian skin tones.', to: '/shop?cat=makeup' }
 ]
 
 const SUPPLIERS = [
-  { name: 'Nira Labs', cat: 'Skincare & body', years: 9, img: asset('img/serum.jpg') },
-  { name: 'Nira Atelier', cat: 'Makeup & tools', years: 6, img: asset('img/lip-apply.jpg') },
-  { name: 'Bhagalpur Handloom Co-op', cat: 'Handloom & suits', years: 12, img: asset('img/saree-jewel.jpg') },
-  { name: 'Nira Leather Works', cat: 'Bags & heels', years: 7, img: asset('img/bag-brown.jpg') }
+  { name: 'The skincare lab', cat: 'Six formulas, in-house', years: 7, img: asset('img/serum.jpg') },
+  { name: 'The makeup studio', cat: 'Twelve shades, tested', years: 5, img: asset('img/lip-apply.jpg') },
+  { name: 'The handloom co-op', cat: 'Bhagalpur, 41 weavers', years: 7, img: asset('img/saree-jewel.jpg') },
+  { name: 'The leather atelier', cat: 'Bags, heels, smalls', years: 4, img: asset('img/bag-brown.jpg') }
 ]
 
 export default function Home() {
@@ -80,7 +80,7 @@ export default function Home() {
       <div className="container sec sec--tight">
         <div className="hero-row">
           <aside className="sidebar">
-            <div className="sidebar__head">Source by category</div>
+            <div className="sidebar__head">Shop by category</div>
             {categories.map((c) => (
               <Link to={`/shop?cat=${c.id}`} key={c.id}>
                 {c.name}<i>{c.note}</i>
@@ -107,12 +107,12 @@ export default function Home() {
       {/* coupons */}
       <div className="container sec sec--tight">
         <div className="slab" style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-          <span className="label" style={{ color: 'var(--orange)' }}>Trade offers</span>
+          <span className="label" style={{ color: 'var(--orange)' }}>Offers for you</span>
           <div className="coupons" style={{ flex: 1 }}>
-            <div className="coupon"><b>₹200</b><span>off first order<em>Min. ₹1,999</em></span><button onClick={() => toast('Coupon collected')}>Collect</button></div>
-            <div className="coupon"><b>10%</b><span>on 5+ pieces<em>Code NIRA10</em></span><button onClick={() => toast('Code NIRA10 copied')}>Collect</button></div>
-            <div className="coupon"><b>Free</b><span>sample kit<em>On first enquiry</em></span><button onClick={() => toast('Sample kit added')}>Collect</button></div>
-            <div className="coupon"><b>₹500</b><span>on ₹4,999+<em>Bags &amp; sarees</em></span><button onClick={() => toast('Coupon collected')}>Collect</button></div>
+            <div className="coupon"><b>₹200</b><span>off your first order<em>On ₹1,999+</em></span><button onClick={() => toast('Coupon collected')}>Collect</button></div>
+            <div className="coupon"><b>10%</b><span>off with NIRA10<em>First order · max ₹500</em></span><button onClick={() => toast('Code NIRA10 copied')}>Collect</button></div>
+            <div className="coupon"><b>Free</b><span>delivery<em>On every order today</em></span><button onClick={() => toast('Sample kit added')}>Collect</button></div>
+            <div className="coupon"><b>₹500</b><span>off on ₹4,999+<em>Bags &amp; sarees</em></span><button onClick={() => toast('Coupon collected')}>Collect</button></div>
           </div>
         </div>
       </div>
@@ -127,8 +127,8 @@ export default function Home() {
         <div className="slab">
           <div className="sec-head">
             <div>
-              <h2>Top ranking products</h2>
-              <p>Ranked by reorder rate and buyer ratings in the last 90 days</p>
+              <h2>Bestsellers this week</h2>
+              <p>Ranked by what gets reordered, not by what we want to push</p>
             </div>
             <Link className="link-arrow" to="/shop">View all 16 <Icon.arrow /></Link>
           </div>
@@ -138,27 +138,27 @@ export default function Home() {
         </div>
       </div>
 
-      {/* verified suppliers */}
+      {/* the house */}
       <div className="container sec">
         <div className="slab">
           <div className="sec-head">
             <div>
-              <h2>Verified suppliers</h2>
-              <p>Audited facilities, trade assurance, sample support</p>
+              <h2>Three worlds, one house</h2>
+              <p>Skincare from our lab, handloom from Bhagalpur, leather from our atelier</p>
             </div>
-            <Link className="link-arrow" to="/about">How we audit <Icon.arrow /></Link>
+            <Link className="link-arrow" to="/about">Read the house story <Icon.arrow /></Link>
           </div>
           <div className="pgrid">
             {SUPPLIERS.map((s, i) => (
               <Link className="pcard rise" to="/shop" key={s.name} style={{ '--d': `${i * 0.04}s` }}>
                 <div className="pcard__media" style={{ aspectRatio: '4 / 3' }}>
                   <img src={s.img} alt={s.name} loading="lazy" />
-                  <span className="tag">Verified</span>
+                  <span className="tag">{s.cat.split(' ')[0]}</span>
                 </div>
                 <div className="pcard__info">
                   <div className="pcard__name" style={{ fontWeight: 600 }}>{s.name}</div>
                   <div className="pcard__moq">{s.cat}</div>
-                  <div className="pcard__sup"><Icon.check style={{ width: 12, height: 12, stroke: 'var(--green)' }} /> {s.years} years on Nira</div>
+                  <div className="pcard__sup"><Icon.check style={{ width: 12, height: 12, stroke: 'var(--green)' }} /> Since {2026 - s.years} · in-house</div>
                 </div>
               </Link>
             ))}
@@ -171,6 +171,55 @@ export default function Home() {
         <Ticker items={CAMPAIGN} label="Campaign" to="/shop" cta="Shop the campaign" />
       </div>
 
+      {/* the house band */}
+      <div className="container sec">
+        <section className="houseband">
+          <div>
+            <p className="label">The house</p>
+            <h2>Fewer things, made properly.</h2>
+            <p>
+              Six formulas from our own lab, handloom from two co-ops in Bhagalpur, and an atelier
+              for bags and heels. Nothing goes on the shelf unless it earns a second order.
+            </p>
+            <div className="houseband__grid">
+              <div><b className="num">16</b><span>Pieces in the edit</span></div>
+              <div><b className="num">41</b><span>Weavers, two co-ops</span></div>
+              <div><b className="num">2 yr</b><span>Stitch warranty</span></div>
+              <div><b className="num">26k</b><span>Pincodes served</span></div>
+            </div>
+          </div>
+          <div className="houseband__ph">
+            <img src={asset('img/jar-silk.jpg')} alt="The house" loading="lazy" />
+          </div>
+        </section>
+      </div>
+
+      {/* reviews */}
+      <div className="container sec">
+        <div className="slab">
+          <div className="sec-head">
+            <div>
+              <h2>12,400 reviews, 4.8 average</h2>
+              <p>Verified buyers only — we do not filter the bad ones out</p>
+            </div>
+            <Link className="link-arrow" to="/shop">Shop bestsellers <Icon.arrow /></Link>
+          </div>
+          <div className="revstrip">
+            {[
+              ['Six weeks in, the pigmentation on my cheeks has visibly faded. Does not pill under sunscreen.', 'Ananya R.', 'Vitamin C serum'],
+              ['The tote holds a 14-inch laptop and still looks like a bag, not a briefcase.', 'Meher K.', 'Structured tote'],
+              ['Rosewood is the first lipstick that does not turn brown on my skin tone.', 'Sana', 'Matte lipstick']
+            ].map(([t, n, p]) => (
+              <article className="revcard" key={n}>
+                <Stars value={5} />
+                <p>“{t}”</p>
+                <footer><span>{n}</span><span>{p}</span></footer>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* wide banner slider */}
       <div className="container sec">
         <WideSlider items={WIDES} />
@@ -181,8 +230,8 @@ export default function Home() {
         <div className="slab">
           <div className="sec-head">
             <div>
-              <h2>Recommended for you</h2>
-              <p>Based on categories you browse most</p>
+              <h2>You may also like</h2>
+              <p>Picked from what people browse after this</p>
             </div>
             <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
           </div>
@@ -192,21 +241,21 @@ export default function Home() {
         </div>
       </div>
 
-      {/* trade assurance */}
+      {/* service promises */}
       <div className="container sec">
         <div className="trust">
-          <div className="trust__i"><Icon.truck /><div><b>Trade assurance</b><span>Payment protected until delivery</span></div></div>
-          <div className="trust__i"><Icon.check /><div><b>Sample first</b><span>Samples before bulk</span></div></div>
-          <div className="trust__i"><Icon.heart /><div><b>Private label</b><span>From 500 units</span></div></div>
-          <div className="trust__i"><Icon.sound /><div><b>Dedicated manager</b><span>One person, one account</span></div></div>
+          <div className="trust__i"><Icon.truck /><div><b>Free delivery</b><span>On orders above ₹1,499</span></div></div>
+          <div className="trust__i"><Icon.check /><div><b>14-day returns</b><span>Unopened, no questions</span></div></div>
+          <div className="trust__i"><Icon.heart /><div><b>Dermat-tested</b><span>Safe for Indian skin</span></div></div>
+          <div className="trust__i"><Icon.sound /><div><b>Private appointments</b><span>Bengaluru studio</span></div></div>
         </div>
       </div>
 
       {/* newsletter */}
       <div className="container sec">
         <div className="news">
-          <h2>New arrivals, once a week</h2>
-          <p>MOQ drops, restocks and factory updates. No more than one email a week.</p>
+          <h2>₹200 off, and first access</h2>
+          <p>One email a week: new drops, restocks and the occasional skincare note.</p>
           <form
             className="nform"
             onSubmit={(e) => {
@@ -216,7 +265,7 @@ export default function Home() {
               setEmail('')
             }}
           >
-            <input type="email" placeholder="Business email" value={email} onChange={(e) => setEmail(e.target.value)} aria-label="Email" />
+            <input type="email" placeholder="Your email address" value={email} onChange={(e) => setEmail(e.target.value)} aria-label="Email" />
             <button type="submit">Subscribe</button>
           </form>
         </div>
