@@ -141,36 +141,18 @@ export default function Home() {
         <StripSlider items={STRIPS} />
       </div>
 
-      {/* top ranking */}
-      {/* depth-wrapped below */}
-      <div className="container sec">
-        <div className="slab">
-          <div className="sec-head">
-            <div>
-              <h2>Bestsellers this week</h2>
-              <p>Ranked by what gets reordered, not by what we want to push</p>
-            </div>
-            <Link className="link-arrow" to="/shop">View all 16 <Icon.arrow /></Link>
-          </div>
-          <div className="pgrid pgrid--big">
-            {top.slice(0, 2).map((p, i) => (
-              <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>
-            ))}
-
-            <Link className="edit-tile" to="/shop">
-              <img src={asset('img/hero-portrait.jpg')} alt="" loading="lazy" />
-              <div className="edit-tile__in">
-                <h3>The Impeccable Guest</h3>
-                <span>Discover</span>
-              </div>
-            </Link>
-
-            {top.slice(2).map((p, i) => (
-              <TiltCard key={p.id}><ProductCard product={p} index={i + 2} /></TiltCard>
-            ))}
+      {/* campaign CTA — the grid lives on the shop page */}
+      <section className="campaign">
+        <div className="container campaign__in">
+          <p className="label">The collection</p>
+          <h2>Sixteen pieces. <em>All of it, in one place.</em></h2>
+          <p>Browse by category, filter by price or search — the full grid lives on the shop page.</p>
+          <div className="campaign__cta">
+            <Link className="btn" to="/shop"><span>Shop the collection</span><Icon.arrow /></Link>
+            <Link className="link-arrow" to="/shop?sort=rating">Top rated</Link>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* the house */}
       <div className="container sec">
@@ -182,7 +164,7 @@ export default function Home() {
             </div>
             <Link className="link-arrow" to="/about">Read the house story <Icon.arrow /></Link>
           </div>
-          <div className="pgrid">
+          <div className="worlds">
             {SUPPLIERS.map((s, i) => (
               <Link className="world rise" to="/shop" key={s.name} style={{ '--d': `${i * 0.05}s` }}>
                 <div className="world__ph">
@@ -296,24 +278,6 @@ export default function Home() {
       </div>
 
       <Depth>
-      {/* recommended */}
-      <div className="container sec">
-        <div className="slab">
-          <div className="sec-head">
-            <div>
-              <h2>You may also like</h2>
-              <p>Picked from what people browse after this</p>
-            </div>
-            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
-          </div>
-          <div className="pgrid">
-            {rest.map((p, i) => <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>)}
-          </div>
-        </div>
-      </div>
-
-      </Depth>
-
       {/* service promises */}
       <div className="container sec">
         <div className="trust">
@@ -343,6 +307,7 @@ export default function Home() {
           </form>
         </div>
       </div>
+      </Depth>
     </>
   )
 }
