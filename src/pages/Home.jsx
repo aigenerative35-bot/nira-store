@@ -5,7 +5,8 @@ import ProductCard from '../components/ProductCard'
 import Ticker from '../components/Ticker'
 import { BannerSlider, StripSlider, WideSlider } from '../components/Banners'
 import Cinema from '../components/Cinema'
-import Fan3D from '../components/Fan3D'
+import Coverflow3D from '../components/Coverflow3D'
+import CubeSlider from '../components/CubeSlider'
 import Depth from '../components/Depth'
 import TiltCard from '../components/TiltCard'
 import { useShop } from '../store'
@@ -186,28 +187,51 @@ export default function Home() {
         to="/shop"
       />
 
-      {/* 3D scroll fan */}
-      <Fan3D items={products.slice(0, 5)} />
+      {/* 3D coverflow */}
+      <div className="container sec">
+        <div className="slab" style={{ overflow: 'hidden' }}>
+          <div className="sec-head">
+            <div>
+              <h2>The edit, in depth</h2>
+              <p>Drag it, or use the arrows — the shelf turns in 3D</p>
+            </div>
+            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
+          </div>
+          <Coverflow3D items={products.slice(0, 6)} />
+        </div>
+      </div>
+
+      {/* 3D cube slider */}
+      <div className="container sec">
+        <CubeSlider
+          items={[
+            { img: asset('img/bag-brown.jpg'), kicker: 'The atelier', title: 'Bags that survive the monsoon', text: 'Full-grain vegan leather, hand-edged, two-year stitch warranty.', to: '/shop?cat=bags' },
+            { img: asset('img/saree-jewel.jpg'), kicker: 'Handloom', title: 'Woven in Bhagalpur', text: '120 pieces per style, from two weaver co-ops.', to: '/shop?cat=suits' },
+            { img: asset('img/serum.jpg'), kicker: 'The lab', title: 'Six formulas, nothing else', text: 'Dermat-tested for Indian humidity. The ritual from ₹1,899.', to: '/shop?cat=skincare' }
+          ]}
+        />
+      </div>
 
       {/* the house band */}
       <div className="container sec">
-        <section className="houseband">
+        <section className="house">
           <div>
-            <p className="label">The house</p>
-            <h2>Fewer things, made properly.</h2>
+            <p className="label label--maroon">The house</p>
+            <h2>Fewer things, <em>made properly.</em></h2>
             <p>
               Six formulas from our own lab, handloom from two co-ops in Bhagalpur, and an atelier
               for bags and heels. Nothing goes on the shelf unless it earns a second order.
             </p>
-            <div className="houseband__grid">
+            <div className="house__stats">
               <div><b className="num">16</b><span>Pieces in the edit</span></div>
               <div><b className="num">41</b><span>Weavers, two co-ops</span></div>
               <div><b className="num">2 yr</b><span>Stitch warranty</span></div>
               <div><b className="num">26k</b><span>Pincodes served</span></div>
             </div>
           </div>
-          <div className="houseband__ph">
+          <div className="house__ph">
             <img src={asset('img/jar-silk.jpg')} alt="The house" loading="lazy" />
+            <span>Bengaluru studio, 2026</span>
           </div>
         </section>
       </div>
