@@ -13,7 +13,7 @@ import { asset, categories, products } from '../data'
 
 const BANNERS = [
   {
-    img: asset('img/hero-portrait.jpg'),
+    img: asset('img/hero-bag.jpg'),
     kicker: 'Autumn 2026 — the edit',
     title: 'Skin that looks like you slept.',
     text: 'Six formulas, dermat-tested for Indian humidity. The three-step ritual, from ₹1,899.',
@@ -155,15 +155,14 @@ export default function Home() {
           </div>
           <div className="pgrid">
             {SUPPLIERS.map((s, i) => (
-              <Link className="pcard rise" to="/shop" key={s.name} style={{ '--d': `${i * 0.04}s` }}>
-                <div className="pcard__media" style={{ aspectRatio: '4 / 3' }}>
+              <Link className="world rise" to="/shop" key={s.name} style={{ '--d': `${i * 0.05}s` }}>
+                <div className="world__ph">
                   <img src={s.img} alt={s.name} loading="lazy" />
-                  <span className="tag">{s.cat.split(' ')[0]}</span>
                 </div>
-                <div className="pcard__info">
-                  <div className="pcard__name" style={{ fontWeight: 600 }}>{s.name}</div>
-                  <div className="pcard__moq">{s.cat}</div>
-                  <div className="pcard__sup"><Icon.check style={{ width: 12, height: 12, stroke: 'var(--green)' }} /> Since {2026 - s.years} · in-house</div>
+                <div className="world__in">
+                  <span>{s.cat}</span>
+                  <b>{s.name}</b>
+                  <i>Explore</i>
                 </div>
               </Link>
             ))}
