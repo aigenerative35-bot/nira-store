@@ -42,10 +42,6 @@ export default function ProductCard({ product: p, index = 0 }) {
           </span>
           {off > 0 && <span className="pcard__off num">{off}% off</span>}
         </div>
-
-        <div className="pcard__offer">
-          <Icon.check /> Free delivery · 14-day returns
-        </div>
       </div>
 
       <SocialBar product={p} />
