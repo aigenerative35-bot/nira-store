@@ -106,6 +106,19 @@ export default function Product() {
             or 3 interest-free EMIs of {money(Math.round(p.price / 3))} · Free shipping over ₹1,499
           </div>
 
+          <div className="couponrow">
+            <div className="coupon">
+              <b>10% off</b>
+              <span>First order coupon<em>Code NIRA10 · max ₹500</em></span>
+              <button onClick={() => { navigator.clipboard?.writeText('NIRA10'); toast('Coupon NIRA10 copied') }}>Collect</button>
+            </div>
+            <div className="coupon">
+              <b>₹200 off</b>
+              <span>On orders above ₹1,999<em>Auto-applied at checkout</em></span>
+              <button onClick={() => toast('Coupon saved to your account')}>Collect</button>
+            </div>
+          </div>
+
           {p.sizes?.length > 0 && (
             <div className="opt">
               <div className="opt__lab"><span>Size</span><span style={{ textTransform: 'none', letterSpacing: 0 }}>{chosenSize} selected</span></div>
