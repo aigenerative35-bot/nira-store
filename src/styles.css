@@ -1948,3 +1948,19 @@ body, .page, #root { background: #fff; }
   .pdp2__thumbs { left: 10px; }
   .pdp2__details { grid-template-columns: 1fr; }
 }
+
+/* PDP right pane — running campaign film */
+.pdp2__pane--alt video {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  animation: pdpDrift 22s ease-in-out infinite alternate;
+}
+@keyframes pdpDrift {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.08) translate3d(-1%, -1%, 0); }
+}
+.pdp2__film {
+  position: absolute; left: 16px; bottom: 16px; z-index: 3;
+  font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #16283c; background: rgba(255, 255, 255, 0.9);
+  padding: 5px 10px; border-radius: 2px;
+}
