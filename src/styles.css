@@ -785,3 +785,197 @@ h1, h2, h3, h4 { font-family: var(--display); font-weight: 400; line-height: 1.0
   .collections { grid-template-columns: 1fr; }
   .lookbook { grid-template-columns: 1fr 1fr; }
 }
+
+/* ============================================================
+   GLASS LAYER — frosted panels over a warm, lit backdrop
+   ============================================================ */
+
+:root {
+  --glass: rgba(255, 255, 255, 0.5);
+  --glass-strong: rgba(255, 255, 255, 0.68);
+  --glass-line: rgba(255, 255, 255, 0.72);
+  --glass-line-dark: rgba(20, 17, 14, 0.08);
+  --glass-blur: blur(22px) saturate(1.4);
+  --glass-shadow: 0 10px 40px rgba(20, 17, 14, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --glass-dark: rgba(18, 13, 11, 0.42);
+}
+
+/* lit backdrop so the glass has something to refract */
+body {
+  background:
+    radial-gradient(60% 46% at 8% 4%, rgba(107, 26, 40, 0.16) 0%, rgba(107, 26, 40, 0) 60%),
+    radial-gradient(48% 40% at 96% 12%, rgba(166, 124, 70, 0.18) 0%, rgba(166, 124, 70, 0) 62%),
+    radial-gradient(70% 60% at 50% 100%, rgba(107, 26, 40, 0.1) 0%, rgba(107, 26, 40, 0) 70%),
+    linear-gradient(180deg, #f8f3e9 0%, #f4ecdd 46%, #efe6d6 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- floating glass header ---------- */
+.hdr {
+  background: transparent; border: 0; backdrop-filter: none; box-shadow: none;
+  padding: 12px 0;
+}
+.hdr__in {
+  background: var(--glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-line);
+  border-radius: 18px;
+  padding: 0 clamp(14px, 2vw, 26px);
+  box-shadow: var(--glass-shadow);
+  height: 66px;
+  transition: background 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s;
+}
+.hdr.stuck .hdr__in { background: var(--glass-strong); box-shadow: 0 14px 44px rgba(20, 17, 14, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.85); }
+.hdr.over { background: transparent; }
+.hdr.over .hdr__in {
+  background: var(--glass-dark);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+.hdr.over .logo__mark { background: rgba(255, 255, 255, 0.92); color: var(--ink); }
+
+/* ---------- glass product cards ---------- */
+.pcard {
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid var(--glass-line);
+  border-radius: 16px;
+  padding: 8px 8px 0;
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s, background 0.4s;
+}
+.pcard:hover {
+  transform: translateY(-4px);
+  background: var(--glass-strong);
+  box-shadow: 0 22px 60px rgba(20, 17, 14, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+.pcard__media { border-radius: 11px; overflow: hidden; }
+.pcard__info { padding: 14px 8px 6px; }
+.pcard .social { margin: 0 -8px; padding: 10px 16px; border-top: 1px solid rgba(20, 17, 14, 0.06); border-radius: 0 0 16px 16px; }
+.pcard .tag {
+  background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(8px);
+  color: var(--ink); border-radius: 999px; padding: 5px 11px;
+}
+.pcard .wish { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); }
+.pcard__quick .btn { background: rgba(16, 13, 11, 0.86); backdrop-filter: blur(10px); border: 0; }
+.pcard__quick .btn:hover { background: var(--wine); color: #fff; }
+.pcard .qv { background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(8px); border: 0; }
+
+/* ---------- glass hero card ---------- */
+.glass-card {
+  position: absolute; z-index: 4; right: var(--gut); bottom: clamp(70px, 9vw, 120px);
+  width: min(290px, 42vw);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(26px) saturate(1.5);
+  -webkit-backdrop-filter: blur(26px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px; padding: 20px 22px; color: var(--paper);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.glass-card .label { color: rgba(248, 244, 236, 0.66); }
+.glass-card h4 { font-size: 1.05rem; margin: 10px 0 12px; line-height: 1.3; }
+.glass-card__row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.16); font-size: 0.74rem; letter-spacing: 0.06em; }
+.glass-card__row b { font-family: var(--display); font-size: 0.95rem; font-weight: 400; }
+.glass-card a { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; border-bottom: 1px solid rgba(248, 244, 236, 0.6); padding-bottom: 3px; }
+
+/* ---------- glass chrome ---------- */
+.drawer {
+  background: rgba(250, 246, 238, 0.82);
+  backdrop-filter: blur(30px) saturate(1.4);
+  -webkit-backdrop-filter: blur(30px) saturate(1.4);
+  border-left: 1px solid var(--glass-line);
+}
+.drawer__f { background: rgba(255, 255, 255, 0.42); }
+.modal {
+  background: rgba(250, 246, 238, 0.86);
+  backdrop-filter: blur(30px) saturate(1.4);
+  -webkit-backdrop-filter: blur(30px) saturate(1.4);
+  border: 1px solid var(--glass-line);
+  border-radius: 20px;
+  box-shadow: 0 30px 90px rgba(20, 17, 14, 0.24);
+}
+.searchp {
+  background: rgba(250, 246, 238, 0.86);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border-bottom: 1px solid var(--glass-line);
+}
+.sheet {
+  background: rgba(250, 246, 238, 0.88);
+  backdrop-filter: blur(30px) saturate(1.4);
+  -webkit-backdrop-filter: blur(30px) saturate(1.4);
+  border-left: 1px solid var(--glass-line);
+}
+.mnav { background: rgba(250, 246, 238, 0.92); backdrop-filter: blur(24px); }
+.toast { background: rgba(18, 13, 11, 0.78); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; }
+
+/* ---------- glass panels for content blocks ---------- */
+.summary, .co-card, .slab, .trust__i, .store, .jrow, .news, .addr-empty, .payopt label, .field input, .field select, .promo, .pin, .qty, .gal__main, .gal__th button, .crow__ph, .co-item__ph, .dline__ph, .sheet__ph, .jrow__ph, .look__ph, .collection__ph, .cslide__ph, .tcard {
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--glass-shadow);
+}
+.summary, .co-card, .news { border-radius: 18px; padding: clamp(18px, 2.4vw, 30px); }
+.slab { border-radius: 18px; padding: clamp(16px, 2vw, 26px); }
+.trust__i { border-radius: 14px; }
+.trust { border: 0; gap: 10px; }
+.trust__i:last-child, .trust__i { border-right: 1px solid var(--glass-line); border-bottom: 1px solid var(--glass-line); }
+.store, .jrow { border-radius: 14px; padding: clamp(16px, 2vw, 24px); margin-bottom: 10px; border-top: 1px solid var(--glass-line); }
+.jlist { border-top: 0; }
+.jrow:hover { background: var(--glass-strong); }
+.field input, .field select, .field textarea { border-radius: 10px; background: rgba(255, 255, 255, 0.55); }
+.payopt label { border-radius: 12px; }
+.payopt label.on { background: rgba(107, 26, 40, 0.08); border-color: rgba(107, 26, 40, 0.45); }
+.promo { border-radius: 999px; overflow: hidden; background: rgba(255, 255, 255, 0.5); }
+.pin { border-radius: 999px; overflow: hidden; }
+.qty { border-radius: 999px; overflow: hidden; background: rgba(255, 255, 255, 0.55); }
+.gal__main, .gal__th button { border-radius: 14px; }
+.cslide__ph, .tcard, .look__ph, .collection__ph, .jrow__ph { border-radius: 14px; overflow: hidden; }
+.collection, .look { border-radius: 14px; overflow: hidden; }
+.collection__in, .look figcaption { border-radius: 0 0 14px 14px; }
+
+/* glass buttons */
+.btn--glass {
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: var(--paper);
+}
+.btn--glass:hover { background: rgba(255, 255, 255, 0.9); color: var(--ink); border-color: rgba(255, 255, 255, 0.9); }
+.chip { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(10px); border-radius: 999px; }
+.chip.on { background: var(--ink); }
+.shopbar { background: rgba(255, 255, 255, 0.42); backdrop-filter: blur(18px); border-radius: 14px; border: 1px solid var(--glass-line); padding: 10px 14px; }
+.phead { border-bottom: 0; background: transparent; }
+
+/* dark bands keep their own glass treatment */
+.atelier { background: linear-gradient(180deg, #0d0a09 0%, #171110 100%); }
+.atelier__ph { border-radius: 18px; overflow: hidden; }
+.band { background: linear-gradient(135deg, rgba(107, 26, 40, 0.96), rgba(60, 14, 22, 0.98)); }
+.band__grid > div { background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 14px; padding: 18px; }
+.film { border-radius: 20px; margin: 0 var(--gut); }
+.film__ctl .btn { backdrop-filter: blur(10px); }
+
+@media (max-width: 900px) {
+  .glass-card { display: none; }
+  .hdr__in { border-radius: 14px; height: 60px; }
+  .hdr { padding: 8px 0; }
+}
+
+/* header fit */
+.nav a { white-space: nowrap; }
+@media (max-width: 1500px) {
+  .nav { gap: clamp(10px, 1.4vw, 20px); }
+  .nav a { font-size: 9px; letter-spacing: 0.18em; }
+  .logo__txt { font-size: 16px; letter-spacing: 0.34em; }
+}
+@media (max-width: 1240px) { .nav a:nth-last-child(1), .nav a:nth-last-child(2) { display: none; } }
+
+/* legibility on the glass nav */
+.hdr.over .hdr__in { background: rgba(14, 10, 9, 0.52); }
+.hdr.over .nav a, .hdr.over .logo__txt, .hdr.over .hact, .hdr.over .icon-btn { text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35); }
+.hdr.over .logo__txt { color: #fdfaf5; }
+.hdr.over .nav a { color: rgba(253, 250, 245, 0.92); }
