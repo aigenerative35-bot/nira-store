@@ -1835,3 +1835,116 @@ body, .page, #root { background: #fff; }
   border-color: rgba(255, 255, 255, 0.24);
   color: rgba(255, 255, 255, 0.72);
 }
+
+/* ============================================================
+   PDP — split hero with floating buy card (Herrera style)
+   ============================================================ */
+.pdp2 { background: #fff; }
+.pdp2__split {
+  position: relative;
+  display: grid; grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 110px); min-height: 560px; max-height: 900px;
+  background: #fff;
+}
+.pdp2__pane { position: relative; overflow: hidden; background: #f4f4f4; }
+.pdp2__pane img { width: 100%; height: 100%; object-fit: cover; }
+.pdp2__pane--alt { border-left: 1px solid #fff; }
+
+/* thumbnail rail */
+.pdp2__thumbs {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  display: grid; gap: 8px; z-index: 5;
+}
+.pdp2__thumbs button {
+  width: 44px; height: 60px; padding: 0; overflow: hidden; background: #fff;
+  border: 1px solid transparent; opacity: 0.65; transition: 0.2s;
+}
+.pdp2__thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+.pdp2__thumbs button:hover { opacity: 1; }
+.pdp2__thumbs button.on { border-color: #16283c; opacity: 1; }
+
+/* heart */
+.pdp2__heart {
+  position: absolute; right: 22px; top: 22px; z-index: 6;
+  width: 42px; height: 42px; border-radius: 50%; background: #fff;
+  border: 1px solid #e3e3e3; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+.pdp2__heart svg { width: 18px; height: 18px; stroke: #16283c; fill: none; stroke-width: 1.4; }
+.pdp2__heart.on svg { fill: #16283c; }
+
+/* floating buy card */
+.pdp2__card {
+  position: absolute; right: clamp(16px, 3vw, 48px); bottom: clamp(16px, 3vw, 44px);
+  z-index: 7; width: min(430px, 42%);
+  background: #fff; border-radius: 6px; padding: 22px 24px;
+  box-shadow: 0 26px 70px rgba(10, 20, 35, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  display: grid; gap: 14px;
+}
+.pdp2__row { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+.pdp2__row h1 { font-size: 15px; font-weight: 500; line-height: 1.35; color: #16283c; max-width: 70%; }
+.pdp2__row span { font-size: 14px; color: #16283c; white-space: nowrap; }
+.pdp2__vat { font-size: 11px; color: #8a8a8a; margin-top: -6px; }
+
+.pdp2__opt { display: grid; gap: 8px; }
+.pdp2__opt-h { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; color: #16283c; }
+.pdp2__opt-h em { font-style: normal; font-size: 11px; color: #8a8a8a; border-bottom: 1px solid #ddd; }
+.pdp2__swatches { display: flex; gap: 8px; }
+.pdp2__swatches button {
+  width: 26px; height: 26px; border-radius: 50%; border: 1px solid #ddd; position: relative;
+}
+.pdp2__swatches button.on { box-shadow: 0 0 0 2px #fff, 0 0 0 3px #16283c; }
+.pdp2__sizes { display: flex; gap: 6px; flex-wrap: wrap; }
+.pdp2__sizes button {
+  min-width: 42px; height: 34px; border: 1px solid #e3e3e3; background: #fff;
+  font-size: 12px; color: #16283c; transition: 0.18s;
+}
+.pdp2__sizes button:hover { border-color: #16283c; }
+.pdp2__sizes button.on { background: #16283c; color: #fff; border-color: #16283c; }
+
+.pdp2__qty { display: flex; gap: 10px; align-items: center; }
+.pdp2__pin { display: flex; flex: 1; border: 1px solid #e3e3e3; }
+.pdp2__pin input { flex: 1; min-width: 0; border: 0; padding: 0 10px; height: 38px; outline: none; font-size: 12.5px; }
+.pdp2__pin button { padding: 0 12px; background: #f4f4f4; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #16283c; }
+.pdp2__pinmsg { font-size: 11.5px; color: #b3261e; }
+.pdp2__pinmsg.ok { color: #0f8b4c; }
+
+.pdp2__add {
+  width: 100%; height: 46px; background: #0b0b0b; color: #fff;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600;
+  transition: 0.2s;
+}
+.pdp2__add:hover { background: #22364a; }
+.pdp2__social { border-top: 1px solid #f0f0f0; padding-top: 10px; }
+.pdp2__social .social { border: 0; padding: 0; }
+
+/* details below */
+.pdp2__details {
+  display: grid; grid-template-columns: 1.25fr 0.75fr; gap: clamp(20px, 4vw, 60px);
+  padding: clamp(26px, 4vw, 60px) 0;
+}
+.pdp2__acc .acc__head {
+  display: flex; justify-content: space-between; align-items: center; width: 100%;
+  padding: 16px 0; border-bottom: 1px solid #ececec; font-size: 13px; color: #16283c;
+  letter-spacing: 0.02em;
+}
+.pdp2__acc .acc__head svg { width: 14px; height: 14px; stroke: #16283c; fill: none; stroke-width: 1.6; transition: transform 0.2s; }
+.pdp2__acc .acc__body { padding: 12px 0 18px; border-bottom: 1px solid #ececec; }
+.pdp2__acc .acc__body p { font-size: 13.5px; color: #5b7086; line-height: 1.7; max-width: 62ch; }
+
+.pdp2__aside { border: 1px solid #ececec; border-radius: 6px; padding: 20px; align-self: start; }
+.pdp2__rate { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.pdp2__rate b { font-size: 14px; color: #16283c; }
+.pdp2__rate span { font-size: 11.5px; color: #8a8a8a; }
+.pdp2__aside p { font-size: 13.5px; color: #33475c; line-height: 1.7; }
+.pdp2__who { display: block; margin-top: 10px; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #8a8a8a; }
+
+.pdp2__rel { padding-bottom: clamp(30px, 4vw, 60px); }
+
+@media (max-width: 1000px) {
+  .pdp2__split { grid-template-columns: 1fr; height: auto; max-height: none; }
+  .pdp2__pane--alt { display: none; }
+  .pdp2__pane { height: 58vh; min-height: 380px; }
+  .pdp2__card { position: static; width: auto; margin: 0; border-radius: 0; box-shadow: none; padding: 20px 16px; }
+  .pdp2__thumbs { left: 10px; }
+  .pdp2__details { grid-template-columns: 1fr; }
+}
