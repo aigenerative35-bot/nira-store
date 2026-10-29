@@ -27,12 +27,14 @@ export default function ProductCard({ product: p, index = 0 }) {
       </div>
 
       <div className="pcard__info">
-        <Link to={`/product/${p.id}`} className="pcard__name">{p.name}</Link>
+        <div className="pcard__top">
+          <Link to={`/product/${p.id}`} className="pcard__name">{p.name}</Link>
+          <span className="pcard__cat">{p.catName}</span>
+        </div>
 
         <div className="pcard__rate">
           <span className="pill-rate">{p.rating} <Icon.star /></span>
           <span className="pcard__reviews num">({p.reviews.toLocaleString('en-IN')})</span>
-          <span className="pcard__cat">{p.catName}</span>
         </div>
 
         <div className="pcard__row">
