@@ -16,6 +16,13 @@ export const categories = [
   { id: 'heels', name: 'Heels', img: asset('img/heels-pink.jpg'), note: 'Blocks & stilettos' }
 ]
 
+const SUPPLIERS = [
+  'Nira Atelier Pvt Ltd',
+  'Nira Labs (Skincare)',
+  'Bhagalpur Handloom Co-op',
+  'Nira Leather Works'
+]
+
 export const products = [
   {
     id: 'p1', name: 'Vitamin C Serum', cat: 'skincare', catName: 'Skincare',
@@ -189,3 +196,14 @@ export const reviews = [
 ]
 
 export const getProduct = (id) => products.find((p) => p.id === id)
+
+
+/* --- marketplace layer: MOQ, price range, supplier --- */
+products.forEach((p, i) => {
+  p.moq = p.cat === 'skincare' || p.cat === 'makeup' ? 2 : p.cat === 'suits' ? 1 : 3
+  p.priceMax = Math.round(p.price * 1.14)
+  p.supplier = p.cat === 'suits' ? SUPPLIERS[2] : p.cat === 'bags' || p.cat === 'heels' ? SUPPLIERS[3] : p.cat === 'skincare' || p.cat === 'body' ? SUPPLIERS[1] : SUPPLIERS[0]
+  p.verified = i % 4 !== 3
+  p.years = 3 + (i % 6)
+  p.lead = 3 + (i % 5)
+})
