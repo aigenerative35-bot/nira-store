@@ -78,7 +78,7 @@ export default function Home() {
   const [side, setSide] = useState(false)
   const [promos, setPromos] = useState(false)
 
-  const top = products.slice(0, 6)
+  const top = products.slice(0, 8)
   const rest = products.slice(6)
 
   return (
@@ -152,8 +152,22 @@ export default function Home() {
             </div>
             <Link className="link-arrow" to="/shop">View all 16 <Icon.arrow /></Link>
           </div>
-          <div className="pgrid">
-            {top.map((p, i) => <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>)}
+          <div className="pgrid pgrid--big">
+            {top.slice(0, 2).map((p, i) => (
+              <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>
+            ))}
+
+            <Link className="edit-tile" to="/shop">
+              <img src={asset('img/hero-portrait.jpg')} alt="" loading="lazy" />
+              <div className="edit-tile__in">
+                <h3>The Impeccable Guest</h3>
+                <span>Discover</span>
+              </div>
+            </Link>
+
+            {top.slice(2).map((p, i) => (
+              <TiltCard key={p.id}><ProductCard product={p} index={i + 2} /></TiltCard>
+            ))}
           </div>
         </div>
       </div>
