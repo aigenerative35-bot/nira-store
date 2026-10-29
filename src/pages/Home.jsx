@@ -5,7 +5,8 @@ import ProductCard from '../components/ProductCard'
 import Ticker from '../components/Ticker'
 import { BannerSlider, StripSlider, WideSlider } from '../components/Banners'
 import Cinema from '../components/Cinema'
-import Ring3D from '../components/Ring3D'
+import Fan3D from '../components/Fan3D'
+import Depth from '../components/Depth'
 import TiltCard from '../components/TiltCard'
 import { useShop } from '../store'
 import { asset, categories, products } from '../data'
@@ -126,6 +127,7 @@ export default function Home() {
       </div>
 
       {/* top ranking */}
+      {/* depth-wrapped below */}
       <div className="container sec">
         <div className="slab">
           <div className="sec-head">
@@ -185,19 +187,8 @@ export default function Home() {
         to="/shop"
       />
 
-      {/* 3D ring */}
-      <div className="container sec">
-        <div className="slab" style={{ overflow: 'hidden' }}>
-          <div className="sec-head">
-            <div>
-              <h2>The ring</h2>
-              <p>Spin through the edit — drag it, or let it turn</p>
-            </div>
-            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
-          </div>
-          <Ring3D items={products.slice(0, 8)} radius={320} autoSpeed={7} />
-        </div>
-      </div>
+      {/* 3D scroll fan */}
+      <Fan3D items={products.slice(0, 5)} />
 
       {/* the house band */}
       <div className="container sec">
@@ -253,6 +244,7 @@ export default function Home() {
         <WideSlider items={WIDES} />
       </div>
 
+      <Depth>
       {/* recommended */}
       <div className="container sec">
         <div className="slab">
@@ -268,6 +260,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      </Depth>
 
       {/* service promises */}
       <div className="container sec">
