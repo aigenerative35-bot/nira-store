@@ -102,7 +102,7 @@ export default function Shop() {
           </div>
         </Reveal>
       ) : (
-        <motion.div className="pgrid" layout style={{ padding: 'clamp(20px,3vw,40px) 0 var(--sec)' }}>
+        <motion.div className="pgrid pgrid--big" layout style={{ padding: 'clamp(20px,3vw,40px) 0 var(--sec)' }}>
           {list.map((p, i) => (
             <ProductCard key={p.id} product={p} index={i} />
           ))}
