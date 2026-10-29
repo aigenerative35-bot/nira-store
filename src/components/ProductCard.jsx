@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { Icon, Stars } from '../ui'
 import SocialBar from './SocialBar'
 import { useShop } from '../store'
@@ -11,13 +10,7 @@ export default function ProductCard({ product: p, index = 0 }) {
   const off = p.mrp > p.price ? Math.round((1 - p.price / p.mrp) * 100) : 0
 
   return (
-    <motion.article
-      className="pcard"
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-4%' }}
-      transition={{ duration: 0.5, delay: Math.min(index * 0.03, 0.2) }}
-    >
+    <article className="pcard rise" style={{ '--d': `${Math.min(index * 0.04, 0.24)}s` }}>
       <div className="pcard__media">
         <Link to={`/product/${p.id}`} aria-label={p.name}>
           <img className="main" src={p.img} alt={p.name} loading="lazy" />
@@ -66,6 +59,6 @@ export default function ProductCard({ product: p, index = 0 }) {
       </div>
 
       <SocialBar product={p} />
-    </motion.article>
+    </article>
   )
 }
