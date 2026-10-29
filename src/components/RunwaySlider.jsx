@@ -71,7 +71,7 @@ export default function RunwaySlider({ items, auto = 4200, tag = 'Runway style' 
                 if (off !== 0) go(idx)
               }}
               style={{
-                transform: `translateX(${off * 262 + drag}px) scale(${off === 0 ? 1.04 : 0.84})`,
+                transform: `translateX(calc(${off} * 22.5vw + ${drag}px)) scale(${off === 0 ? 1.02 : 0.84})`,
                 opacity: abs > 2 ? 0 : abs === 0 ? 1 : abs === 1 ? 0.92 : 0.55,
                 zIndex: 10 - abs,
                 pointerEvents: abs > 2 ? 'none' : 'auto'
