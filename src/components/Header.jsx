@@ -17,6 +17,8 @@ const NAV = [
   { to: '/shop?cat=makeup', label: 'Makeup' },
   { to: '/shop?cat=bags', label: 'Bags' },
   { to: '/shop?cat=suits', label: 'Suits' },
+  { to: '/lookbook', label: 'Lookbook' },
+  { to: '/journal', label: 'Journal' },
   { to: '/about', label: 'The house' }
 ]
 
