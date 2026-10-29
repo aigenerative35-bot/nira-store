@@ -6,6 +6,15 @@ import SocialBar from '../components/SocialBar'
 import { useShop } from '../store'
 import { asset, getProduct, money, products, reviews } from '../data'
 
+const FILM = {
+  skincare: { src: 'video/film.mp4', poster: 'video/poster.jpg' },
+  body: { src: 'video/film.mp4', poster: 'video/poster.jpg' },
+  makeup: { src: 'video/hero.mp4', poster: 'video/hero-poster.jpg' },
+  bags: { src: 'video/atelier.mp4', poster: 'video/atelier-poster.jpg' },
+  heels: { src: 'video/atelier.mp4', poster: 'video/atelier-poster.jpg' },
+  suits: { src: 'video/loom.mp4', poster: 'video/loom-poster.jpg' }
+}
+
 const ACC = [
   { key: 'desc', title: 'Description', body: (p) => p.desc },
   { key: 'use', title: 'How to use', body: (p) => p.use },
@@ -77,7 +86,13 @@ export default function Product() {
           <img src={gallery[idx]} alt={p.name} />
         </div>
         <div className="pdp2__pane pdp2__pane--alt">
-          <img src={gallery[(idx + 1) % gallery.length]} alt="" />
+          <video
+            key={p.id}
+            src={asset((FILM[p.cat] || FILM.skincare).src)}
+            poster={asset((FILM[p.cat] || FILM.skincare).poster)}
+            autoPlay muted loop playsInline preload="metadata"
+          />
+          <span className="pdp2__film">Campaign film · {p.catName}</span>
         </div>
 
         {/* thumbnail rail */}
