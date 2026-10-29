@@ -181,6 +181,34 @@ export default function Home() {
         </div>
       </div>
 
+      {/* campaign story */}
+      <section className="story">
+        <div className="story__media">
+          <img src={asset('img/saree-jewel.jpg')} alt="The autumn campaign" loading="lazy" />
+          <span className="story__cap">Campaign · Bengaluru, 2026</span>
+        </div>
+        <div className="story__body">
+          <p className="label label--maroon">The autumn campaign</p>
+          <h2>Woven slowly, worn for years.</h2>
+          <p>
+            Two co-ops in Bhagalpur, forty-one weavers, one price list. Every saree is paid for
+            within seven days of leaving the loom — no middlemen, no seasonal discounting.
+          </p>
+          <p>
+            The campaign was shot over three days in our Bengaluru studio: no retouching,
+            no studio lights beyond one window.
+          </p>
+          <Link className="btn" to="/shop?cat=suits"><span>Shop the handloom edit</span><Icon.arrow /></Link>
+        </div>
+      </section>
+
+      {/* manifesto */}
+      <section className="manifesto">
+        <p className="label">Our position</p>
+        <h2>“We would rather make sixteen things properly than six hundred things badly.”</h2>
+        <span>Nira Atelier — house note, 2026</span>
+      </section>
+
       {/* ticker */}
       <div className="container sec">
         <Ticker items={CAMPAIGN} label="Campaign" to="/shop" cta="Shop the campaign" />
