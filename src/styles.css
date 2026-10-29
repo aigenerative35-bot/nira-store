@@ -1786,3 +1786,52 @@ body, .page, #root { background: #fff; }
 .pgrid--big .pcard__row { margin-top: 2px; }
 .pgrid--big .pcard__rate { display: none; }
 .pgrid--big .pcard__media { background: #fff; }
+
+/* ============================================================
+   Footer only — navy (#0f2a4a)
+   ============================================================ */
+.ftr {
+  background: #0f2a4a;
+  color: rgba(255, 255, 255, 0.78);
+  border-top: 0;
+  margin-top: clamp(20px, 3vw, 40px);
+}
+.ftr__grid { border-bottom: 1px solid rgba(255, 255, 255, 0.14); }
+.ftr h4,
+.ftr .ftr__col h4 {
+  color: #ffffff;
+  letter-spacing: 0.18em;
+}
+.ftr a { color: rgba(255, 255, 255, 0.76); }
+.ftr a:hover { color: #ffffff; }
+.ftr p { color: rgba(255, 255, 255, 0.66); }
+.ftr .logo__txt { color: #ffffff; }
+.ftr .logo__mark { background: #ffffff; color: #0f2a4a; }
+
+/* newsletter inside the footer */
+.ftr .nform input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+}
+.ftr .nform input::placeholder { color: rgba(255, 255, 255, 0.5); }
+.ftr .nform input:focus { border-color: rgba(255, 255, 255, 0.6); }
+.ftr .nform button {
+  background: #ffffff;
+  color: #0f2a4a;
+  border-color: #ffffff;
+  font-weight: 600;
+}
+.ftr .nform button:hover { background: #e6eef8; border-color: #e6eef8; }
+
+/* base line */
+.ftr__base {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.55);
+}
+.ftr__base a { color: rgba(255, 255, 255, 0.7); }
+.ftr .pay span {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.72);
+}
