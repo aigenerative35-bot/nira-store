@@ -1659,3 +1659,34 @@ body { background: #f4f6f9; }
 .pgrid--big .tag { left: 12px; right: auto; }
 .pgrid--big .pcard__cat { font-size: 11px; }
 .pgrid--big .pcard__info { padding-top: 14px; }
+
+/* campaign band on the home page (grid lives on shop) */
+.campaign {
+  background: linear-gradient(180deg, #f7fafd 0%, #eef3f9 100%);
+  border-block: 1px solid #e3e9f1;
+  padding: clamp(34px, 5vw, 74px) 0;
+  margin: clamp(10px, 1.6vw, 18px) 0;
+}
+.campaign__in { text-align: center; display: grid; gap: 12px; justify-items: center; }
+.campaign__in h2 { font-size: clamp(22px, 3vw, 38px); color: #16283c; letter-spacing: -0.01em; }
+.campaign__in h2 em { font-style: italic; color: var(--navy); }
+.campaign__in p { color: #5b7086; font-size: 14px; max-width: 52ch; }
+.campaign__cta { display: flex; align-items: center; gap: 18px; margin-top: 8px; flex-wrap: wrap; justify-content: center; }
+
+/* shop search field */
+.shop-search {
+  display: flex; align-items: center; gap: 9px; flex: 1 1 260px;
+  background: #fff; border: 1px solid #e3e9f1; border-radius: 6px; padding: 0 12px; height: 38px;
+}
+.shop-search svg { width: 15px; height: 15px; stroke: #8ba3bd; fill: none; stroke-width: 1.8; }
+.shop-search input { flex: 1; border: 0; outline: none; font-size: 13px; background: transparent; color: #16283c; }
+
+/* three worlds as a horizontal editorial rail (no product grid on home) */
+.worlds {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(240px, 1fr);
+  gap: 10px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.worlds::-webkit-scrollbar { display: none; }
+.worlds .world { scroll-snap-align: start; }
+.worlds .world__ph { aspect-ratio: 4 / 3.6; }
