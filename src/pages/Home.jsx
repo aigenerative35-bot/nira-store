@@ -202,23 +202,44 @@ export default function Home() {
         </div>
       </div>
 
-      {/* deals of the day */}
-      <div className="container sec">
+      {/* coupons */}
+      <div className="container sec sec--tight">
         <div className="slab">
-          <div className="sec-head">
+          <div className="sec-head" style={{ marginBottom: 8 }}>
             <div>
-              <h2>Deals of the day</h2>
-              <p>Lowest prices on the pieces everyone reorders</p>
+              <h2>Coupons for you</h2>
+              <p>Collect now, they apply automatically at checkout</p>
             </div>
-            <div className="sec-head__r">
+            <Link className="link-arrow" to="/shop">All offers <Icon.arrow /></Link>
+          </div>
+          <div className="coupons">
+            <div className="coupon"><b>₹200</b><span>off on ₹1,999+<em>New users only</em></span><button onClick={() => toast('Coupon collected')}>Collect</button></div>
+            <div className="coupon"><b>10%</b><span>off first order<em>Code NIRA10 · max ₹500</em></span><button onClick={() => toast('Coupon NIRA10 copied')}>Collect</button></div>
+            <div className="coupon"><b>₹500</b><span>off on ₹4,999+<em>Bags &amp; sarees</em></span><button onClick={() => toast('Coupon collected')}>Collect</button></div>
+            <div className="coupon"><b>Free</b><span>shipping<em>On every order today</em></span><button onClick={() => toast('Free shipping applied')}>Collect</button></div>
+          </div>
+        </div>
+      </div>
+
+      {/* flash sale */}
+      <div className="container sec">
+        <div className="flash">
+          <div className="flash__head">
+            <div className="flash__t">
+              <h2>Flash sale</h2>
+              <span>Up to 40% off · limited stock</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <Countdown />
-              <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
+              <Link className="btn btn--light btn--sm" to="/shop"><span>See all deals</span></Link>
             </div>
           </div>
-          <div className="pgrid">
-            {deals.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
-            ))}
+          <div className="slab">
+            <div className="pgrid">
+              {deals.map((p, i) => (
+                <ProductCard key={p.id} product={p} index={i} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -256,6 +277,24 @@ export default function Home() {
             <Link className="link-arrow" to="/shop?cat=bags">View all <Icon.arrow /></Link>
           </div>
           <Rail items={atelier} render={(p, i) => <ProductCard product={p} index={i} />} />
+        </div>
+      </div>
+
+      {/* guess you like */}
+      <div className="container sec">
+        <div className="slab">
+          <div className="sec-head">
+            <div>
+              <h2>Guess you like</h2>
+              <p>Picked from what people browse after this</p>
+            </div>
+            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
+          </div>
+          <div className="pgrid">
+            {products.map((p, i) => (
+              <ProductCard key={p.id} product={p} index={i} />
+            ))}
+          </div>
         </div>
       </div>
 
