@@ -92,6 +92,15 @@ export default function Home() {
             <div><b className="num">1.2 lakh</b><span>Orders shipped</span></div>
           </div>
         </div>
+        <aside className="glass-card">
+          <p className="label">The ritual</p>
+          <h4>Three steps, twice a day — from ₹1,899</h4>
+          <div className="glass-card__row"><span>Vitamin C serum</span><b className="num">₹1,299</b></div>
+          <div className="glass-card__row"><span>Rice water mist</span><b className="num">₹649</b></div>
+          <div className="glass-card__row"><span>Ceramide night cream</span><b className="num">₹1,599</b></div>
+          <Link to="/shop?cat=skincare">Shop the ritual <Icon.arrow /></Link>
+        </aside>
+
         <div className="container hero__foot">
           <span className="hero__scroll"><i /> Scroll</span>
           <button className="sound-btn" onClick={toggleSound} aria-label="Toggle sound">
