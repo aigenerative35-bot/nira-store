@@ -1513,3 +1513,106 @@ body { background: #f4f6f9; }
 .rw__dots { display: flex; gap: 8px; }
 .rw__dots button { width: 8px; height: 8px; }
 .rw__prog { width: clamp(90px, 12vw, 140px); }
+
+/* ============================================================
+   HD pass — full-bleed hero, bigger cards, editorial rhythm
+   ============================================================ */
+
+/* ---- hero ---- */
+.hero-bleed { position: relative; margin-bottom: clamp(14px, 2vw, 24px); }
+.hero-row {
+  display: block; position: relative;
+  width: 100%; max-width: none; padding: 0;
+}
+.hero-row .sidebar {
+  position: absolute; left: max(var(--gut), calc((100vw - var(--shell)) / 2 + var(--gut)));
+  top: clamp(16px, 2.4vw, 34px); z-index: 6;
+  width: 236px; border-radius: 10px; padding: 8px 0;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 24px 60px rgba(6, 16, 28, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+.hero-row .bmain {
+  height: clamp(420px, 40vw, 580px);
+  min-height: 0; border-radius: 0;
+}
+.bs--hero { border-radius: 0; min-height: clamp(420px, 40vw, 580px); }
+.bs__in {
+  max-width: min(620px, 52%);
+  padding-left: max(var(--gut), calc((100vw - var(--shell)) / 2 + var(--gut)));
+  margin-left: 270px;
+}
+.bs__in h1 { font-size: clamp(30px, 3.6vw, 52px); line-height: 1.06; letter-spacing: -0.02em; }
+.bs__in p { font-size: 14.5px; max-width: 44ch; }
+.bs__kicker { font-size: 11px; padding: 5px 12px; }
+.bs__dots { bottom: 22px; }
+
+.hero-strip { background: #0f2a4a; color: rgba(255, 255, 255, 0.82); }
+.hero-strip__in {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; height: 42px; font-size: 11.5px; letter-spacing: 0.06em; flex-wrap: wrap;
+}
+.hero-strip__in span { display: inline-flex; align-items: center; gap: 8px; }
+.hero-strip__in span::before {
+  content: ''; width: 4px; height: 4px; border-radius: 50%; background: #7ea7d6;
+}
+
+/* ---- cards: bigger image, stronger price ---- */
+.pcard { border-radius: 8px; }
+.pcard__media { aspect-ratio: 4 / 5; }
+.pcard__info { padding: 13px 13px 11px; gap: 6px; }
+.pcard__name { font-size: 13.5px; line-height: 1.4; }
+.pcard__price { font-size: 17px; letter-spacing: -0.01em; }
+.pcard__price s { font-size: 12.5px; }
+.pcard__off { font-size: 11px; padding: 2px 8px; }
+.pill-rate { font-size: 11px; padding: 2px 7px; }
+.social { padding: 8px 13px; }
+
+/* ---- section rhythm ---- */
+.sec { padding: clamp(14px, 2vw, 24px) 0; }
+.slab { border-radius: 10px; padding: clamp(14px, 1.8vw, 24px); }
+.sec-head h2 { font-size: clamp(18px, 2vw, 24px); }
+.sec-head p { font-size: 13px; }
+
+/* editorial marquee under the hero */
+.editorial-strip {
+  overflow: hidden; background: #fff; border-block: 1px solid #e8eef5; padding: 14px 0;
+}
+.editorial-strip__track {
+  display: flex; gap: 0; width: max-content; animation: edslide 42s linear infinite;
+}
+.editorial-strip:hover .editorial-strip__track { animation-play-state: paused; }
+.editorial-strip span {
+  display: inline-flex; align-items: center; gap: 22px; padding-right: 22px; white-space: nowrap;
+  font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: #5b7086;
+}
+.editorial-strip i { width: 5px; height: 5px; border-radius: 50%; background: #b9cde4; }
+@keyframes edslide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+@media (max-width: 1200px) {
+  .hero-row .sidebar { display: none; }
+  .bs__in { margin-left: 0; max-width: 78%; }
+}
+@media (max-width: 760px) {
+  .hero-row .bmain { height: 320px; }
+  .bs--hero { min-height: 320px; }
+  .bs__in { max-width: 100%; padding: 22px; }
+  .bs__in h1 { font-size: 24px; }
+  .hero-strip__in { height: auto; padding: 10px 0; font-size: 10.5px; gap: 10px; }
+}
+
+/* ---- hero slider: definite height + copy clears the floating panel ---- */
+.bs--hero { height: clamp(420px, 40vw, 580px); min-height: 0; border-radius: 0; }
+.bs__vp, .bs__slide { height: 100%; }
+.bs__slide img { width: 100%; height: 100%; object-fit: cover; }
+.bs__in {
+  margin-left: 0;
+  max-width: 64%;
+  padding: clamp(24px, 3vw, 46px);
+}
+@media (min-width: 1201px) {
+  .bs__in { padding-left: calc(var(--gut) + 280px); }
+}
+.bs__dots { bottom: 18px; }
+.hero-row .sidebar { top: clamp(14px, 2vw, 28px); }
