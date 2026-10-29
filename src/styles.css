@@ -1074,3 +1074,101 @@ body { background: #f4f6f9; }
 @media (max-width: 900px) {
   .fan3__card { width: 108px; margin-inline: -18px; }
 }
+
+/* ============================================================
+   Polish pass — hierarchy, spacing, less noise
+   ============================================================ */
+
+/* hero: taller, better crop */
+.bs--hero { min-height: clamp(380px, 32vw, 470px); border-radius: 8px; }
+.bs__slide img { object-position: center 30%; }
+.bs__in { max-width: 58%; }
+.bs__in h1 { font-size: clamp(24px, 3.1vw, 40px); letter-spacing: -0.01em; }
+.bs__in p { font-size: 13.5px; max-width: 42ch; }
+.bs__kicker { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.28); }
+
+/* right promos: consistent, rounded, labelled */
+.hero-side { gap: 12px; }
+.hpromo { border-radius: 8px; border: 0; box-shadow: 0 10px 26px rgba(15, 42, 74, 0.14); }
+.hpromo__in { padding: 18px; }
+.hpromo__in b { font-size: 15px; }
+.hpromo__in span { font-size: 12px; opacity: 0.9; }
+
+/* coupons: one calm row, no dashed noise */
+.slab:has(.coupons) { padding: 12px 16px; }
+.coupons { gap: 0; }
+.coupon {
+  border: 0; border-left: 1px solid #e3e9f1; background: transparent;
+  border-radius: 0; padding: 4px 16px; min-width: 0; flex: 1 1 0;
+}
+.coupon:first-child { border-left: 0; padding-left: 0; }
+.coupon b { font-size: 15px; letter-spacing: -0.01em; }
+.coupon span { font-size: 11px; color: #5b7fa6; }
+.coupon em { font-size: 10px; }
+.coupon button {
+  background: transparent; color: var(--navy); border: 1px solid #d5e0ec;
+  border-radius: 4px; padding: 3px 9px; font-size: 10px;
+}
+.coupon button:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+/* section heads: hairline rule + count */
+.sec-head { align-items: flex-end; border-bottom: 1px solid #e8eef5; padding-bottom: 12px; margin-bottom: 16px; }
+.sec-head h2 { font-size: clamp(17px, 1.9vw, 22px); }
+.sec-head p { font-size: 12.5px; max-width: 62ch; }
+.sec-head__r .link-arrow { font-size: 12px; }
+
+/* cards: calmer meta, tighter spacing */
+.pcard__info { padding: 11px 12px 10px; gap: 5px; }
+.pcard__name { min-height: 0; font-size: 13px; line-height: 1.4; }
+.pcard__rate { gap: 6px; }
+.pcard__cat { font-size: 10px; letter-spacing: 0.04em; }
+.pcard__price { font-size: 15.5px; }
+.pcard__off { font-size: 10.5px; }
+.social { padding: 7px 12px; gap: 12px; }
+.social__btn { font-size: 10.5px; }
+.pcard__media { aspect-ratio: 1 / 1.05; }
+.tag { font-size: 9.5px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 3px; }
+
+/* three worlds: image cards with overlay */
+.world { position: relative; display: block; border-radius: 10px; overflow: hidden; }
+.world__ph { aspect-ratio: 4 / 3.4; overflow: hidden; background: #eef3f9; }
+.world__ph img { transition: transform 1s var(--ease); }
+.world:hover .world__ph img { transform: scale(1.05); }
+.world__in {
+  position: absolute; inset: auto 0 0 0; padding: 16px; color: #fff;
+  background: linear-gradient(0deg, rgba(6, 16, 28, 0.82), rgba(6, 16, 28, 0));
+  display: grid; gap: 3px;
+}
+.world__in span { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); }
+.world__in b { font-size: 14px; font-weight: 600; }
+.world__in i { font-style: normal; font-size: 10.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.45); width: max-content; padding-bottom: 2px; margin-top: 4px; }
+
+/* ticker: square crops read better */
+.tcard { aspect-ratio: 1 / 1; border-radius: 8px; }
+.tcard__name { font-size: 10.5px; letter-spacing: 0.1em; }
+.ticker-sec { border-radius: 10px; }
+
+/* strip slider cards */
+.bs-card { border-radius: 8px; min-height: 190px; border: 0; box-shadow: 0 8px 22px rgba(15, 42, 74, 0.1); }
+.bs-card__in b { font-size: 17px; }
+.bs-card__in i { font-size: 12px; }
+
+/* fan: tighter stage, bigger cards */
+.fan3 { padding-top: clamp(36px, 4.6vw, 68px); }
+.fan3__stage { padding-bottom: 10px; }
+.fan3__card { width: clamp(132px, 15vw, 210px); margin-inline: clamp(-30px, -2.4vw, -14px); }
+.fan3__head h2 { font-size: clamp(24px, 3.4vw, 42px); }
+
+/* house band + reviews */
+.houseband { border-radius: 12px; }
+.revcard { border-radius: 10px; }
+
+@media (max-width: 900px) {
+  .bs__in { max-width: 100%; }
+  .coupon { flex: 1 1 45%; border-left: 0; padding: 6px 0; }
+}
+
+/* strip slider: fit three cards exactly */
+.bs-strip > div > .bs-card { flex-basis: calc(33.333% - 8px) !important; }
+.bs-card__in { padding: 16px 18px; }
+.bs-card__in b { line-height: 1.2; }
