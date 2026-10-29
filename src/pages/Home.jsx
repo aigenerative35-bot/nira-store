@@ -60,8 +60,8 @@ const STRIPS = [
 
 const WIDES = [
   { img: asset('img/hero-portrait.jpg'), kicker: 'The ritual', title: 'Three steps, twice a day. Nothing more.', text: 'A cleanser, a serum, a barrier cream — and the skin that follows.', to: '/shop?cat=skincare' },
-  { img: asset('img/hero-bag.jpg'), kicker: 'The atelier', title: 'Bags, heels and small leathers.', text: 'Hand-finished, two-year stitch warranty, free size exchange.', to: '/shop?cat=bags' },
-  { img: asset('img/saree-street.jpg'), kicker: 'Handloom', title: 'Forty-one weavers, two co-ops.', text: 'Every saree paid for within seven days of weaving.', to: '/about' },
+  { img: asset('video/atelier-poster.jpg'), video: asset('video/atelier.mp4'), kicker: 'The atelier', title: 'Bags, heels and small leathers.', text: 'Hand-finished, two-year stitch warranty, free size exchange.', to: '/shop?cat=bags' },
+  { img: asset('video/loom-poster.jpg'), video: asset('video/loom.mp4'), kicker: 'Handloom', title: 'Forty-one weavers, two co-ops.', text: 'Every saree paid for within seven days of weaving.', to: '/about' },
   { img: asset('img/brushes.jpg'), kicker: 'Makeup', title: 'Twelve shades. One honest finish.', text: 'Buildable, transfer-proof, tested on Indian skin tones.', to: '/shop?cat=makeup' }
 ]
 
