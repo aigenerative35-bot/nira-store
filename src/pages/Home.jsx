@@ -187,9 +187,9 @@ export default function Home() {
         to="/shop"
       />
 
-      {/* 3D coverflow */}
-      <div className="container sec">
-        <div className="slab" style={{ overflow: 'hidden' }}>
+      {/* runway — full bleed */}
+      <section className="rw-sec">
+        <div className="container">
           <div className="sec-head">
             <div>
               <h2>Runway — autumn 2026</h2>
@@ -197,9 +197,9 @@ export default function Home() {
             </div>
             <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
           </div>
-          <RunwaySlider items={products.slice(0, 6)} tag="Runway style" />
         </div>
-      </div>
+        <RunwaySlider items={products.slice(0, 6)} tag="Runway style" />
+      </section>
 
       {/* 3D cube slider */}
       <div className="container sec">
