@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Icon } from '../ui'
 import ProductCard from '../components/ProductCard'
 import Ticker from '../components/Ticker'
+import { BannerSlider, StripSlider, WideSlider } from '../components/Banners'
 import { useShop } from '../store'
 import { asset, categories, products } from '../data'
 
@@ -43,6 +44,22 @@ const CAMPAIGN = [
   { title: 'Advent', img: asset('img/jar-flowers.jpg'), badge: 'N' }
 ]
 
+const STRIPS = [
+  { img: asset('img/serum.jpg'), kicker: 'Skincare', title: '3-step ritual kit', text: 'MOQ 2 · from ₹1,899', to: '/shop?cat=skincare' },
+  { img: asset('img/saree-jewel.jpg'), kicker: 'Handloom', title: 'Silk saree, 120 pcs', text: 'Direct from Bhagalpur', to: '/shop?cat=suits' },
+  { img: asset('img/bag-brown.jpg'), kicker: 'Atelier', title: 'Structured tote', text: 'Custom hardware 100+', to: '/shop?cat=bags' },
+  { img: asset('img/heels-pink.jpg'), kicker: 'Heels', title: 'Block heel, 3 inch', text: 'Sample pair available', to: '/shop?cat=heels' },
+  { img: asset('img/lip-apply.jpg'), kicker: 'Makeup', title: 'Matte lipstick', text: '12 shades · MOQ 6', to: '/shop?cat=makeup' },
+  { img: asset('img/jar-flowers.jpg'), kicker: 'Body', title: 'Ceramide night cream', text: 'Private label from 500', to: '/shop?cat=body' }
+]
+
+const WIDES = [
+  { img: asset('img/hero-portrait.jpg'), kicker: 'Private label', title: 'Your brand, our lab. From 500 units.', text: 'Formula, filling, packaging and testing — handled end to end.', to: '/contact' },
+  { img: asset('img/hero-bag.jpg'), kicker: 'Wholesale', title: 'Bags at wholesale, samples first.', text: 'Order a sample pair before you commit to a run.', to: '/shop?cat=bags' },
+  { img: asset('img/saree-street.jpg'), kicker: 'Co-operative', title: '41 weavers, two co-ops, one price list.', text: 'No middlemen. Every order paid within 7 days.', to: '/about' },
+  { img: asset('img/brushes.jpg'), kicker: 'Tools', title: 'Brush sets with custom monogram.', text: 'MOQ 50 · 12-day lead time.', to: '/shop?cat=makeup' }
+]
+
 const SUPPLIERS = [
   { name: 'Nira Labs', cat: 'Skincare & body', years: 9, img: asset('img/serum.jpg') },
   { name: 'Nira Atelier', cat: 'Makeup & tools', years: 6, img: asset('img/lip-apply.jpg') },
@@ -52,13 +69,7 @@ const SUPPLIERS = [
 
 export default function Home() {
   const { toast } = useShop()
-  const [slide, setSlide] = useState(0)
   const [email, setEmail] = useState('')
-
-  useEffect(() => {
-    const t = setInterval(() => setSlide((s) => (s + 1) % BANNERS.length), 6000)
-    return () => clearInterval(t)
-  }, [])
 
   const top = products.slice(0, 6)
   const rest = products.slice(6)
@@ -80,32 +91,7 @@ export default function Home() {
             <Link to="/shop">All products<i>16</i></Link>
           </aside>
 
-          <div className="bmain">
-            <div className="bmain__vp" style={{ transform: `translateX(-${slide * 100}%)` }}>
-              {BANNERS.map((b) => (
-                <div className="bslide" key={b.title}>
-                  <img src={b.img} alt="" />
-                  <div className="bslide__in">
-                    <small>{b.kicker}</small>
-                    <h1>{b.title}</h1>
-                    <p>{b.text}</p>
-                    <div><Link className="btn btn--light" to={b.to}><span>View products</span></Link></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button className="bnav l" onClick={() => setSlide((s) => (s - 1 + BANNERS.length) % BANNERS.length)} aria-label="Previous">
-              <Icon.arrow style={{ transform: 'rotate(180deg)' }} />
-            </button>
-            <button className="bnav r" onClick={() => setSlide((s) => (s + 1) % BANNERS.length)} aria-label="Next">
-              <Icon.arrow />
-            </button>
-            <div className="bdots">
-              {BANNERS.map((b, i) => (
-                <button key={b.title} className={i === slide ? 'on' : ''} onClick={() => setSlide(i)} aria-label={`Slide ${i + 1}`} />
-              ))}
-            </div>
-          </div>
+          <BannerSlider items={BANNERS} />
 
           <div className="hero-side">
             {PROMOS.map((p) => (
@@ -129,6 +115,11 @@ export default function Home() {
             <div className="coupon"><b>₹500</b><span>on ₹4,999+<em>Bags &amp; sarees</em></span><button onClick={() => toast('Coupon collected')}>Collect</button></div>
           </div>
         </div>
+      </div>
+
+      {/* banner strip slider */}
+      <div className="container sec sec--tight">
+        <StripSlider items={STRIPS} />
       </div>
 
       {/* top ranking */}
@@ -178,6 +169,11 @@ export default function Home() {
       {/* ticker */}
       <div className="container sec">
         <Ticker items={CAMPAIGN} label="Campaign" to="/shop" cta="Shop the campaign" />
+      </div>
+
+      {/* wide banner slider */}
+      <div className="container sec">
+        <WideSlider items={WIDES} />
       </div>
 
       {/* recommended */}
