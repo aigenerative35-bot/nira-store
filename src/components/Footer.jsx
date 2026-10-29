@@ -19,7 +19,10 @@ export default function Footer() {
       <div className="container">
         <div className="ftr__grid">
           <div>
-            <Link className="logo" to="/">Nira</Link>
+            <Link className="logo" to="/">
+              <span className="logo__mark">N</span>
+              <span className="logo__txt">Nira</span>
+            </Link>
             <p>Beauty and atelier — skincare, body, makeup, bags, suits and heels. Fewer, better things, made to be used daily.</p>
             <form className="nform" onSubmit={submit} style={{ margin: '20px 0 0' }}>
               <input
