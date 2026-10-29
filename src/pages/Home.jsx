@@ -75,6 +75,8 @@ const SUPPLIERS = [
 export default function Home() {
   const { toast } = useShop()
   const [email, setEmail] = useState('')
+  const [side, setSide] = useState(false)
+  const [promos, setPromos] = useState(false)
 
   const top = products.slice(0, 6)
   const rest = products.slice(6)
@@ -83,8 +85,17 @@ export default function Home() {
     <>
       {/* hero row: sidebar + carousel + promos */}
       <div className="container sec sec--tight">
-        <div className="hero-row">
-          <aside className="sidebar">
+        <div className={`hero-row ${side ? '' : 'no-side'} ${promos ? '' : 'no-promos'}`}>
+          <div className="hero-toggles">
+            <button className={side ? 'on' : ''} onClick={() => setSide((v) => !v)} aria-pressed={side}>
+              {side ? '✕' : '☰'} Categories
+            </button>
+            <button className={promos ? 'on' : ''} onClick={() => setPromos((v) => !v)} aria-pressed={promos}>
+              {promos ? '✕' : '+'} Offers
+            </button>
+          </div>
+          {side && (
+          <aside className="sidebar panel-l">
             <div className="sidebar__head">Shop by category</div>
             {categories.map((c) => (
               <Link to={`/shop?cat=${c.id}`} key={c.id}>
@@ -95,10 +106,12 @@ export default function Home() {
             <Link to="/shop?sort=rating">Top rated<i>4.7+</i></Link>
             <Link to="/shop">All products<i>16</i></Link>
           </aside>
+          )}
 
           <BannerSlider items={BANNERS} />
 
-          <div className="hero-side">
+          {promos && (
+          <div className="hero-side panel-r">
             {PROMOS.map((p) => (
               <Link className="hpromo" to="/shop" key={p.b}>
                 <img src={p.img} alt="" />
@@ -106,6 +119,7 @@ export default function Home() {
               </Link>
             ))}
           </div>
+          )}
         </div>
       </div>
 
