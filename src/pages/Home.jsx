@@ -5,7 +5,7 @@ import ProductCard from '../components/ProductCard'
 import Ticker from '../components/Ticker'
 import { BannerSlider, StripSlider, WideSlider } from '../components/Banners'
 import Cinema from '../components/Cinema'
-import Coverflow3D from '../components/Coverflow3D'
+import RunwaySlider from '../components/RunwaySlider'
 import CubeSlider from '../components/CubeSlider'
 import Depth from '../components/Depth'
 import TiltCard from '../components/TiltCard'
@@ -192,12 +192,12 @@ export default function Home() {
         <div className="slab" style={{ overflow: 'hidden' }}>
           <div className="sec-head">
             <div>
-              <h2>The edit, in depth</h2>
-              <p>Drag it, or use the arrows — the shelf turns in 3D</p>
+              <h2>Runway — autumn 2026</h2>
+              <p>Slides on its own, or drag it yourself — click a side look to bring it centre</p>
             </div>
             <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
           </div>
-          <Coverflow3D items={products.slice(0, 6)} />
+          <RunwaySlider items={products.slice(0, 6)} tag="Runway style" />
         </div>
       </div>
 
