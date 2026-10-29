@@ -1375,3 +1375,44 @@ body { background: #f4f6f9; }
   .rw__card { width: 150px; }
   .rw__stage { height: 250px; }
 }
+
+/* ============================================================
+   Runway — full-bleed, large cards
+   ============================================================ */
+.rw-sec {
+  background: #fff;
+  border-top: 1px solid #e8eef5;
+  border-bottom: 1px solid #e8eef5;
+  padding: clamp(18px, 2.6vw, 34px) 0 clamp(26px, 3.4vw, 46px);
+  margin: clamp(10px, 1.6vw, 18px) 0;
+}
+.rw-sec .sec-head { border-bottom: 0; padding-bottom: 0; margin-bottom: clamp(10px, 1.6vw, 18px); }
+
+.rw { width: 100%; }
+.rw__stage {
+  width: 100%;
+  height: clamp(330px, 30vw, 480px);
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+.rw__card {
+  width: clamp(210px, 22vw, 360px);
+  aspect-ratio: 3 / 4;
+  border-radius: 2px;
+}
+.rw__tag { font-size: 10.5px; letter-spacing: 0.16em; top: 12px; right: 14px; }
+.rw__meta { margin-top: clamp(16px, 2vw, 26px); gap: 12px; }
+.rw__meta h3 { font-size: clamp(20px, 2.4vw, 30px); }
+.rw__cta { padding: 14px 44px; font-size: 11px; }
+.rw__ctrl { top: 36%; left: clamp(10px, 3vw, 46px); right: clamp(10px, 3vw, 46px); }
+.rw__dots { margin-top: 18px; }
+
+@media (max-width: 900px) {
+  .rw__stage { height: 260px; }
+  .rw__card { width: 150px; }
+}
+
+/* drop the stray bar before section titles */
+.sec-head h2::before, .ticker-head h2::before { display: none; }
+.rw-sec .sec-head h2 { font-size: clamp(18px, 2vw, 24px); }
+.rw-sec .sec-head p { padding-left: 0; }
