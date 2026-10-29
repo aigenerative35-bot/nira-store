@@ -56,10 +56,11 @@ export default function Footer() {
           <div>
             <h5>Company</h5>
             <ul>
-              <li><Link to="/about">Our story</Link></li>
-              <li><Link to="/about">Ingredients</Link></li>
-              <li><Link to="/about">The atelier</Link></li>
-              <li><Link to="/contact">Careers</Link></li>
+              <li><Link to="/about">The house</Link></li>
+              <li><Link to="/lookbook">Lookbook</Link></li>
+              <li><Link to="/journal">The journal</Link></li>
+              <li><Link to="/stores">Stores</Link></li>
+              <li><Link to="/contact">Client care</Link></li>
             </ul>
           </div>
           <div>
