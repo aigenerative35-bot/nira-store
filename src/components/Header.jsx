@@ -73,7 +73,18 @@ export default function Header() {
           </Link>
 
           <form className="searchbar" onSubmit={submit} role="search">
-            <select value={cat} onChange={(e) => setCat(e.target.value)} aria-label="Category">
+            <select
+              value={cat}
+              onChange={(e) => {
+                const v = e.target.value
+                setCat(v)
+                const p = new URLSearchParams()
+                if (v) p.set('cat', v)
+                if (q.trim()) p.set('q', q.trim())
+                navigate('/shop' + (p.toString() ? '?' + p.toString() : ''))
+              }}
+              aria-label="Category"
+            >
               <option value="">All categories</option>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
