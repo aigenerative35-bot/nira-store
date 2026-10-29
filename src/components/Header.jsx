@@ -79,7 +79,8 @@ export default function Header() {
           </button>
 
           <Link className="logo" to="/">
-            Nira<span>beauty &amp; atelier</span>
+            <span className="logo__mark">N</span>
+            <span className="logo__txt">Nira<span>beauty &amp; atelier</span></span>
           </Link>
 
           <form className="searchbar" onSubmit={submit} role="search">
@@ -193,7 +194,7 @@ export default function Header() {
             transition={{ type: 'spring', stiffness: 320, damping: 34 }}
           >
             <div className="mnav__h">
-              <span className="logo" style={{ fontSize: 16 }}>Nira</span>
+              <span className="logo"><span className="logo__mark" style={{ width: 26, height: 26, fontSize: 13 }}>N</span><span className="logo__txt" style={{ color: '#fff', fontSize: 15 }}>Nira</span></span>
               <button className="icon-btn" onClick={() => setMnav(false)} aria-label="Close">
                 <Icon.close />
               </button>
