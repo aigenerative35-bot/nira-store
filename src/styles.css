@@ -1746,3 +1746,43 @@ body { background: #f4f6f9; }
   .story { grid-template-columns: 1fr; }
   .story__body h2 { max-width: none; }
 }
+
+/* ============================================================
+   All-white surface + aligned card meta
+   ============================================================ */
+body, .page, #root { background: #fff; }
+
+.slab,
+.sec--paper,
+.campaign,
+.manifesto,
+.rw-sec,
+.ticker-sec,
+.hero-strip,
+.story,
+.house,
+.pgrid--big,
+.worlds {
+  background: #fff;
+  background-image: none;
+}
+.campaign, .manifesto, .rw-sec, .ticker-sec { border-color: #ececec; }
+.hero-strip { background: #fff; border-block: 1px solid #ececec; }
+.hero-strip__in { color: #444; height: 44px; }
+.hero-strip__in span::before { background: #bbb; }
+.slab { border: 0; box-shadow: none; }
+.ticker-sec { border: 0; }
+
+/* card meta: name + category on one line, price below */
+.pcard__top {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+}
+.pcard__top .pcard__name { flex: 1 1 auto; min-width: 0; }
+.pcard__top .pcard__cat {
+  flex: 0 0 auto; font-size: 11px; color: #8a8a8a; letter-spacing: 0; text-transform: none;
+  text-align: right; display: block;
+}
+.pgrid--big .pcard__info { gap: 4px; }
+.pgrid--big .pcard__row { margin-top: 2px; }
+.pgrid--big .pcard__rate { display: none; }
+.pgrid--big .pcard__media { background: #fff; }
