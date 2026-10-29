@@ -1416,3 +1416,128 @@ body { background: #f4f6f9; }
 .sec-head h2::before, .ticker-head h2::before { display: none; }
 .rw-sec .sec-head h2 { font-size: clamp(18px, 2vw, 24px); }
 .rw-sec .sec-head p { padding-left: 0; }
+
+/* ============================================================
+   Collapsible hero panels — hidden by default, 3D slide-in
+   ============================================================ */
+.hero-row {
+  position: relative;
+  --side-w: 232px;
+  --promo-w: 240px;
+  grid-template-columns: var(--side-w) minmax(0, 1fr) var(--promo-w);
+  transition: grid-template-columns 0.55s cubic-bezier(.22,.7,.2,1), column-gap 0.45s;
+}
+.hero-row.no-side { --side-w: 0px; }
+.hero-row.no-promos { --promo-w: 0px; }
+.hero-row.no-side.no-promos { column-gap: 0; }
+
+.hero-row .sidebar,
+.hero-row .hero-side {
+  min-width: 0; overflow: hidden;
+  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
+}
+.hero-row.no-side .sidebar,
+.hero-row.no-promos .hero-side {
+  opacity: 0; pointer-events: none; visibility: hidden;
+}
+
+/* 3D entrance when a panel is brought back */
+.hero-row:not(.no-side) .sidebar { animation: panelInL 0.6s cubic-bezier(.22,.7,.2,1) both; }
+.hero-row:not(.no-promos) .hero-side { animation: panelInR 0.6s cubic-bezier(.22,.7,.2,1) both; }
+@keyframes panelInL {
+  from { opacity: 0; transform: perspective(900px) rotateY(-26deg) translateZ(-170px) translateX(-24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes panelInR {
+  from { opacity: 0; transform: perspective(900px) rotateY(26deg) translateZ(-170px) translateX(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* toggles */
+.hero-toggles {
+  position: absolute; top: 10px; right: 10px; z-index: 9;
+  display: flex; gap: 8px;
+}
+.hero-toggles button {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 34px; padding: 0 14px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #16283c; background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 42, 74, 0.14);
+  box-shadow: 0 6px 18px rgba(6, 16, 28, 0.18);
+  backdrop-filter: blur(10px);
+  transition: 0.22s;
+}
+.hero-toggles button:hover { background: #fff; transform: translateY(-1px); }
+.hero-toggles button.on { background: #0f2a4a; color: #fff; border-color: #0f2a4a; }
+
+@media (max-width: 1300px) {
+  .hero-row { --promo-w: 0px; }
+  .hero-row .hero-side { display: none; }
+  .hero-toggles button:nth-child(2) { display: none; }
+}
+@media (max-width: 1080px) {
+  .hero-row { --side-w: 0px; }
+  .hero-row .sidebar { display: none; }
+  .hero-toggles button:nth-child(1) { display: none; }
+}
+
+/* flex layout for the hero row (more predictable than animated grid) */
+.hero-row {
+  display: flex; gap: 10px; align-items: stretch;
+  grid-template-columns: none;
+}
+.hero-row > .bs { flex: 1 1 auto; min-width: 0; }
+.hero-row .sidebar { flex: 0 0 232px; width: 232px; }
+.hero-row .hero-side { flex: 0 0 240px; width: 240px; }
+
+.hero-row.no-side .sidebar {
+  flex-basis: 0; width: 0; opacity: 0; visibility: hidden; margin-right: -10px;
+}
+.hero-row.no-promos .hero-side {
+  flex-basis: 0; width: 0; opacity: 0; visibility: hidden; margin-left: -10px;
+}
+.hero-row .sidebar, .hero-row .hero-side {
+  transition: flex-basis 0.55s cubic-bezier(.22,.7,.2,1), width 0.55s cubic-bezier(.22,.7,.2,1),
+              opacity 0.4s var(--ease), margin 0.55s cubic-bezier(.22,.7,.2,1);
+}
+.hero-row .sidebar > *, .hero-row .hero-side > * { min-width: 0; }
+
+@media (max-width: 1300px) {
+  .hero-row .hero-side { flex-basis: 0; width: 0; opacity: 0; visibility: hidden; margin-left: -10px; }
+}
+@media (max-width: 1080px) {
+  .hero-row .sidebar { flex-basis: 0; width: 0; opacity: 0; visibility: hidden; margin-right: -10px; }
+}
+
+/* panels mount/unmount — 3D entrance, banner takes the full row when hidden */
+.hero-row { display: flex; gap: 10px; align-items: stretch; }
+.hero-row > .bs { flex: 1 1 auto; min-width: 0; }
+.hero-row .sidebar { flex: 0 0 232px; width: 232px; }
+.hero-row .hero-side { flex: 0 0 240px; width: 240px; }
+.panel-l { animation: panelInL 0.6s cubic-bezier(.22,.7,.2,1) both; transform-origin: left center; }
+.panel-r { animation: panelInR 0.6s cubic-bezier(.22,.7,.2,1) both; transform-origin: right center; }
+@keyframes panelInL {
+  0% { opacity: 0; transform: perspective(1000px) rotateY(-32deg) translateZ(-200px) translateX(-20px); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes panelInR {
+  0% { opacity: 0; transform: perspective(1000px) rotateY(32deg) translateZ(-200px) translateX(20px); }
+  100% { opacity: 1; transform: none; }
+}
+.hero-row .sidebar, .hero-row .hero-side { will-change: transform, opacity; }
+@media (max-width: 1300px) {
+  .hero-row .hero-side { display: none; }
+  .hero-toggles button:nth-child(2) { display: none; }
+}
+@media (max-width: 1080px) {
+  .hero-row .sidebar { display: none; }
+  .hero-toggles button:nth-child(1) { display: none; }
+}
+
+/* banner must take its width from flex, never from content */
+.hero-row > .bs { flex: 1 1 0; width: 0; min-width: 0; }
+.hero-row .bs--hero { width: 100%; min-width: 0; }
+.hero-row .bs__vp { width: 100%; }
+.hero-row .bs__slide { flex: 0 0 100%; min-width: 100%; }
+.hero-row .bs__in { max-width: 60%; }
