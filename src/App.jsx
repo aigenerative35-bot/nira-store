@@ -15,6 +15,9 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Lookbook from './pages/Lookbook'
+import Journal from './pages/Journal'
+import Stores from './pages/Stores'
 import NotFound from './pages/NotFound'
 import { useShop } from './store'
 
@@ -48,6 +51,9 @@ export default function App() {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/lookbook" element={<Lookbook />} />
+          <Route path="/journal" element={<Journal />} />
+          <Route path="/stores" element={<Stores />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
