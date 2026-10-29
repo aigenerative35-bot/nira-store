@@ -81,8 +81,8 @@ export default function Home() {
 
   return (
     <>
-      {/* hero: full-bleed banner with a floating category panel */}
-      <div className="hero-bleed">
+      {/* hero row: sidebar + carousel + promos */}
+      <div className="container sec sec--tight">
         <div className="hero-row">
           <aside className="sidebar">
             <div className="sidebar__head">Shop by category</div>
@@ -98,31 +98,14 @@ export default function Home() {
 
           <BannerSlider items={BANNERS} />
 
-        </div>
-
-        <div className="hero-strip">
-          <div className="container hero-strip__in">
-            <span>Complimentary delivery over ₹1,499</span>
-            <span>14-day returns</span>
-            <span>Dermat-tested in Indian humidity</span>
-            <span>Cash on delivery pan-India</span>
+          <div className="hero-side">
+            {PROMOS.map((p) => (
+              <Link className="hpromo" to="/shop" key={p.b}>
+                <img src={p.img} alt="" />
+                <div className="hpromo__in"><b>{p.b}</b><span>{p.s}</span></div>
+              </Link>
+            ))}
           </div>
-        </div>
-      </div>
-
-      {/* editorial marquee */}
-      <div className="editorial-strip">
-        <div className="editorial-strip__track">
-          {[...Array(2)].map((_, k) => (
-            <span key={k}>
-              Fewer things, made properly <i />
-              Handloom from Bhagalpur <i />
-              Dermat-tested formulas <i />
-              Two-year stitch warranty <i />
-              Made in India <i />
-              Since 2019 <i />
-            </span>
-          ))}
         </div>
       </div>
 
