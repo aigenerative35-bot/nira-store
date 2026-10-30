@@ -54,8 +54,7 @@ export default function Header() {
           </div>
           <div className="util__links">
             <Link to="/contact">Help centre</Link>
-            <Link to="/offers">Offers</Link>
-            <Link to="/account">Track order</Link>
+            <Link to="/contact">Track order</Link>
             <Link to="/about">Our story</Link>
             <span>IN / INR</span>
           </div>
@@ -99,7 +98,7 @@ export default function Header() {
           </form>
 
           <div className="hdr__acts">
-            <Link className="hact" to="/account"><Icon.user /><span>Account</span></Link>
+            <Link className="hact" to="/contact"><Icon.user /><span>Account</span></Link>
             <Link className="hact" to="/shop?wish=1">
               <Icon.heart /><span>Wishlist</span>
               {wish.length > 0 && <span className="badge">{wish.length}</span>}

@@ -17,7 +17,7 @@ const PAY = [
 ]
 
 export default function Checkout() {
-  const { cart, subtotal, discount, shipping, total, promo, applyPromo, clear, toast, placeOrder } = useShop()
+  const { cart, subtotal, discount, shipping, total, promo, applyPromo, clear, toast } = useShop()
   const [step, setStep] = useState(1)
   const [placed, setPlaced] = useState(null)
   const [pay, setPay] = useState('upi')
@@ -52,7 +52,6 @@ export default function Checkout() {
 
   const place = () => {
     const id = 'NR' + Math.floor(100000 + Math.random() * 899999)
-    placeOrder({ id, total, pay })
     setPlaced({ id, total, name: form.name, pay })
     clear()
     window.scrollTo({ top: 0, behavior: 'smooth' })
