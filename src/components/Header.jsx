@@ -54,7 +54,8 @@ export default function Header() {
           </div>
           <div className="util__links">
             <Link to="/contact">Help centre</Link>
-            <Link to="/contact">Track order</Link>
+            <Link to="/offers">Offers</Link>
+            <Link to="/account">Track order</Link>
             <Link to="/about">Our story</Link>
             <span>IN / INR</span>
           </div>
