@@ -86,15 +86,9 @@ export default function RunwaySlider({ items, auto = 4200, tag = 'Runway style' 
       </div>
 
       <div className="rw__meta">
-        <p className="rw__kicker">
-          Look {String(i + 1).padStart(2, '0')} — {active.catName}
-        </p>
         <h3>{active.name}</h3>
         <div className="rw__price num">{money(active.price)}</div>
-        <Link className="btn rw__cta" to={`/product/${active.id}`}>
-          <span>Shop now</span>
-          <Icon.arrow />
-        </Link>
+        <Link className="btn rw__cta" to={`/product/${active.id}`}><span>Shop now</span></Link>
         <Link className="rw__all" to={`/shop?cat=${active.cat}`}>View all {active.catName}</Link>
       </div>
 
@@ -103,15 +97,10 @@ export default function RunwaySlider({ items, auto = 4200, tag = 'Runway style' 
         <button onClick={() => go(i + 1)} aria-label="Next"><Icon.arrow /></button>
       </div>
 
-      <div className="rw__foot">
-        <div className="rw__dots">
-          {items.map((p, n) => (
-            <button key={p.id} className={n === i ? 'on' : ''} onClick={() => go(n)} aria-label={p.name} />
-          ))}
-        </div>
-        <span className="rw__prog" aria-hidden="true">
-          <i key={i} style={{ animationDuration: `${auto}ms`, animationPlayState: hover ? 'paused' : 'running' }} />
-        </span>
+      <div className="rw__dots">
+        {items.map((p, n) => (
+          <button key={p.id} className={n === i ? 'on' : ''} onClick={() => go(n)} aria-label={p.name} />
+        ))}
       </div>
     </div>
   )

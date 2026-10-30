@@ -1,19 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Icon, Qty, Stars } from '../ui'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Icon, Qty, Reveal, Stars } from '../ui'
 import ProductCard from '../components/ProductCard'
-import SocialBar from '../components/SocialBar'
 import { useShop } from '../store'
 import { asset, getProduct, money, products, reviews } from '../data'
-
-const FILM = {
-  skincare: { src: 'video/film.mp4', poster: 'video/poster.jpg' },
-  body: { src: 'video/film.mp4', poster: 'video/poster.jpg' },
-  makeup: { src: 'video/hero.mp4', poster: 'video/hero-poster.jpg' },
-  bags: { src: 'video/atelier.mp4', poster: 'video/atelier-poster.jpg' },
-  heels: { src: 'video/atelier.mp4', poster: 'video/atelier-poster.jpg' },
-  suits: { src: 'video/loom.mp4', poster: 'video/loom-poster.jpg' }
-}
 
 const ACC = [
   { key: 'desc', title: 'Description', body: (p) => p.desc },
@@ -24,25 +15,28 @@ const ACC = [
 
 export default function Product() {
   const { id } = useParams()
-  const p = getProduct(id) || products[0]
-  const { add, wish, toggleWish, toast, setDrawer } = useShop()
+  const p = getProduct(id)
+  const { add, wish, toggleWish, toast } = useShop()
   const [qty, setQty] = useState(1)
   const [size, setSize] = useState(null)
   const [shade, setShade] = useState(null)
-  const [idx, setIdx] = useState(0)
+  const [img, setImg] = useState(null)
   const [open, setOpen] = useState('desc')
   const [pin, setPin] = useState('')
   const [pinMsg, setPinMsg] = useState({ text: '', ok: false })
+  const [showBar, setShowBar] = useState(false)
 
   useEffect(() => {
-    setQty(1); setSize(null); setShade(null); setIdx(0); setOpen('desc'); setPinMsg({ text: '', ok: false })
-    window.scrollTo({ top: 0 })
+    setQty(1); setSize(null); setShade(null); setImg(null); setOpen('desc'); setPinMsg({ text: '', ok: false })
   }, [id])
 
-  const gallery = useMemo(
-    () => (p ? [p.img, p.img2, asset('img/lip-apply.jpg'), asset('img/saree-jewel.jpg'), asset('img/flatlay.jpg')] : []),
-    [p]
-  )
+  useEffect(() => {
+    const onScroll = () => setShowBar(window.scrollY > 640)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const gallery = useMemo(() => (p ? [p.img, p.img2, asset('img/lip-apply.jpg'), asset('img/flatlay.jpg')] : []), [p])
   const related = useMemo(
     () => (p ? products.filter((x) => x.cat === p.cat && x.id !== p.id).concat(products.filter((x) => x.cat !== p.cat)).slice(0, 4) : []),
     [p]
@@ -64,69 +58,86 @@ export default function Product() {
   const liked = wish.includes(p.id)
 
   const checkPin = () => {
-    if (!/^\d{6}$/.test(pin)) return setPinMsg({ text: 'Enter a 6-digit pincode', ok: false })
-    const days = 2 + (Number(pin.slice(-1)) % 4)
-    const d = new Date(Date.now() + days * 864e5)
-    setPinMsg({
-      text: `Delivers by ${d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })} · Free`,
-      ok: true
-    })
-  }
-
-  const buy = () => {
-    add(p.id, qty, chosenSize, chosenShade)
-    setDrawer(true)
+    if (!/^\d{6}$/.test(pin.trim())) return setPinMsg({ text: 'Enter a valid 6-digit pincode.', ok: false })
+    const d = new Date()
+    d.setDate(d.getDate() + 3)
+    const when = d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })
+    setPinMsg({ text: `Delivers by ${when} · COD available · Free shipping`, ok: true })
   }
 
   return (
-    <div className="pdp2">
-      {/* split hero */}
-      <div className="pdp2__split">
-        <div className="pdp2__pane">
-          <img src={gallery[idx]} alt={p.name} />
-        </div>
-        <div className="pdp2__pane pdp2__pane--alt">
-          <video
-            key={p.id}
-            src={asset((FILM[p.cat] || FILM.skincare).src)}
-            poster={asset((FILM[p.cat] || FILM.skincare).poster)}
-            autoPlay muted loop playsInline preload="metadata"
-          />
-          <span className="pdp2__film">Campaign film · {p.catName}</span>
-        </div>
+    <div className="container">
+      <div className="crumb">
+        <Link to="/">Home</Link><span>/</span>
+        <Link to="/shop">Shop</Link><span>/</span>
+        <Link to={`/shop?cat=${p.cat}`}>{p.catName}</Link><span>/</span>
+        <span>{p.name}</span>
+      </div>
 
-        {/* thumbnail rail */}
-        <div className="pdp2__thumbs">
-          {gallery.map((g, i) => (
-            <button key={g + i} className={i === idx ? 'on' : ''} onClick={() => setIdx(i)} aria-label={`Image ${i + 1}`}>
-              <img src={g} alt="" />
-            </button>
-          ))}
-        </div>
-
-        <button className={`pdp2__heart ${liked ? 'on' : ''}`} onClick={() => toggleWish(p.id)} aria-label="Save to wishlist">
-          <Icon.heart />
-        </button>
-
-        {/* floating info card */}
-        <div className="pdp2__card">
-          <div className="pdp2__row">
-            <h1>{p.name}</h1>
-            <span className="num">{money(p.price)}</span>
+      <div className="pdp">
+        <div className="gal">
+          <div className="gal__th">
+            {gallery.map((g, i) => (
+              <button key={i} className={img === g || (!img && i === 0) ? 'on' : ''} onClick={() => setImg(g)}>
+                <img src={g} alt="" />
+              </button>
+            ))}
           </div>
-          <p className="pdp2__vat">MRP inclusive of all taxes · {p.mrp > p.price ? `${Math.round((1 - p.price / p.mrp) * 100)}% off` : 'New in'}</p>
+          <div className="gal__main">
+            <img src={img || p.img} alt={p.name} />
+          </div>
+        </div>
+
+        <div>
+          <p className="label label--maroon">{p.catName}</p>
+          <h1>{p.name}</h1>
+          <div className="pdp__rate">
+            <Stars value={p.rating} size={12} />
+            <span>{p.rating} · {p.reviews.toLocaleString('en-IN')} reviews</span>
+            <span style={{ color: 'var(--muted-2)' }}>· 92% would repurchase</span>
+          </div>
+
+          <div className="pdp__price">
+            <b className="num">{money(p.price)}</b>
+            {p.mrp > p.price && <s className="num">{money(p.mrp)}</s>}
+            {p.mrp > p.price && <em>Save {Math.round((1 - p.price / p.mrp) * 100)}%</em>}
+          </div>
+          <div className="pdp__emi num">
+            or 3 interest-free EMIs of {money(Math.round(p.price / 3))} · Free shipping over ₹1,499
+          </div>
+
+          <div className="couponrow">
+            <div className="coupon">
+              <b>10% off</b>
+              <span>First order coupon<em>Code NIRA10 · max ₹500</em></span>
+              <button onClick={() => { navigator.clipboard?.writeText('NIRA10'); toast('Coupon NIRA10 copied') }}>Collect</button>
+            </div>
+            <div className="coupon">
+              <b>₹200 off</b>
+              <span>On orders above ₹1,999<em>Auto-applied at checkout</em></span>
+              <button onClick={() => toast('Coupon saved to your account')}>Collect</button>
+            </div>
+          </div>
+
+          {p.sizes?.length > 0 && (
+            <div className="opt">
+              <div className="opt__lab"><span>Size</span><span style={{ textTransform: 'none', letterSpacing: 0 }}>{chosenSize} selected</span></div>
+              <div className="pills">
+                {p.sizes.map((s) => (
+                  <button key={s} className={`pill ${chosenSize === s ? 'on' : ''}`} onClick={() => setSize(s)}>{s}</button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {p.shades?.length > 0 && (
-            <div className="pdp2__opt">
-              <div className="pdp2__opt-h">
-                <span>Colour</span>
-                <em>{chosenShade}</em>
-              </div>
-              <div className="pdp2__swatches">
+            <div className="opt">
+              <div className="opt__lab"><span>Shade</span><span style={{ textTransform: 'none', letterSpacing: 0 }}>{chosenShade}</span></div>
+              <div className="swatches">
                 {p.shades.map((s) => (
                   <button
                     key={s.name}
-                    className={chosenShade === s.name ? 'on' : ''}
+                    className={`swatch ${chosenShade === s.name ? 'on' : ''}`}
                     style={{ background: s.hex }}
                     onClick={() => setShade(s.name)}
                     aria-label={s.name}
@@ -136,82 +147,115 @@ export default function Product() {
             </div>
           )}
 
-          {p.sizes?.length > 0 && (
-            <div className="pdp2__opt">
-              <div className="pdp2__opt-h">
-                <span>Size</span>
-                <em>Size guide</em>
-              </div>
-              <div className="pdp2__sizes">
-                {p.sizes.map((s) => (
-                  <button key={s} className={chosenSize === s ? 'on' : ''} onClick={() => setSize(s)}>{s}</button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="pdp2__qty">
+          <div className="buyrow">
             <Qty value={qty} onChange={setQty} />
-            <div className="pdp2__pin">
-              <input
-                value={pin}
-                onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="Pincode"
-                aria-label="Pincode"
-              />
-              <button onClick={checkPin}>Check</button>
-            </div>
+            <button className="btn btn--block" onClick={() => add(p.id, qty, chosenSize, chosenShade)}>
+              <span>Add to bag — {money(p.price * qty)}</span>
+            </button>
           </div>
-          {pinMsg.text && <p className={`pdp2__pinmsg ${pinMsg.ok ? 'ok' : ''}`}>{pinMsg.text}</p>}
-
-          <button className="pdp2__add" onClick={buy}>
-            Add to bag
+          <button className="btn btn--ghost btn--block" onClick={() => toggleWish(p.id)}>
+            <span>{liked ? 'Saved to wishlist' : 'Save to wishlist'}</span>
           </button>
-          <div className="pdp2__social">
-            <SocialBar product={p} compact />
-          </div>
-        </div>
-      </div>
 
-      {/* details */}
-      <div className="container">
-        <div className="pdp2__details">
-          <div className="pdp2__acc">
+          <div className="pin">
+            <input
+              value={pin}
+              onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              placeholder="Enter pincode for delivery date"
+              inputMode="numeric"
+              aria-label="Pincode"
+            />
+            <button onClick={checkPin}>Check</button>
+          </div>
+          <div className={`pinmsg ${pinMsg.ok ? 'ok' : ''}`}>{pinMsg.text}</div>
+
+          <div className="acc">
             {ACC.map((a) => (
-              <div className={`acc__item ${open === a.key ? 'open' : ''}`} key={a.key}>
-                <button className="acc__head" onClick={() => setOpen(open === a.key ? '' : a.key)}>
-                  <span>{a.title}</span>
-                  <Icon.arrow style={{ transform: open === a.key ? 'rotate(90deg)' : 'none' }} />
+              <div className="acc__item" key={a.key}>
+                <button onClick={() => setOpen(open === a.key ? '' : a.key)}>
+                  {a.title} <i>{open === a.key ? '–' : '+'}</i>
                 </button>
-                {open === a.key && <div className="acc__body"><p>{a.body(p)}</p></div>}
+                <AnimatePresence initial={false}>
+                  {open === a.key && (
+                    <motion.div
+                      className="acc__body"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: [0.22, 0.7, 0.2, 1] }}
+                    >
+                      <p>{a.body(p)}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))}
           </div>
-
-          <aside className="pdp2__aside">
-            <div className="pdp2__rate">
-              <Stars value={p.rating} />
-              <b className="num">{p.rating}</b>
-              <span>{p.reviews.toLocaleString('en-IN')} reviews</span>
-            </div>
-            <p>“{reviews[0].text}”</p>
-            <span className="pdp2__who">{reviews[0].name} — verified buyer</span>
-          </aside>
         </div>
+      </div>
 
-        <section className="pdp2__rel">
+      {/* reviews */}
+      <section className="sec sec--tight">
+        <Reveal>
           <div className="sec-head">
             <div>
-              <h2>You may also like</h2>
-              <p>Picked from the same world</p>
+              <p className="label label--maroon">Verified reviews</p>
+              <h2>{p.rating} average · {p.reviews.toLocaleString('en-IN')} reviews</h2>
             </div>
-            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
           </div>
-          <div className="pgrid pgrid--big">
-            {related.map((r, i) => <ProductCard key={r.id} product={r} index={i} />)}
+        </Reveal>
+        <div className="rgrid">
+          {reviews.map((r, i) => (
+            <Reveal key={r.name} delay={i * 0.06}>
+              <div className="review">
+                <Stars value={r.rating} size={12} />
+                <p>“{r.text}”</p>
+                <footer>{r.name} · {r.city}</footer>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* related */}
+      <section className="sec">
+        <Reveal>
+          <div className="sec-head">
+            <div>
+              <p className="label label--maroon">You may also like</p>
+              <h2>Pairs well with this</h2>
+            </div>
+            <Link className="link-arrow" to="/shop">Shop all <Icon.arrow /></Link>
           </div>
-        </section>
-      </div>
+        </Reveal>
+        <div className="pgrid">
+          {related.map((r, i) => (
+            <ProductCard key={r.id} product={r} index={i} />
+          ))}
+        </div>
+      </section>
+
+      <AnimatePresence>
+        {showBar && (
+          <motion.div
+            className="stickybuy"
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+          >
+            <div className="container stickybuy__in">
+              <div>
+                <b>{p.name}</b>
+                <span className="num" style={{ display: 'block' }}>{money(p.price)}</span>
+              </div>
+              <button className="btn" onClick={() => add(p.id, qty, chosenSize, chosenShade)}>
+                <span>Add to bag</span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
