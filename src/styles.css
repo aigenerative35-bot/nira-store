@@ -2377,3 +2377,39 @@ img, video, svg, iframe { max-width: 100%; }
 @media (max-width: 640px) {
   .pgrid--big .tag { top: 9px; left: 10px; font-size: 9px; }
 }
+
+/* ============================================================
+   Exact card size — 154.517 mm × 195.792 mm (print spec)
+   1 card = 154.517mm wide, 195.792mm tall. On screens narrower
+   than 4 × that, it scales down but keeps the exact ratio.
+   ============================================================ */
+:root {
+  --card-w: 154.517mm;
+  --card-h: 195.792mm;
+  --card-ratio: 154.517 / 195.792;
+}
+
+.pgrid--big {
+  grid-template-columns: repeat(4, minmax(0, var(--card-w)));
+  justify-content: space-between;
+  column-gap: clamp(8px, 1.2vw, 14px);
+}
+
+.pgrid--big .pcard__media {
+  width: 100%;
+  aspect-ratio: var(--card-ratio);
+  height: auto;
+  max-height: var(--card-h);
+}
+
+/* on very wide screens the cards hit the exact physical size */
+@media (min-width: 2500px) {
+  .pgrid--big { grid-template-columns: repeat(4, var(--card-w)); }
+  .pgrid--big .pcard__media { width: var(--card-w); height: var(--card-h); }
+}
+
+/* print: exact millimetres */
+@media print {
+  .pgrid--big { grid-template-columns: repeat(4, var(--card-w)); gap: 6mm; }
+  .pgrid--big .pcard__media { width: var(--card-w) !important; height: var(--card-h) !important; }
+}
