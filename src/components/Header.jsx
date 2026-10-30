@@ -56,7 +56,6 @@ export default function Header() {
             <Link to="/contact">Help centre</Link>
             <Link to="/offers">Offers</Link>
             <Link to="/account">Track order</Link>
-            <Link to="/admin">Admin</Link>
             <Link to="/about">Our story</Link>
             <span>IN / INR</span>
           </div>
