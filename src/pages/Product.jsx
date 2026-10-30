@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Icon, Qty, Stars } from '../ui'
 import ProductCard from '../components/ProductCard'
 import SocialBar from '../components/SocialBar'
-import Aplus from '../components/Aplus'
+import Aplus, { DEFAULT_A } from '../components/Aplus'
 import { useShop } from '../store'
 import { asset, getProduct, money, products, reviews } from '../data'
 
@@ -34,6 +34,14 @@ export default function Product() {
   const [open, setOpen] = useState('desc')
   const [pin, setPin] = useState('')
   const [pinMsg, setPinMsg] = useState({ text: '', ok: false })
+  const [aplus] = useState(() => {
+    try {
+      const v = JSON.parse(localStorage.getItem('nira_aplus_v1'))
+      return Array.isArray(v) ? v : DEFAULT_A
+    } catch {
+      return DEFAULT_A
+    }
+  })
 
   useEffect(() => {
     setQty(1); setSize(null); setShade(null); setIdx(0); setOpen('desc'); setPinMsg({ text: '', ok: false })
@@ -200,7 +208,7 @@ export default function Product() {
           </aside>
         </div>
 
-        <Aplus p={p} />
+        <Aplus p={p} enabled={aplus} />
 
         <section className="pdp2__rel">
           <div className="sec-head">
