@@ -2597,3 +2597,19 @@ img, video, svg, iframe { max-width: 100%; }
 
 /* PDP breadcrumb + schema helper */
 .pdp2 .crumbs { padding: 12px 16px 0; }
+
+/* stock states */
+.tag--out { color: #b3261e !important; }
+.pcard__off { font-size: 11px; color: #8a8a8a; }
+.pdp2__add:disabled { background: #9a9a9a; cursor: not-allowed; }
+.pdp2__stock { font-size: 11px; color: #b26a00; margin-top: -4px; }
+
+/* recently viewed rail */
+.viewed { padding: clamp(20px, 3vw, 40px) 0; border-top: 1px solid #ececec; }
+.viewed h2 { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #8ba3bd; margin-bottom: 14px; }
+.viewed__rail { display: grid; grid-auto-flow: column; grid-auto-columns: 140px; gap: 12px; overflow-x: auto; scrollbar-width: none; }
+.viewed__rail::-webkit-scrollbar { display: none; }
+.viewed__item { display: grid; gap: 6px; }
+.viewed__item img { width: 100%; aspect-ratio: 154.517 / 195.792; object-fit: cover; background: #f5f5f5; }
+.viewed__item b { font-size: 12px; color: #16283c; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.viewed__item span { font-size: 11.5px; color: #8a8a8a; }
