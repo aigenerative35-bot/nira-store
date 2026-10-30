@@ -34,6 +34,9 @@ export default function Product() {
   const [open, setOpen] = useState('desc')
   const [pin, setPin] = useState('')
   const [pinMsg, setPinMsg] = useState({ text: '', ok: false })
+  const [acfg] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('nira_aplus_cfg_v1')) || {} } catch { return {} }
+  })
   const [aplus] = useState(() => {
     try {
       const v = JSON.parse(localStorage.getItem('nira_aplus_v2') || localStorage.getItem('nira_aplus_v1'))
@@ -211,7 +214,7 @@ export default function Product() {
           </aside>
         </div>
 
-        <Aplus p={p} enabled={aplus} />
+        <Aplus p={p} enabled={aplus} cfg={acfg} />
 
         <section className="pdp2__rel">
           <div className="sec-head">
