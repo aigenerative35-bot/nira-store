@@ -2132,3 +2132,108 @@ img, video { content-visibility: auto; }
   .bs-wide-item { min-height: 150px; }
   .hdr__acts span:not(.badge) { display: none; }
 }
+
+/* ============================================================
+   PDP — smaller buy card (so the film reads)
+   ============================================================ */
+.pdp2__card {
+  width: min(352px, 32%);
+  padding: 18px 20px;
+  gap: 11px;
+  border-radius: 8px;
+}
+.pdp2__row h1 { font-size: 13.5px; }
+.pdp2__row span { font-size: 13px; }
+.pdp2__vat { font-size: 10.5px; }
+.pdp2__opt { gap: 6px; }
+.pdp2__opt-h { font-size: 11px; }
+.pdp2__swatches button { width: 22px; height: 22px; }
+.pdp2__sizes button { min-width: 36px; height: 30px; font-size: 11px; }
+.pdp2__pin input { height: 34px; font-size: 12px; }
+.pdp2__pin button { font-size: 10px; padding: 0 10px; }
+.pdp2__add { height: 42px; font-size: 10px; letter-spacing: 0.2em; }
+.pdp2__social { padding-top: 8px; }
+.pdp2__social .social { gap: 12px; }
+.pdp2__social .social__btn { font-size: 10px; }
+
+@media (max-width: 1180px) {
+  .pdp2__card { width: min(330px, 44%); }
+}
+@media (max-width: 1000px) {
+  .pdp2__card { width: auto; }
+}
+
+/* ============================================================
+   A+ content modules (Amazon A+ style)
+   ============================================================ */
+.aplus { display: grid; gap: clamp(26px, 4vw, 60px); padding: clamp(28px, 4vw, 64px) 0; border-top: 1px solid #ececec; }
+
+/* 1 banner */
+.aplus__banner { position: relative; overflow: hidden; min-height: clamp(260px, 34vw, 460px); display: grid; place-items: center; }
+.aplus__banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.aplus__banner::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8, 16, 26, 0.55), rgba(8, 16, 26, 0.72));
+}
+.aplus__banner-in { position: relative; z-index: 2; text-align: center; color: #fff; padding: 30px 20px; }
+.aplus__banner-in .label { color: rgba(255, 255, 255, 0.65); }
+.aplus__banner-in h2 {
+  font-size: clamp(22px, 3.4vw, 44px); line-height: 1.12; letter-spacing: -0.02em;
+  margin: 14px 0 12px; font-weight: 500;
+}
+.aplus__banner-in span { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
+
+/* 2 split */
+.aplus__split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 3.4vw, 54px); align-items: center; }
+.aplus__ph { aspect-ratio: 4 / 3.2; overflow: hidden; background: #f5f5f5; }
+.aplus__ph img { width: 100%; height: 100%; object-fit: cover; }
+.aplus__copy h3 { font-size: clamp(19px, 2.4vw, 30px); line-height: 1.16; color: #16283c; margin: 12px 0 12px; letter-spacing: -0.01em; }
+.aplus__copy > p { font-size: 13.5px; color: #5b7086; max-width: 48ch; }
+.aplus__list { margin-top: 18px; display: grid; gap: 0; }
+.aplus__list li {
+  display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: baseline;
+  padding: 12px 0; border-top: 1px solid #ececec; list-style: none;
+}
+.aplus__list b { font-size: 11px; letter-spacing: 0.1em; color: #b0bcc9; }
+.aplus__list span { font-size: 13px; color: #33475c; }
+
+/* 3 tiles */
+.aplus__tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #ececec; border: 1px solid #ececec; }
+.aplus__tile { background: #fff; padding: clamp(16px, 2.4vw, 28px); }
+.aplus__tile span { font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #8ba3bd; }
+.aplus__tile h4 { font-size: 15px; color: #16283c; margin: 10px 0 8px; }
+.aplus__tile p { font-size: 12.5px; color: #6b7f95; line-height: 1.65; }
+
+/* 4 specs */
+.aplus__specs { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(18px, 3.4vw, 54px); align-items: center; }
+.aplus__specs-ph { aspect-ratio: 4 / 4.4; overflow: hidden; background: #f5f5f5; }
+.aplus__specs-ph img { width: 100%; height: 100%; object-fit: cover; }
+.aplus__specs-body h3 { font-size: clamp(17px, 2vw, 24px); color: #16283c; margin-bottom: 14px; }
+.aplus__specs-body dl { display: grid; }
+.aplus__specs-body dl > div {
+  display: grid; grid-template-columns: 150px 1fr; gap: 12px;
+  padding: 11px 0; border-top: 1px solid #ececec;
+}
+.aplus__specs-body dt { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #8ba3bd; }
+.aplus__specs-body dd { font-size: 13px; color: #33475c; }
+
+/* 5 quote */
+.aplus__quote { text-align: center; padding: clamp(26px, 4vw, 60px) clamp(16px, 4vw, 60px); background: #fafafa; border: 1px solid #ececec; display: grid; gap: 14px; justify-items: center; }
+.aplus__quote p { font-size: clamp(18px, 2.6vw, 30px); line-height: 1.35; color: #16283c; max-width: 26ch; letter-spacing: -0.01em; }
+.aplus__quote span { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8ba3bd; }
+.aplus__quote .btn--ghost { border-color: #16283c; color: #16283c; }
+.aplus__quote .btn--ghost:hover { background: #16283c; color: #fff; }
+
+@media (max-width: 900px) {
+  .aplus__split, .aplus__specs { grid-template-columns: 1fr; }
+  .aplus__tiles { grid-template-columns: 1fr; }
+  .aplus__specs-body dl > div { grid-template-columns: 110px 1fr; }
+}
+
+/* buy card — a touch smaller so the film breathes */
+.pdp2__card { width: min(320px, 27%); padding: 16px 18px; gap: 10px; }
+.pdp2__row h1 { font-size: 13px; }
+.pdp2__row span { font-size: 12.5px; }
+.pdp2__add { height: 40px; }
+@media (max-width: 1180px) { .pdp2__card { width: min(310px, 40%); } }
+@media (max-width: 1000px) { .pdp2__card { width: auto; } }
