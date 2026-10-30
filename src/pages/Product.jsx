@@ -36,11 +36,14 @@ export default function Product() {
   const [pinMsg, setPinMsg] = useState({ text: '', ok: false })
   const [aplus] = useState(() => {
     try {
-      const v = JSON.parse(localStorage.getItem('nira_aplus_v1'))
-      return Array.isArray(v) ? v : DEFAULT_A
-    } catch {
-      return DEFAULT_A
-    }
+      const v = JSON.parse(localStorage.getItem('nira_aplus_v2') || localStorage.getItem('nira_aplus_v1'))
+      if (Array.isArray(v)) return v
+      if (v && typeof v === 'object') {
+        const cat = (new URLSearchParams(window.location.search).get('') || '')
+        return v[p.cat] || v.all || DEFAULT_A
+      }
+    } catch {}
+    return DEFAULT_A
   })
 
   useEffect(() => {
