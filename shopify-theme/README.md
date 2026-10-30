@@ -1,39 +1,42 @@
-# Shopify theme — Nira v1.1.0
-
-Design + **integration hooks** for courier tracking, payments, GST invoices,
-analytics and affiliate.
+# Shopify theme — Nira v1.2.0
 
 ## Install
-Shopify admin → Online Store → Themes → **Add theme → Upload zip** →
-`nira-shopify-theme.zip` → Publish → Customize.
+Online Store → Themes → Add theme → Upload zip → Publish → Customize.
 
-## Templates (21) · Sections (29) · Layouts (2) · Snippets (4)
-Adds `page.track` (Track order) on top of v1.0.0.
+## App compatibility — what works out of the box
 
-## Integrations — what the theme does vs what an app does
+### 1. Apps that inject scripts (`content_for_header`) — 100% work
+The layout includes `{{ content_for_header }}`, so any app that adds a ScriptTag
+works with zero theme edits: Klaviyo, Judge.me, Yotpo, Meta/Google pixels,
+Hotjar, Microsoft Clarity, Privy, Gorgias, Tidio, Rebuy, Searchanise…
 
-| Need | In the theme | Where to install the app |
-|---|---|---|
-| **Courier tracking** | `snippets/tracking.liquid` renders `order.fulfillments` (company, AWB, tracking URL) on the order page and account table; `/pages/track` page with AWB lookup | Shiprocket / Delhivery / iThink — add tracking in Shopify admin, theme displays it |
-| **Razorpay / payments** | Payment icons in the footer (`shop.enabled_payment_types`); checkout is Shopify's | Shopify admin → Settings → Payments → Razorpay (India) |
-| **GST invoice** | GSTIN in the footer, optional GST-number field in the cart (`cart.attributes`) | Any GST invoice app (e.g. GstInvoice, Envoice) reads the attribute |
-| **Analytics** | `snippets/analytics.liquid` — GA4 (+view_item / view_item_list events), Meta Pixel, Microsoft Clarity, custom head scripts | Theme settings → *Analytics & pixels* |
-| **Affiliate** | `?ref=CODE` captured to localStorage and attached to cart as `attributes[ref]` | UpPromote / Refersion / Affiliate+ read the cart attribute |
+### 2. App embeds & app blocks — supported
+- **App embeds** render automatically on any theme with `content_for_header`.
+- **App blocks** (`"type": "@app"`) are enabled in: header, footer, product page,
+  A+ content — so merchants can drop widgets from the theme editor.
 
-## Theme settings (6 groups)
-theme_info · Theme settings · Product card · **Analytics & pixels** ·
-**Store & tax** (GSTIN, legal name, support phone, GST field toggle) ·
-**Affiliate** (param name, on/off)
+### 3. Shopify Search & Discovery (filters) — supported
+`snippets/facets.liquid` renders `collection.filters` (list + price range,
+active-filter pills, apply/clear). Install the app, add filters, they appear.
 
-## App blocks
-`"type": "@app"` in header, footer, product page and A+ content — apps can inject
-widgets from the theme editor.
+### 4. Cart / checkout apps
+AJAX cart drawer uses `/cart/add.js`, `/cart.js`, `/cart/change.js` — the same
+endpoints bundle apps, upsell apps and free-gift apps hook into.
 
-## Still app-side (cannot live in a theme)
-Payment capture, courier API calls, invoice PDF generation, affiliate payouts and
-tax filing all run on the app's servers. The theme provides the display and the
-data hooks above.
+### 5. Apps that need a manual snippet
+Some apps ask you to paste code into `theme.liquid` or a product template.
+Use **Theme settings → Analytics & pixels → Custom head scripts** for head code,
+or add a `@app` block in the editor for body widgets. No file editing needed.
+
+## What a theme cannot do
+Payment capture (Razorpay), courier API calls (Shiprocket), invoice PDFs,
+affiliate payouts, GST filing — those run on the app's servers. The theme
+provides display + data hooks (tracking, GSTIN, cart attributes, ref codes).
+
+## Inventory
+21 templates · 29 sections · 2 layouts · 6 snippets · theme.css · theme.js
+config: theme_info + 5 setting groups (theme, card, analytics, tax, affiliate)
 
 ## Honest notes
-- `theme-check` CLI cannot run in this environment — upload and open Customize.
+- `theme-check` CLI cannot run here; upload and open Customize to see warnings.
 - No demo images ship with the theme.
