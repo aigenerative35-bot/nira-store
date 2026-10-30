@@ -2307,3 +2307,43 @@ img, video, svg, iframe { max-width: 100%; }
 }
 .pgrid--big .pcard__info { gap: 4px; }
 .pgrid--big .pcard__row { min-height: 15px; }
+
+/* ============================================================
+   Herrera-exact card: plain tag, one meta line, price below
+   ============================================================ */
+.pgrid--big .tag {
+  position: absolute; top: 10px; left: 12px; z-index: 3;
+  background: none !important; color: #3a3a3a; border: 0; border-radius: 0; padding: 0;
+  font-size: 9.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+  box-shadow: none;
+}
+.pgrid--big .pcard__media { background: #fff; }
+.pgrid--big .pcard__media img { object-fit: contain; padding: 3%; }
+.pgrid--big .pcard__info {
+  display: block; padding: 12px 2px 0; text-align: left;
+}
+.pgrid--big .pcard__top {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  margin: 0;
+}
+.pgrid--big .pcard__name {
+  font-size: 13px; font-weight: 400; color: #1c1c1c; letter-spacing: 0;
+  line-height: 1.3; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pgrid--big .pcard__cat {
+  font-size: 11px; color: #8f8f8f; letter-spacing: 0; text-transform: none;
+  white-space: nowrap; flex: 0 0 auto;
+}
+.pgrid--big .pcard__row { margin-top: 7px; min-height: 0; }
+.pgrid--big .pcard__price {
+  font-size: 12px; color: #444; font-weight: 400; letter-spacing: 0.01em;
+}
+.pgrid--big .pcard__off, .pgrid--big .pcard__rate, .pgrid--big .pcard__reviews { display: none; }
+
+/* heart: only on hover, like the reference */
+.pgrid--big .wish {
+  opacity: 0 !important; top: 8px; right: 8px; width: 26px; height: 26px;
+  background: rgba(255, 255, 255, 0.9); border: 1px solid #ededed; box-shadow: none;
+  transition: opacity 0.2s;
+}
+.pgrid--big .pcard:hover .wish { opacity: 1 !important; }
