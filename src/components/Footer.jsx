@@ -9,9 +9,16 @@ export default function Footer() {
 
   const submit = (e) => {
     e.preventDefault()
-    if (!/^\S+@\S+\.\S+$/.test(email)) return toast('Enter a valid email')
-    toast("You're in — check your inbox for the code")
-    setEmail('')
+    const el = e.target.querySelector('input[type=email]')
+    const val = (el?.value || '').trim()
+    if (!/^\S+@\S+\.\S+$/.test(val)) return
+    try {
+      const all = JSON.parse(localStorage.getItem('nira_subs_v1') || '[]')
+      if (!all.includes(val)) all.push(val)
+      localStorage.setItem('nira_subs_v1', JSON.stringify(all.slice(0, 200)))
+    } catch {}
+    el.value = ''
+    e.target.classList.add('nform--done')
   }
 
   return (
@@ -56,7 +63,12 @@ export default function Footer() {
           <div>
             <h5>Company</h5>
             <ul>
-              <li><Link to="/about">The house</Link></li>
+              <li><Link to="/about">The house</Link>
+            <Link to="/journal">The journal</Link>
+            <Link to="/faq">FAQ</Link>
+            <Link to="/shipping">Shipping</Link>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/terms">Terms</Link></li>
               <li><Link to="/lookbook">Lookbook</Link></li>
               <li><Link to="/journal">The journal</Link></li>
               <li><Link to="/stores">Stores</Link></li>
