@@ -40,7 +40,7 @@ export default function Cart() {
                 transition={{ delay: i * 0.04, duration: 0.4 }}
               >
                 <Link className="crow__ph" to={`/product/${l.id}`}>
-                  <img src={l.product.img} alt="" />
+                  <img src={l.product.img} alt="Nira — product imagery" />
                 </Link>
                 <div>
                   <Link to={`/product/${l.id}`}><h4>{l.product.name}</h4></Link>
