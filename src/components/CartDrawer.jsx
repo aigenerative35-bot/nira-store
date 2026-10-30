@@ -51,7 +51,7 @@ export default function CartDrawer() {
                 cart.map((l) => (
                   <div className="dline" key={`${l.id}-${l.size}-${l.shade}`}>
                     <Link className="dline__ph" to={`/product/${l.id}`} onClick={() => setDrawer(false)}>
-                      <img src={l.product.img} alt="" />
+                      <img src={l.product.img} alt="Nira — product imagery" />
                     </Link>
                     <div>
                       <h5>{l.product.name}</h5>
