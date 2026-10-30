@@ -122,7 +122,7 @@ export default function Shop() {
               <option value="3.5">3.5 &amp; up</option>
             </select>
           </label>
-          {(maxPrice || minRating) && (
+          {(maxPrice > 0 || minRating > 0) && (
             <button className="chip" onClick={() => { const n = new URLSearchParams(params); n.delete('max'); n.delete('rating'); setParams(n) }}>
               Clear filters ✕
             </button>
