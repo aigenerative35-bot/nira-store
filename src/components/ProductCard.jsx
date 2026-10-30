@@ -14,7 +14,7 @@ export default function ProductCard({ product: p, index = 0 }) {
       <div className="pcard__media">
         <Link to={`/product/${p.id}`} aria-label={p.name}>
           <img className="main" src={p.img} alt={p.name} loading="lazy" />
-          <img className="alt" src={p.img2} alt="" loading="lazy" />
+          <img className="alt" src={p.img2} alt="Nira — product imagery" loading="lazy" />
         </Link>
         {p.tag && <span className="tag">{p.tag}</span>}
         <button className={`wish ${liked ? 'on' : ''}`} onClick={() => toggleWish(p.id)} aria-label="Save to wishlist">
