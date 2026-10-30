@@ -15,6 +15,8 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Account from './pages/Account'
+import Offers from './pages/Offers'
 import NotFound from './pages/NotFound'
 import { useShop } from './store'
 
@@ -51,6 +53,8 @@ export default function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/offers" element={<Offers />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
