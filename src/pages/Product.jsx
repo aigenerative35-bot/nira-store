@@ -37,12 +37,23 @@ export default function Product() {
   const [guide, setGuide] = useState(false)
   const [sticky, setSticky] = useState(false)
   const [myReview, setMyReview] = useState({ text: '', rating: 5, saved: false })
+  const [viewed, setViewed] = useState([])
 
   useEffect(() => {
     const onScroll = () => setSticky(window.scrollY > 520)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    if (!p) return
+    try {
+      const all = JSON.parse(localStorage.getItem('nira_viewed_v1') || '[]')
+      const next = [p.id, ...all.filter((x) => x !== p.id)].slice(0, 8)
+      localStorage.setItem('nira_viewed_v1', JSON.stringify(next))
+      setViewed(next.filter((x) => x !== p.id))
+    } catch {}
+  }, [p])
 
   useEffect(() => {
     setQty(1); setSize(null); setShade(null); setIdx(0); setOpen('desc'); setPinMsg({ text: '', ok: false })
@@ -188,9 +199,12 @@ export default function Product() {
           </div>
           {pinMsg.text && <p className={`pdp2__pinmsg ${pinMsg.ok ? 'ok' : ''}`}>{pinMsg.text}</p>}
 
-          <button className="pdp2__add" onClick={buy}>
-            Add to bag
+          <button className="pdp2__add" onClick={buy} disabled={p.stock === 0}>
+            {p.stock === 0 ? 'Sold out' : 'Add to bag'}
           </button>
+          {p.stock > 0 && p.stock <= 5 && (
+            <p className="pdp2__stock">Only {p.stock} left in this batch</p>
+          )}
           <div className="pdp2__social">
             <SocialBar product={p} compact />
           </div>
@@ -217,7 +231,7 @@ export default function Product() {
       <div className={`stickybar ${sticky ? 'on' : ''}`}>
         <img src={p.img} alt={p.name} />
         <div><b>{p.name}</b><span className="num">{money(p.price)}</span></div>
-        <button onClick={buy}>Add to bag</button>
+        <button onClick={buy} disabled={p.stock === 0}>{p.stock === 0 ? 'Sold out' : 'Add to bag'}</button>
       </div>
 
       {/* details */}
@@ -283,6 +297,25 @@ export default function Product() {
         </div>
 
         <Aplus p={p} />
+
+        {viewed.length > 0 && (
+          <section className="viewed">
+            <h2>Recently viewed</h2>
+            <div className="viewed__rail">
+              {viewed.map((id) => {
+                const it = products.find((x) => x.id === id)
+                if (!it) return null
+                return (
+                  <Link key={id} to={`/product/${id}`} className="viewed__item">
+                    <img src={it.img} alt={it.name} loading="lazy" />
+                    <b>{it.name}</b>
+                    <span className="num">{money(it.price)}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          </section>
+        )}
 
         <section className="pdp2__rel">
           <div className="sec-head">
