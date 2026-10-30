@@ -114,7 +114,7 @@ export default function Home() {
           <div className="hero-side panel-r">
             {PROMOS.map((p) => (
               <Link className="hpromo" to="/shop" key={p.b}>
-                <img src={p.img} alt="" />
+                <img src={p.img} alt="Nira — product imagery" />
                 <div className="hpromo__in"><b>{p.b}</b><span>{p.s}</span></div>
               </Link>
             ))}
