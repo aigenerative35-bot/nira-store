@@ -25,7 +25,7 @@ const ACC = [
 
 export default function Product() {
   const { id } = useParams()
-  const p = getProduct(id)
+  const p = getProduct(id) || products[0]
   const { add, wish, toggleWish, toast, setDrawer } = useShop()
   const [qty, setQty] = useState(1)
   const [size, setSize] = useState(null)
