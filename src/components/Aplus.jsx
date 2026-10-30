@@ -10,7 +10,7 @@ export default function Aplus({ p }) {
     <div className="aplus">
       {/* 01 — full-bleed campaign banner */}
       <section className="ap ap--banner">
-        <img src={IMG('saree-jewel')} alt="" loading="lazy" />
+        <img src={IMG('saree-jewel')} alt="Nira — product imagery" loading="lazy" />
         <div className="ap__bannerIn">
           <p className="label">The house</p>
           <h2>Made in small batches,<br />finished by hand.</h2>
@@ -20,7 +20,7 @@ export default function Aplus({ p }) {
 
       {/* 02 — image + copy with numbered highlights */}
       <section className="ap ap--split">
-        <div className="ap__ph"><img src={p.img2} alt="" loading="lazy" /></div>
+        <div className="ap__ph"><img src={p.img2} alt="Nira — product imagery" loading="lazy" /></div>
         <div className="ap__copy">
           <p className="label label--maroon">Why this piece</p>
           <h3>Built for daily use, not for the shelf.</h3>
@@ -49,7 +49,7 @@ export default function Aplus({ p }) {
 
       {/* 04 — spec sheet with portrait image */}
       <section className="ap ap--specs">
-        <div className="ap__ph"><img src={p.img} alt="" loading="lazy" /></div>
+        <div className="ap__ph"><img src={p.img} alt="Nira — product imagery" loading="lazy" /></div>
         <div>
           <h3>The details</h3>
           <dl>
