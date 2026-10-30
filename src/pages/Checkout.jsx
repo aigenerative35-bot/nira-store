@@ -174,7 +174,7 @@ export default function Checkout() {
               {cart.map((l) => (
                 <div className="co-item" key={`${l.id}-${l.size}-${l.shade}`}>
                   <Link className="co-item__ph" to={`/product/${l.id}`}>
-                    <img src={l.product.img} alt="" />
+                    <img src={l.product.img} alt="Nira — product imagery" />
                   </Link>
                   <div>
                     <h4>{l.product.name}</h4>
