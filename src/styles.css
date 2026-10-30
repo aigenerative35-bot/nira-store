@@ -2436,3 +2436,7 @@ img, video { content-visibility: auto; }
   text-transform: uppercase; color: #b0b0b0;
 }
 .admin__item { cursor: grab; }
+
+/* admin link in the footer */
+.ftr__admin { border-bottom: 1px solid rgba(255, 255, 255, 0.45); color: #fff !important; }
+.ftr__admin:hover { border-color: #fff; }
