@@ -34,6 +34,15 @@ export default function Product() {
   const [open, setOpen] = useState('desc')
   const [pin, setPin] = useState('')
   const [pinMsg, setPinMsg] = useState({ text: '', ok: false })
+  const [guide, setGuide] = useState(false)
+  const [sticky, setSticky] = useState(false)
+  const [myReview, setMyReview] = useState({ text: '', rating: 5, saved: false })
+
+  useEffect(() => {
+    const onScroll = () => setSticky(window.scrollY > 520)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     setQty(1); setSize(null); setShade(null); setIdx(0); setOpen('desc'); setPinMsg({ text: '', ok: false })
@@ -100,7 +109,7 @@ export default function Product() {
         <div className="pdp2__thumbs">
           {gallery.map((g, i) => (
             <button key={g + i} className={i === idx ? 'on' : ''} onClick={() => setIdx(i)} aria-label={`Image ${i + 1}`}>
-              <img src={g} alt="" />
+              <img src={g} alt="Nira — product imagery" />
             </button>
           ))}
         </div>
@@ -141,7 +150,7 @@ export default function Product() {
             <div className="pdp2__opt">
               <div className="pdp2__opt-h">
                 <span>Size</span>
-                <em>Size guide</em>
+                <button className="pdp2__guide" onClick={() => setGuide(true)}>Size guide</button>
               </div>
               <div className="pdp2__sizes">
                 {p.sizes.map((s) => (
@@ -174,6 +183,29 @@ export default function Product() {
         </div>
       </div>
 
+      {guide && (
+        <div className="modal" onClick={() => setGuide(false)}>
+          <div className="modal__card" onClick={(e) => e.stopPropagation()}>
+            <header><h3>Size guide</h3><button onClick={() => setGuide(false)}>✕</button></header>
+            <table>
+              <thead><tr><th>Size</th><th>Chest (in)</th><th>Waist (in)</th><th>Length (in)</th></tr></thead>
+              <tbody>
+                {[['XS', 32, 26, 38], ['S', 34, 28, 39], ['M', 36, 30, 40], ['L', 38, 32, 41], ['XL', 40, 34, 42], ['Free size', '—', '—', '—']].map((r) => (
+                  <tr key={r[0]}>{r.map((c, i) => <td key={i}>{c}</td>)}</tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="modal__note">Measured flat, garment to garment. Between sizes? Take the larger — handloom settles after the first wash.</p>
+          </div>
+        </div>
+      )}
+
+      <div className={`stickybar ${sticky ? 'on' : ''}`}>
+        <img src={p.img} alt={p.name} />
+        <div><b>{p.name}</b><span className="num">{money(p.price)}</span></div>
+        <button onClick={buy}>Add to bag</button>
+      </div>
+
       {/* details */}
       <div className="container">
         <div className="pdp2__details">
@@ -197,6 +229,42 @@ export default function Product() {
             </div>
             <p>“{reviews[0].text}”</p>
             <span className="pdp2__who">{reviews[0].name} — verified buyer</span>
+
+            <div className="rform">
+              <b>Write a review</b>
+              {myReview.saved ? (
+                <p className="rform__ok">Thanks — your review is saved on this device.</p>
+              ) : (
+                <>
+                  <div className="rform__stars">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button key={n} className={myReview.rating >= n ? 'on' : ''} onClick={() => setMyReview({ ...myReview, rating: n })} aria-label={`${n} stars`}>★</button>
+                    ))}
+                  </div>
+                  <textarea
+                    rows={3}
+                    placeholder="How did it work for you?"
+                    value={myReview.text}
+                    onChange={(e) => setMyReview({ ...myReview, text: e.target.value })}
+                  />
+                  <button
+                    className="rform__btn"
+                    onClick={() => {
+                      if (myReview.text.trim().length < 8) return toast('Write a little more')
+                      try {
+                        const all = JSON.parse(localStorage.getItem('nira_reviews_v1') || '[]')
+                        all.unshift({ id: p.id, ...myReview, at: Date.now() })
+                        localStorage.setItem('nira_reviews_v1', JSON.stringify(all.slice(0, 50)))
+                      } catch {}
+                      setMyReview({ ...myReview, saved: true })
+                      toast('Review saved')
+                    }}
+                  >
+                    Post review
+                  </button>
+                </>
+              )}
+            </div>
           </aside>
         </div>
 
