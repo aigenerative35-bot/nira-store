@@ -100,6 +100,9 @@ export default function Header() {
           </form>
 
           <div className="hdr__acts">
+            <button className="hact hdr__searchbtn" onClick={() => setSearch(true)} aria-label="Search">
+              <Icon.search /><span>Search</span>
+            </button>
             <Link className="hact" to="/contact"><Icon.user /><span>Account</span></Link>
             <Link className="hact" to="/shop?wish=1">
               <Icon.heart /><span>Wishlist</span>
@@ -116,6 +119,9 @@ export default function Header() {
       <AnimatePresence>
         {mnav && (
           <motion.nav className="mnav" initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', stiffness: 320, damping: 34 }}>
+          <button className="mnav__search" onClick={() => { setMnav(false); setSearch(true) }}>
+            <Icon.search /> Search products
+          </button>
             <div className="mnav__h">
               <span className="logo"><span className="logo__mark" style={{ width: 26, height: 26, fontSize: 13 }}>N</span><span className="logo__txt" style={{ color: '#fff', fontSize: 15 }}>Nira</span></span>
               <button className="icon-btn" onClick={() => setMnav(false)} aria-label="Close"><Icon.close /></button>
