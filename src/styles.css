@@ -2440,3 +2440,80 @@ img, video { content-visibility: auto; }
 /* admin link in the footer */
 .ftr__admin { border-bottom: 1px solid rgba(255, 255, 255, 0.45); color: #fff !important; }
 .ftr__admin:hover { border-color: #fff; }
+
+/* ============================================================
+   Admin v3 — 3 columns + editor
+   ============================================================ */
+.admin__cols {
+  display: grid; grid-template-columns: 1fr 0.72fr 1.05fr;
+  gap: clamp(14px, 2vw, 26px); align-items: start;
+  padding: clamp(16px, 2.4vw, 28px) 0;
+}
+.admin__preview {
+  position: sticky; top: 84px;
+  border: 1px solid #ececec; border-radius: 8px; padding: 12px; background: #fff;
+  max-height: calc(100vh - 110px); overflow-y: auto;
+}
+.admin__preview h2 { font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #8ba3bd; margin-bottom: 10px; }
+.admin__frame { display: grid; gap: 18px; }
+.admin__frame .ap--banner { min-height: 150px; }
+.admin__frame .ap__bannerIn h2 { font-size: 15px; }
+.admin__frame .ap__bannerIn span { font-size: 8px; }
+.admin__frame .ap--split { grid-template-columns: 1fr; gap: 10px; }
+.admin__frame .ap__copy h3 { font-size: 13px; }
+.admin__frame .ap__copy > p { font-size: 11px; }
+.admin__frame .ap--three, .admin__frame .ap--four, .admin__frame .ap--tiles { grid-template-columns: 1fr 1fr; }
+.admin__frame .ap--specs { grid-template-columns: 1fr; }
+.admin__frame .ap__ph { aspect-ratio: 16 / 9; }
+.admin__pv { position: relative; cursor: pointer; }
+.admin__pv:hover { outline: 1px solid #b9cde4; outline-offset: 4px; }
+.admin__pvTag {
+  position: absolute; top: -2px; right: 0; font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #8ba3bd; background: #fff; padding: 2px 6px;
+}
+
+.admin__item { display: grid; grid-template-columns: 18px 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid #e6e6e6; background: #fff; }
+.admin__tick { width: 16px; height: 16px; display: grid; place-items: center; border: 1px solid #d5d5d5; background: #fff; padding: 0; }
+.admin__item.on .admin__tick { background: #0f2a4a; border-color: #0f2a4a; }
+.admin__tick svg { width: 10px; height: 10px; stroke: #fff; fill: none; stroke-width: 3; }
+.admin__name { font-size: 12px; color: #16283c; cursor: pointer; }
+.admin__edit { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #0f2a4a; border: 1px solid #dbe4ef; padding: 3px 7px; background: #f7fafd; }
+.admin__edit:hover { background: #0f2a4a; color: #fff; border-color: #0f2a4a; }
+
+/* editor drawer */
+.admin__editor {
+  position: fixed; right: 0; top: 0; bottom: 0; width: min(680px, 96vw); z-index: 120;
+  background: #fff; border-left: 1px solid #e6e6e6; box-shadow: -30px 0 80px rgba(10, 20, 35, 0.16);
+  display: flex; flex-direction: column; overflow-y: auto;
+}
+.admin__editor header {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 16px 20px; border-bottom: 1px solid #ececec; position: sticky; top: 0; background: #fff; z-index: 2;
+}
+.admin__editor header h3 { font-size: 15px; color: #16283c; margin-top: 4px; }
+.admin__editor header .label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #8ba3bd; }
+.admin__close { width: 30px; height: 30px; border: 1px solid #e3e3e3; display: grid; place-items: center; color: #555; }
+.admin__editorGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 18px 20px 30px; }
+.admin__editorForm { display: grid; gap: 14px; align-content: start; }
+.admin__field { display: grid; gap: 6px; }
+.admin__field > span { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #8ba3bd; }
+.admin__field input, .admin__field textarea {
+  border: 1px solid #e3e3e3; padding: 10px 12px; font-size: 13px; color: #16283c; outline: none; font-family: inherit;
+}
+.admin__field input:focus, .admin__field textarea:focus { border-color: #16283c; }
+.admin__upload { display: grid; gap: 8px; }
+.admin__upload img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #ececec; }
+.admin__uploadEmpty { aspect-ratio: 16/9; display: grid; place-items: center; border: 1px dashed #d8d8d8; color: #b0b0b0; font-size: 11px; }
+.admin__uploadActions { display: flex; gap: 8px; }
+.admin__uploadActions .btn { padding: 8px 14px; font-size: 10px; cursor: pointer; }
+.admin__editorPv .label { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #8ba3bd; display: block; margin-bottom: 8px; }
+.admin__editorPv .admin__frame { border: 1px solid #ececec; border-radius: 8px; padding: 10px; }
+
+@media (max-width: 1280px) {
+  .admin__cols { grid-template-columns: 1fr 0.8fr; }
+  .admin__preview { grid-column: 1 / -1; position: static; max-height: none; }
+}
+@media (max-width: 900px) {
+  .admin__cols { grid-template-columns: 1fr; }
+  .admin__editorGrid { grid-template-columns: 1fr; }
+}
