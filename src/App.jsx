@@ -26,7 +26,30 @@ function ScrollTop() {
   return null
 }
 
+
+function usePageMeta() {
+  const loc = useLocation()
+  useEffect(() => {
+    const map = {
+      '/': ['Nira — beauty & atelier', 'Skincare, handloom and leather, made in small batches in India.'],
+      '/shop': ['Shop the edit — Nira', 'Sixteen pieces across skincare, makeup, body, bags, suits and heels.'],
+      '/cart': ['Your bag — Nira', 'Review your bag and check out.'],
+      '/checkout': ['Checkout — Nira', 'Secure checkout, free delivery above ₹1,499.'],
+      '/about': ['The house — Nira', 'Two co-ops in Bhagalpur, forty-one weavers, one price list.'],
+      '/contact': ['Contact — Nira', 'Questions about an order? Talk to one person, not a queue.']
+    }
+    const [title, desc] = map[loc.pathname] || (loc.pathname.startsWith('/product')
+      ? ['Product — Nira', 'Made in small batches, finished by hand.']
+      : ['Nira — beauty & atelier', 'Skincare, handloom and leather.'])
+    document.title = title
+    let m = document.querySelector('meta[name="description"]')
+    if (!m) { m = document.createElement('meta'); m.setAttribute('name', 'description'); document.head.appendChild(m) }
+    m.setAttribute('content', desc)
+  }, [loc.pathname])
+}
+
 export default function App() {
+  usePageMeta()
   const location = useLocation()
   const { drawer, search, quickView, commentFor } = useShop()
   const { scrollYProgress } = useScroll()
