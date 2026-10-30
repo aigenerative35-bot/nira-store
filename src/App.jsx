@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -49,6 +49,8 @@ export default function App() {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/product" element={<Navigate to="/product/p1" replace />} />
+          <Route path="/p/:id" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
