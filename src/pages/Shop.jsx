@@ -20,6 +20,8 @@ export default function Shop() {
   const q = (params.get('q') || '').toLowerCase().trim()
   const [sort, setSort] = useState(params.get('sort') || 'featured')
   const onlyWish = params.get('wish') === '1'
+  const maxPrice = parseInt(params.get('max') || '0', 10) || 0
+  const minRating = parseFloat(params.get('rating') || '0') || 0
   const PER_PAGE = 10
   const page = Math.max(1, parseInt(params.get('page') || '1', 10) || 1)
 
@@ -27,11 +29,13 @@ export default function Shop() {
     let out = products.filter((p) => cat === 'all' || p.cat === cat)
     if (q) out = out.filter((p) => `${p.name} ${p.catName} ${p.short}`.toLowerCase().includes(q))
     if (onlyWish) out = out.filter((p) => wish.includes(p.id))
+    if (maxPrice) out = out.filter((p) => p.price <= maxPrice)
+    if (minRating) out = out.filter((p) => p.rating >= minRating)
     if (sort === 'low') out = [...out].sort((a, b) => a.price - b.price)
     if (sort === 'high') out = [...out].sort((a, b) => b.price - a.price)
     if (sort === 'rating') out = [...out].sort((a, b) => b.rating - a.rating)
     return out
-  }, [cat, sort, onlyWish, wish, q])
+  }, [cat, sort, onlyWish, wish, q, maxPrice, minRating])
 
   const pageCount = Math.max(1, Math.ceil(list.length / PER_PAGE))
   const current = Math.min(page, pageCount)
@@ -94,6 +98,35 @@ export default function Shop() {
               {c.name}
             </button>
           ))}
+        </div>
+        <div className="filters">
+          <label className="filters__i">
+            <span>Max price</span>
+            <select
+              value={maxPrice || ''}
+              onChange={(e) => { const n = new URLSearchParams(params); if (e.target.value) n.set('max', e.target.value); else n.delete('max'); n.delete('page'); setParams(n) }}
+            >
+              <option value="">Any</option>
+              {[999, 1499, 2499, 3999, 6499].map((v) => <option key={v} value={v}>Under ₹{v.toLocaleString('en-IN')}</option>)}
+            </select>
+          </label>
+          <label className="filters__i">
+            <span>Rating</span>
+            <select
+              value={minRating || ''}
+              onChange={(e) => { const n = new URLSearchParams(params); if (e.target.value) n.set('rating', e.target.value); else n.delete('rating'); n.delete('page'); setParams(n) }}
+            >
+              <option value="">Any</option>
+              <option value="4.5">4.5 &amp; up</option>
+              <option value="4">4.0 &amp; up</option>
+              <option value="3.5">3.5 &amp; up</option>
+            </select>
+          </label>
+          {(maxPrice || minRating) && (
+            <button className="chip" onClick={() => { const n = new URLSearchParams(params); n.delete('max'); n.delete('rating'); setParams(n) }}>
+              Clear filters ✕
+            </button>
+          )}
         </div>
         <div className="sortbar">
           {q && (
