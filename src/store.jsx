@@ -63,6 +63,8 @@ export function ShopProvider({ children }) {
   }
 
   const add = (id, qty = 1, size, shade) => {
+    const prod = products.find((x) => x.id === id)
+    if (prod && prod.stock === 0) { toast('That piece is sold out'); return }
     const p = getProduct(id)
     if (!p) return
     const s = size ?? p.sizes?.[0] ?? ''
@@ -133,20 +135,17 @@ export function ShopProvider({ children }) {
     }
   }
 
-  const applyPromo = (code) => {
-    const c = (code || '').trim().toUpperCase()
-    if (c === PROMO_CODE) {
-      setPromo(c)
-      toast(`${c} applied — 10% off`)
-      return true
-    }
-    if (!c) {
-      setPromo('')
-      return true
-    }
-    toast('That code is not valid')
-    return false
+  const applyPromo = (raw) => {
+    const code = String(raw || '').trim().toUpperCase()
+    const rule = COUPONS[code]
+    if (!rule) { toast('That code is not valid'); return false }
+    if (subtotal < rule.min) { toast(`Add ₹${(rule.min - subtotal).toLocaleString('en-IN')} more to use ${code}`); return false }
+    setPromo(code)
+    toast(`${code} applied — ${rule.label}`)
+    return true
   }
+
+
 
   const lines = useMemo(
     () => cart.map((l, idx) => ({ ...l, idx, product: getProduct(l.id) })).filter((l) => l.product),
@@ -154,8 +153,16 @@ export function ShopProvider({ children }) {
   )
   const count = lines.reduce((n, l) => n + l.qty, 0)
   const subtotal = lines.reduce((n, l) => n + l.product.price * l.qty, 0)
-  const discount = promo ? Math.round(subtotal * 0.1) : 0
-  const shipping = subtotal - discount >= FREE_SHIP || subtotal === 0 ? 0 : SHIP_FEE
+  const rule = promo ? COUPONS[promo] : null
+  const discount = !rule
+    ? 0
+    : rule.type === 'flat'
+    ? Math.min(rule.value, subtotal)
+    : rule.type === 'percent'
+    ? Math.min(Math.round((subtotal * rule.value) / 100), rule.max || Infinity)
+    : 0
+  const freeShip = rule?.type === 'shipping'
+  const shipping = freeShip || subtotal - discount >= FREE_SHIP || subtotal === 0 ? 0 : SHIP_FEE
   const total = Math.max(0, subtotal - discount + shipping)
 
   const signUp = (name, email, password) => {
