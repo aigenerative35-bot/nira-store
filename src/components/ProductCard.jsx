@@ -28,7 +28,11 @@ export default function ProductCard({ product: p, index = 0 }) {
       <div className="pcard__info">
         <div className="pcard__top">
           <Link to={`/product/${p.id}`} className="pcard__name">{p.name}</Link>
-          <span className="pcard__cat">{p.catName}</span>
+          <span className="pcard__cat">
+            {p.sizes?.length ? `${p.sizes.length} ${p.sizes.length === 1 ? 'size' : 'sizes'}`
+              : p.shades?.length ? `${p.shades.length} ${p.shades.length === 1 ? 'colour' : 'colours'}`
+              : p.catName}
+          </span>
         </div>
 
         <div className="pcard__rate">
