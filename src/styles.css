@@ -2295,3 +2295,15 @@ img, video, svg, iframe { max-width: 100%; }
 }
 .pgrid--big .pcard__row { min-height: 16px; }
 .pgrid--big .pcard__rate { display: none; }
+
+/* grid cards: no social row inside the card at all (it lives on the PDP) */
+.pcard .social, .pcard > .social { display: none !important; }
+
+/* heart: always visible, top-right, never over the tag */
+.pgrid--big .wish {
+  opacity: 1 !important; top: 10px; right: 10px; left: auto;
+  width: 28px; height: 28px; background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #ececec; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.pgrid--big .pcard__info { gap: 4px; }
+.pgrid--big .pcard__row { min-height: 15px; }
