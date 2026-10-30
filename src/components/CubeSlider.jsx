@@ -36,7 +36,7 @@ export default function CubeSlider({ items, auto = 5600 }) {
               }}
               aria-hidden={!isActive}
             >
-              <img src={b.img} alt="" loading="lazy" />
+              <img src={b.img} alt="Nira — product imagery" loading="lazy" />
               <div className="cube__scrim" />
               <div className="cube__in">
                 <span className="cube__kicker">{b.kicker}</span>
