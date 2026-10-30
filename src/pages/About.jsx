@@ -77,7 +77,7 @@ export default function About() {
             {['saree-jewel', 'saree-back', 'saree-street'].map((n, i) => (
               <Reveal key={n} delay={i * 0.07}>
                 <div className="split__ph" style={{ aspectRatio: '4/5' }}>
-                  <img src={asset(`img/${n}.jpg`)} alt="" loading="lazy" />
+                  <img src={asset(`img/${n}.jpg`)} alt="Nira — product imagery" loading="lazy" />
                 </div>
               </Reveal>
             ))}
