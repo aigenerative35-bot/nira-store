@@ -51,7 +51,7 @@ export default function CommentSheet() {
 
             <div className="sheet__product">
               <Link to={`/product/${p.id}`} className="sheet__ph" onClick={() => setCommentFor(null)}>
-                <img src={p.img} alt="" />
+                <img src={p.img} alt="Nira — product imagery" />
               </Link>
               <div>
                 <div className="pcard__cat">{p.catName}</div>
