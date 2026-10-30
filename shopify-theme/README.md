@@ -1,27 +1,32 @@
 # Shopify theme — Nira
 
-`nira-shopify-theme.zip` is a complete, installable Shopify theme that ports this
-storefront's design to Liquid.
+Complete, installable Shopify theme (Liquid) that ports this storefront's design.
 
 ## Install
-1. Shopify admin → **Online Store → Themes**
-2. **Add theme → Upload zip file**
-3. Pick `nira-shopify-theme.zip` → **Publish**
+Shopify admin → **Online Store → Themes → Add theme → Upload zip** → pick
+`nira-shopify-theme.zip` → **Publish**.
 
-## What's inside
-- `layout/theme.liquid` — shell, fonts, cart drawer, asset loading
-- `sections/` — header, footer, hero, featured collection, campaign story,
-  product, collection, cart, search, page, 404
-- `snippets/product-card.liquid` — the 4-column card (154.517 × 195.792 mm ratio)
-- `assets/theme.css` — the design system (white ground, navy #0f2a4a accent)
-- `assets/theme.js` — AJAX cart drawer, gallery, qty steppers, mobile menu
-- `templates/*.json`, `config/*`, `locales/en.default.json`
+## Templates included
+`index` · `product` · `collection` · `list-collections` · `cart` · `search` ·
+`page` · `blog` · `article` · `404` · `customers/login` · `customers/register` ·
+`customers/account` · `customers/order` · `gift_card`
+
+## Sections (18)
+header · footer · hero · featured-collection · campaign-story · main-product ·
+main-collection · main-cart · main-search · main-page · main-404 · main-blog ·
+main-article · main-list-collections · main-login · main-register ·
+main-account · main-order
+
+## Features
+- AJAX cart drawer (`/cart/add.js`, `/cart.js`)
+- Real Shopify product/variant/price objects, inventory, checkout
+- Collection filters by tag + sort, pagination (10 per page)
+- Customer accounts: login, register, order history, order detail
+- Predictive search form in the header
+- Gift card template
+- Design system in `assets/theme.css` — white ground, navy `#0f2a4a`, card ratio
+  154.517 × 195.792 mm
 
 ## After installing
-- Theme editor → **Hero**: pick image, heading, button
-- **Featured collection** section: choose a collection (falls back to all products)
-- **Footer**: assign menus to the columns
-- Theme settings: logo, accent colour, footer blurb
-
-Products, inventory, payments and checkout come from Shopify itself — nothing
-is mocked.
+Theme editor → Hero (image, heading, CTA) · Featured collection (pick a collection)
+· Campaign story · Footer menus · Theme settings (logo, accent colour, footer text).
