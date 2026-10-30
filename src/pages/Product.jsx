@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Icon, Qty, Stars } from '../ui'
 import ProductCard from '../components/ProductCard'
 import SocialBar from '../components/SocialBar'
+import Aplus from '../components/Aplus'
 import { useShop } from '../store'
 import { asset, getProduct, money, products, reviews } from '../data'
 
@@ -198,6 +199,8 @@ export default function Product() {
             <span className="pdp2__who">{reviews[0].name} — verified buyer</span>
           </aside>
         </div>
+
+        <Aplus p={p} />
 
         <section className="pdp2__rel">
           <div className="sec-head">
