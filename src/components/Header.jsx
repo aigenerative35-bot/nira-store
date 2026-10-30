@@ -12,7 +12,7 @@ const NOTES = [
 ]
 
 export default function Header() {
-  const { count, wish, setDrawer } = useShop()
+  const { count, wish, setDrawer, setSearch } = useShop()
   const { pathname, search } = useLocation()
   const navigate = useNavigate()
   const [note, setNote] = useState(0)
@@ -73,7 +73,7 @@ export default function Header() {
             <span className="logo__txt">Nira<span>beauty &amp; atelier</span></span>
           </Link>
 
-          <form className="searchbar" onSubmit={submit} role="search">
+          <form className="searchbar" onSubmit={(e) => { e.preventDefault(); setSearch(true) }} role="search">
             <select
               value={cat}
               onChange={(e) => {
@@ -92,10 +92,11 @@ export default function Header() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
+              onFocus={() => setSearch(true)}
               placeholder="Search for serums, tote bags, sarees, heels…"
               aria-label="Search products"
             />
-            <button type="submit" aria-label="Search"><Icon.search /></button>
+            <button type="button" aria-label="Search" onClick={() => setSearch(true)}><Icon.search /></button>
           </form>
 
           <div className="hdr__acts">
