@@ -15,6 +15,12 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Account from './pages/Account'
+import Offers from './pages/Offers'
+import Policy from './pages/Policy'
+import Journal from './pages/Journal'
+import CookieBar from './components/CookieBar'
+import useAnalytics from './useAnalytics'
 import NotFound from './pages/NotFound'
 import { useShop } from './store'
 
@@ -49,8 +55,9 @@ function usePageMeta() {
 }
 
 export default function App() {
-  usePageMeta()
   const location = useLocation()
+  usePageMeta()
+  useAnalytics(location.pathname)
   const { drawer, search, quickView, commentFor } = useShop()
   const { scrollYProgress } = useScroll()
   const bar = useSpring(scrollYProgress, { stiffness: 140, damping: 26, mass: 0.3 })
@@ -74,10 +81,18 @@ export default function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/offers" element={<Offers />} />
+          <Route path="/journal" element={<Journal />} />
+          <Route path="/faq" element={<Policy />} />
+          <Route path="/shipping" element={<Policy />} />
+          <Route path="/privacy" element={<Policy />} />
+          <Route path="/terms" element={<Policy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
+      <CookieBar />
       <CartDrawer />
       <SearchOverlay />
       <QuickView />
