@@ -50,7 +50,7 @@ export default function Product() {
   }, [id])
 
   const gallery = useMemo(
-    () => (p ? [p.img, p.img2, asset('img/lip-apply.jpg'), asset('img/saree-jewel.jpg'), asset('img/flatlay.jpg')] : []),
+    () => (p ? [p.img, p.img2, asset('img/lip-apply.webp'), asset('img/saree-jewel.webp'), asset('img/flatlay.webp')] : []),
     [p]
   )
   const related = useMemo(
@@ -88,8 +88,22 @@ export default function Product() {
     setDrawer(true)
   }
 
+  const schema = {
+    '@context': 'https://schema.org', '@type': 'Product',
+    name: p.name, image: [p.img, p.img2], description: p.short || p.desc,
+    sku: p.id, brand: { '@type': 'Brand', name: 'Nira' },
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: p.rating, reviewCount: p.reviews },
+    offers: { '@type': 'Offer', priceCurrency: 'INR', price: p.price, availability: 'https://schema.org/InStock' }
+  }
+
   return (
     <div className="pdp2">
+      <nav className="crumbs" aria-label="Breadcrumb">
+        <Link to="/">Home</Link><span>/</span>
+        <Link to={`/shop?cat=${p.cat}`}>{p.catName}</Link><span>/</span>
+        <span>{p.name}</span>
+      </nav>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       {/* split hero */}
       <div className="pdp2__split">
         <div className="pdp2__pane">
