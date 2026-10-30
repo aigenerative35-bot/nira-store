@@ -4,6 +4,8 @@ import { products, getProduct, FREE_SHIP, SHIP_FEE, PROMO_CODE, money } from './
 const KEY = 'nira_cart_v2'
 const WISH = 'nira_wish_v2'
 const PROMO = 'nira_promo_v2'
+const USER = 'nira_user_v1'
+const ORDERS = 'nira_orders_v1'
 const LIKES = 'nira_likes_v2'
 const COMMENTS = 'nira_comments_v2'
 
@@ -44,6 +46,8 @@ export function ShopProvider({ children }) {
   const [search, setSearch] = useState(false)
   const [quickView, setQuickView] = useState(null)
   const [toasts, setToasts] = useState([])
+  const [user, setUser] = useState(() => read(USER, null))
+  const [orders, setOrders] = useState(() => read(ORDERS, []))
   const idRef = useRef(0)
 
   useEffect(() => write(KEY, cart), [cart])
@@ -154,6 +158,54 @@ export function ShopProvider({ children }) {
   const shipping = subtotal - discount >= FREE_SHIP || subtotal === 0 ? 0 : SHIP_FEE
   const total = Math.max(0, subtotal - discount + shipping)
 
+  /* ---------- account ---------- */
+  const signUp = (name, email, password) => {
+    if (!name.trim() || !/^\S+@\S+\.\S+$/.test(email) || password.length < 4) {
+      return { ok: false, error: 'Enter a name, a valid email and a 4+ character password.' }
+    }
+    const u = { name: name.trim(), email: email.trim().toLowerCase(), joined: new Date().toISOString() }
+    setUser(u)
+    write(USER, u)
+    toast(`Welcome, ${u.name.split(' ')[0]}`)
+    return { ok: true }
+  }
+
+  const signIn = (email, password) => {
+    if (!/^\S+@\S+\.\S+$/.test(email) || password.length < 4) {
+      return { ok: false, error: 'Check your email and password.' }
+    }
+    const existing = read(USER, null)
+    const u = existing && existing.email === email.trim().toLowerCase()
+      ? existing
+      : { name: email.split('@')[0], email: email.trim().toLowerCase(), joined: new Date().toISOString() }
+    setUser(u)
+    write(USER, u)
+    toast('Signed in')
+    return { ok: true }
+  }
+
+  const signOut = () => {
+    setUser(null)
+    try { localStorage.removeItem(USER) } catch {}
+    toast('Signed out')
+  }
+
+  /* ---------- orders ---------- */
+  const placeOrder = (order) => {
+    const full = {
+      id: order.id,
+      at: new Date().toISOString(),
+      total: order.total,
+      items: lines.map((l) => ({ id: l.id, name: l.name, img: l.img, qty: l.qty, price: l.price, size: l.size, shade: l.shade })),
+      pay: order.pay,
+      status: 'Placed'
+    }
+    const next = [full, ...orders].slice(0, 20)
+    setOrders(next)
+    write(ORDERS, next)
+    return full
+  }
+
   const value = {
     products,
     cart: lines,
@@ -185,6 +237,12 @@ export function ShopProvider({ children }) {
     setDrawer,
     setSearch,
     setQuickView,
+    user,
+    orders,
+    signIn,
+    signUp,
+    signOut,
+    placeOrder,
     toast,
     freeShip: FREE_SHIP
   }
