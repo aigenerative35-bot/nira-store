@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Icon } from '../ui'
 import { useShop } from '../store'
+import { payWithRazorpay, isLivePayment } from '../pay'
 import { money } from '../data'
 
 const STATES = ['Karnataka', 'Maharashtra', 'Delhi', 'Tamil Nadu', 'Telangana', 'West Bengal', 'Gujarat', 'Rajasthan', 'Kerala', 'Uttar Pradesh']
@@ -20,6 +21,7 @@ export default function Checkout() {
   const { cart, subtotal, discount, shipping, total, promo, applyPromo, clear, toast, placeOrder } = useShop()
   const [step, setStep] = useState(1)
   const [placed, setPlaced] = useState(null)
+  const [paying, setPaying] = useState(false)
   const [pay, setPay] = useState('upi')
   const [code, setCode] = useState(promo)
   const [errs, setErrs] = useState({})
@@ -50,9 +52,13 @@ export default function Checkout() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const place = () => {
+  const place = async () => {
     const id = 'NR' + Math.floor(100000 + Math.random() * 899999)
-    placeOrder({ id, total, pay })
+    setPaying(true)
+    const res = await payWithRazorpay({ amount: total, name: form.name, email: form.email, phone: form.phone, orderId: id })
+    setPaying(false)
+    if (!res.ok) return toast('Payment cancelled')
+    placeOrder({ id, total, pay, paymentId: res.paymentId })
     setPlaced({ id, total, name: form.name, pay })
     clear()
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -247,7 +253,7 @@ export default function Checkout() {
                 <span>Confirm order</span>
               </button>
             ) : (
-              <button className="btn btn--block" style={{ marginTop: 8 }} onClick={place}>
+              <button className="btn btn--block" style={{ marginTop: 8 }} onClick={place} disabled={paying}>
                 <span>Pay {money(total)}</span>
               </button>
             )}
@@ -267,7 +273,7 @@ export default function Checkout() {
           {step === 1 ? (
             <button className="btn" onClick={confirm}><span>Confirm order</span></button>
           ) : (
-            <button className="btn" onClick={place}><span>Place order</span></button>
+            <button className="btn" onClick={place} disabled={paying}><span>{paying ? 'Processing…' : 'Place order'}</span></button>
           )}
         </div>
       </div>
