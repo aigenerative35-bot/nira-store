@@ -76,8 +76,6 @@ export default function Footer() {
         <div className="ftr__base">
           <span>
             © 2026 Nira — demo storefront built with React. Photography: Pexels free licence.
-            {' · '}
-            <Link to="/admin" className="ftr__admin">Admin · A+ builder</Link>
           </span>
           <div className="pay">
             <span>UPI</span><span>Visa</span><span>Mastercard</span><span>RuPay</span><span>Netbanking</span><span>COD</span>
