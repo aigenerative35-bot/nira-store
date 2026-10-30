@@ -15,7 +15,11 @@ export default function ProductCard({ product: p, index = 0 }) {
           <img className="main" src={p.img} alt={p.name} loading="lazy" />
           <img className="alt" src={p.img2} alt="Nira — product imagery" loading="lazy" />
         </Link>
-        {p.tag && <span className="tag">{p.tag}</span>}
+        {p.stock === 0 ? (
+          <span className="tag tag--out">Sold out</span>
+        ) : p.tag ? (
+          <span className="tag">{p.tag}</span>
+        ) : null}
         <button className={`wish ${liked ? 'on' : ''}`} onClick={() => toggleWish(p.id)} aria-label="Save to wishlist">
           <Icon.heart />
         </button>
@@ -45,7 +49,13 @@ export default function ProductCard({ product: p, index = 0 }) {
             {money(p.price)}
             {p.mrp > p.price && <s>{money(p.mrp)}</s>}
           </span>
-          {off > 0 && <span className="pcard__off num">{off}% off</span>}
+          {p.stock === 0 ? (
+            <span className="pcard__off num">Sold out</span>
+          ) : p.stock <= 5 ? (
+            <span className="pcard__off num">Only {p.stock} left</span>
+          ) : off > 0 ? (
+            <span className="pcard__off num">{off}% off</span>
+          ) : null}
         </div>
       </div>
 
