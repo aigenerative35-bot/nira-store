@@ -2613,3 +2613,62 @@ img, video, svg, iframe { max-width: 100%; }
 .viewed__item img { width: 100%; aspect-ratio: 154.517 / 195.792; object-fit: cover; background: #f5f5f5; }
 .viewed__item b { font-size: 12px; color: #16283c; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .viewed__item span { font-size: 11.5px; color: #8a8a8a; }
+
+/* ============================================================
+   Search overlay v2 — suggestions, recents, keyboard nav
+   ============================================================ */
+.soverlay {
+  position: fixed; left: 50%; transform: translateX(-50%); top: 12vh; z-index: 160;
+  width: min(680px, calc(100vw - 24px)); max-height: 74vh; overflow-y: auto;
+  background: #fff; border-radius: 12px; padding: 18px 18px 12px;
+  box-shadow: 0 40px 90px rgba(10, 20, 35, 0.28);
+}
+.soverlay__bar {
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid #ececec; padding-bottom: 12px;
+}
+.soverlay__bar svg { width: 17px; height: 17px; stroke: #8ba3bd; fill: none; stroke-width: 1.8; flex: 0 0 auto; }
+.soverlay__bar input {
+  flex: 1; border: 0; outline: none; font-size: 15px; color: #16283c; font-family: inherit; background: none;
+}
+.soverlay__bar button { width: 28px; height: 28px; border: 1px solid #ececec; border-radius: 50%; color: #666; font-size: 11px; }
+
+.soverlay__block { padding: 12px 0 4px; }
+.soverlay__label {
+  font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #8ba3bd;
+  padding: 12px 0 8px;
+}
+.soverlay__chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.soverlay__chips button {
+  padding: 7px 12px; border: 1px solid #e3e9f1; border-radius: 999px;
+  font-size: 11.5px; color: #16283c; background: #fff;
+}
+.soverlay__chips button:hover { border-color: #0f2a4a; background: #f7fafd; }
+
+.soverlay__list { display: grid; gap: 2px; }
+.soverlay__list button {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center;
+  width: 100%; padding: 8px; border-radius: 8px; text-align: left; background: none;
+}
+.soverlay__list button.on, .soverlay__list button:hover { background: #f4f7fb; }
+.soverlay__list img { width: 44px; height: 56px; object-fit: cover; background: #f5f5f5; }
+.soverlay__list b { display: block; font-size: 13px; color: #16283c; font-weight: 400; }
+.soverlay__list em { font-style: normal; font-size: 11px; color: #8a8a8a; }
+.soverlay__list i { font-style: normal; font-size: 12.5px; color: #444; }
+
+.soverlay__empty { padding: 22px 0; text-align: center; }
+.soverlay__empty p { font-size: 13px; color: #6b6b6b; margin-bottom: 10px; }
+.soverlay__empty button { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid #0f2a4a; color: #0f2a4a; padding-bottom: 2px; }
+
+.soverlay__foot {
+  border-top: 1px solid #f2f2f2; margin-top: 10px; padding-top: 10px;
+  font-size: 10.5px; color: #a5a5a5; display: flex; gap: 4px; align-items: center;
+}
+.soverlay__foot kbd {
+  border: 1px solid #e3e3e3; border-radius: 3px; padding: 1px 5px; font-size: 9.5px;
+  font-family: ui-monospace, monospace; color: #6b6b6b; background: #fafafa;
+}
+@media (max-width: 640px) {
+  .soverlay { top: 6vh; max-height: 84vh; padding: 14px 14px 10px; }
+  .soverlay__list img { width: 38px; height: 48px; }
+}
