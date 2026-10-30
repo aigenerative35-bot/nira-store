@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { Icon, Stars } from '../ui'
-import SocialBar from './SocialBar'
 import { useShop } from '../store'
 import { money } from '../data'
 
@@ -46,7 +45,6 @@ export default function ProductCard({ product: p, index = 0 }) {
         </div>
       </div>
 
-      <SocialBar product={p} />
     </article>
   )
 }
