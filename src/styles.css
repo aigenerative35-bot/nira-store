@@ -2256,3 +2256,42 @@ img, video, svg, iframe { max-width: 100%; }
   .pdp2__pane img { object-fit: contain; padding: 10px; }
   .pdp2__pane--alt video { object-fit: cover; }
 }
+
+/* ============================================================
+   Grid card alignment fix — tag left, wish right, social on hover only
+   ============================================================ */
+.pgrid--big .pcard { position: relative; }
+.pgrid--big .pcard__media { position: relative; }
+
+/* tag stays top-left, heart moves to the top-right */
+.pgrid--big .tag { left: 12px; right: auto; top: 10px; }
+.pgrid--big .wish {
+  top: 10px; right: 10px; left: auto;
+  width: 28px; height: 28px; opacity: 0; transition: opacity 0.22s;
+  background: rgba(255, 255, 255, 0.94); border: 1px solid #ececec;
+}
+.pgrid--big .pcard:hover .wish { opacity: 1; }
+
+/* social bar floats over the image — never pushes the meta out of line */
+.pgrid--big .social {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  padding: 7px 10px; background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid #f0f0f0; opacity: 0; pointer-events: none;
+  transition: opacity 0.22s;
+}
+.pgrid--big .pcard:hover .social { opacity: 1; pointer-events: auto; }
+.pgrid--big .social button { font-size: 10px; }
+
+/* equal-height meta: two fixed rows so every card lines up */
+.pgrid--big .pcard__info {
+  display: grid; grid-template-rows: minmax(0, auto) auto;
+  gap: 5px; align-items: start; padding-top: 12px;
+}
+.pgrid--big .pcard__top { min-height: 18px; align-items: baseline; }
+.pgrid--big .pcard__name {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; line-height: 1.35;
+}
+.pgrid--big .pcard__row { min-height: 16px; }
+.pgrid--big .pcard__rate { display: none; }
