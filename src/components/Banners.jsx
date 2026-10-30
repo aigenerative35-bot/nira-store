@@ -50,7 +50,7 @@ export function BannerSlider({ items, interval = 6000 }) {
       >
         {items.map((b) => (
           <div className="bs__slide" key={b.title}>
-            <img src={b.img} alt="" draggable="false" />
+            <img src={b.img} alt="Nira — product imagery" draggable="false" />
             <div className="bs__in">
               <span className="bs__kicker">{b.kicker}</span>
               <h1>{b.title}</h1>
@@ -121,7 +121,7 @@ export function StripSlider({ items, interval = 3600 }) {
               style={{ flex: '0 0 calc(33.333% - 7px)' }}
               aria-hidden={n >= total}
             >
-              <img src={b.img} alt="" loading="lazy" />
+              <img src={b.img} alt="Nira — product imagery" loading="lazy" />
               <div className="bs-card__in">
                 <span>{b.kicker}</span>
                 <b>{b.title}</b>
@@ -163,7 +163,7 @@ export function WideSlider({ items }) {
               {b.video ? (
                 <video src={b.video} poster={b.img} autoPlay muted loop playsInline preload="metadata" />
               ) : (
-                <img src={b.img} alt="" loading="lazy" />
+                <img src={b.img} alt="Nira — product imagery" loading="lazy" />
               )}
               <span className="bs-wide-grain" />
               <div className="bs-wide-in">
