@@ -1,50 +1,39 @@
-# Shopify theme — Nira (complete, v1.0.0)
+# Shopify theme — Nira v1.1.0
+
+Design + **integration hooks** for courier tracking, payments, GST invoices,
+analytics and affiliate.
 
 ## Install
-Shopify admin → **Online Store → Themes → Add theme → Upload zip** →
-`nira-shopify-theme.zip` → **Publish** → **Customize**.
+Shopify admin → Online Store → Themes → **Add theme → Upload zip** →
+`nira-shopify-theme.zip` → Publish → Customize.
 
-## Templates (20)
-index · product · collection · list-collections · cart · search · page ·
-page.aplus · blog · article · 404 · password ·
-customers: login · register · account · order · addresses ·
-reset_password · activate_account · gift_card
+## Templates (21) · Sections (29) · Layouts (2) · Snippets (4)
+Adds `page.track` (Track order) on top of v1.0.0.
 
-## Sections (28)
-header · footer · hero-slider · featured-collection · campaign-story ·
-runway-slider · cube-slider · video-banner · offers · aplus ·
-main-product · main-collection · main-cart · main-search · main-page ·
-main-404 · main-blog · main-article · main-list-collections ·
-main-login · main-register · main-account · main-order · main-addresses ·
-main-reset-password · main-activate-account · main-password
+## Integrations — what the theme does vs what an app does
 
-## Layouts (2)
-theme.liquid · password.liquid
+| Need | In the theme | Where to install the app |
+|---|---|---|
+| **Courier tracking** | `snippets/tracking.liquid` renders `order.fulfillments` (company, AWB, tracking URL) on the order page and account table; `/pages/track` page with AWB lookup | Shiprocket / Delhivery / iThink — add tracking in Shopify admin, theme displays it |
+| **Razorpay / payments** | Payment icons in the footer (`shop.enabled_payment_types`); checkout is Shopify's | Shopify admin → Settings → Payments → Razorpay (India) |
+| **GST invoice** | GSTIN in the footer, optional GST-number field in the cart (`cart.attributes`) | Any GST invoice app (e.g. GstInvoice, Envoice) reads the attribute |
+| **Analytics** | `snippets/analytics.liquid` — GA4 (+view_item / view_item_list events), Meta Pixel, Microsoft Clarity, custom head scripts | Theme settings → *Analytics & pixels* |
+| **Affiliate** | `?ref=CODE` captured to localStorage and attached to cart as `attributes[ref]` | UpPromote / Refersion / Affiliate+ read the cart attribute |
 
-## Shopify requirements covered
-- `theme_info` block in `config/settings_schema.json` (required for upload)
-- `{{ content_for_header }}` + `{{ content_for_layout }}`
-- `assets/theme.css` + `assets/theme.js` via `asset_url`
-- `locales/en.default.json`
-- All standard templates + customer templates + gift card + password
+## Theme settings (6 groups)
+theme_info · Theme settings · Product card · **Analytics & pixels** ·
+**Store & tax** (GSTIN, legal name, support phone, GST field toggle) ·
+**Affiliate** (param name, on/off)
 
-## App / plugin support
-App blocks (`"type": "@app"`) enabled in: **header, footer, product page, A+ content**.
-So Judge.me, Klaviyo, Loox, Rebuy, Wishlist Hero, UpPromote etc. can inject
+## App blocks
+`"type": "@app"` in header, footer, product page and A+ content — apps can inject
 widgets from the theme editor.
 
-## Features
-Hero slider (autoplay/arrows/dots) · runway rail (drag) · 3D cube slider ·
-video banner · A+ modules (banner/split/tiles/specs/quote/video) ·
-offers with copy-code · predictive search (`/search/suggest.json`) ·
-AJAX cart drawer · collection tag filters + sort + 10/page · customer
-accounts · gift cards · native Shopify checkout & payments.
-
-## After install
-Theme editor → add slides to the Hero, pick a Featured collection, set
-Runway / Video / Offers, assign footer menus, set logo + accent colour.
+## Still app-side (cannot live in a theme)
+Payment capture, courier API calls, invoice PDF generation, affiliate payouts and
+tax filing all run on the app's servers. The theme provides the display and the
+data hooks above.
 
 ## Honest notes
-- `theme-check` CLI cannot run in this environment; upload and open Customize —
-  any schema warning shows there and is a one-line fix.
-- No demo images ship with the theme; add your own in the editor.
+- `theme-check` CLI cannot run in this environment — upload and open Customize.
+- No demo images ship with the theme.
