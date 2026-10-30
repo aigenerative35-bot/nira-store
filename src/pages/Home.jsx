@@ -60,8 +60,8 @@ const STRIPS = [
 
 const WIDES = [
   { img: asset('img/hero-portrait.jpg'), kicker: 'The ritual', title: 'Three steps, twice a day. Nothing more.', text: 'A cleanser, a serum, a barrier cream — and the skin that follows.', to: '/shop?cat=skincare' },
-  { img: asset('img/hero-bag.jpg'), kicker: 'The atelier', title: 'Bags, heels and small leathers.', text: 'Hand-finished, two-year stitch warranty, free size exchange.', to: '/shop?cat=bags' },
-  { img: asset('img/saree-street.jpg'), kicker: 'Handloom', title: 'Forty-one weavers, two co-ops.', text: 'Every saree paid for within seven days of weaving.', to: '/about' },
+  { img: asset('video/atelier-poster.jpg'), video: asset('video/atelier.mp4'), kicker: 'The atelier', title: 'Bags, heels and small leathers.', text: 'Hand-finished, two-year stitch warranty, free size exchange.', to: '/shop?cat=bags' },
+  { img: asset('video/loom-poster.jpg'), video: asset('video/loom.mp4'), kicker: 'Handloom', title: 'Forty-one weavers, two co-ops.', text: 'Every saree paid for within seven days of weaving.', to: '/about' },
   { img: asset('img/brushes.jpg'), kicker: 'Makeup', title: 'Twelve shades. One honest finish.', text: 'Buildable, transfer-proof, tested on Indian skin tones.', to: '/shop?cat=makeup' }
 ]
 
@@ -75,16 +75,27 @@ const SUPPLIERS = [
 export default function Home() {
   const { toast } = useShop()
   const [email, setEmail] = useState('')
+  const [side, setSide] = useState(false)
+  const [promos, setPromos] = useState(false)
 
-  const top = products.slice(0, 6)
+  const top = products.slice(0, 8)
   const rest = products.slice(6)
 
   return (
     <>
       {/* hero row: sidebar + carousel + promos */}
       <div className="container sec sec--tight">
-        <div className="hero-row">
-          <aside className="sidebar">
+        <div className={`hero-row ${side ? '' : 'no-side'} ${promos ? '' : 'no-promos'}`}>
+          <div className="hero-toggles">
+            <button className={side ? 'on' : ''} onClick={() => setSide((v) => !v)} aria-pressed={side}>
+              {side ? '✕' : '☰'} Categories
+            </button>
+            <button className={promos ? 'on' : ''} onClick={() => setPromos((v) => !v)} aria-pressed={promos}>
+              {promos ? '✕' : '+'} Offers
+            </button>
+          </div>
+          {side && (
+          <aside className="sidebar panel-l">
             <div className="sidebar__head">Shop by category</div>
             {categories.map((c) => (
               <Link to={`/shop?cat=${c.id}`} key={c.id}>
@@ -95,10 +106,12 @@ export default function Home() {
             <Link to="/shop?sort=rating">Top rated<i>4.7+</i></Link>
             <Link to="/shop">All products<i>16</i></Link>
           </aside>
+          )}
 
           <BannerSlider items={BANNERS} />
 
-          <div className="hero-side">
+          {promos && (
+          <div className="hero-side panel-r">
             {PROMOS.map((p) => (
               <Link className="hpromo" to="/shop" key={p.b}>
                 <img src={p.img} alt="" />
@@ -106,6 +119,7 @@ export default function Home() {
               </Link>
             ))}
           </div>
+          )}
         </div>
       </div>
 
@@ -127,22 +141,18 @@ export default function Home() {
         <StripSlider items={STRIPS} />
       </div>
 
-      {/* top ranking */}
-      {/* depth-wrapped below */}
-      <div className="container sec">
-        <div className="slab">
-          <div className="sec-head">
-            <div>
-              <h2>Bestsellers this week</h2>
-              <p>Ranked by what gets reordered, not by what we want to push</p>
-            </div>
-            <Link className="link-arrow" to="/shop">View all 16 <Icon.arrow /></Link>
-          </div>
-          <div className="pgrid">
-            {top.map((p, i) => <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>)}
+      {/* campaign CTA — the grid lives on the shop page */}
+      <section className="campaign">
+        <div className="container campaign__in">
+          <p className="label">The collection</p>
+          <h2>Sixteen pieces. <em>All of it, in one place.</em></h2>
+          <p>Browse by category, filter by price or search — the full grid lives on the shop page.</p>
+          <div className="campaign__cta">
+            <Link className="btn" to="/shop"><span>Shop the collection</span><Icon.arrow /></Link>
+            <Link className="link-arrow" to="/shop?sort=rating">Top rated</Link>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* the house */}
       <div className="container sec">
@@ -154,7 +164,7 @@ export default function Home() {
             </div>
             <Link className="link-arrow" to="/about">Read the house story <Icon.arrow /></Link>
           </div>
-          <div className="pgrid">
+          <div className="worlds">
             {SUPPLIERS.map((s, i) => (
               <Link className="world rise" to="/shop" key={s.name} style={{ '--d': `${i * 0.05}s` }}>
                 <div className="world__ph">
@@ -170,6 +180,34 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* campaign story */}
+      <section className="story">
+        <div className="story__media">
+          <img src={asset('img/saree-jewel.jpg')} alt="The autumn campaign" loading="lazy" />
+          <span className="story__cap">Campaign · Bengaluru, 2026</span>
+        </div>
+        <div className="story__body">
+          <p className="label label--maroon">The autumn campaign</p>
+          <h2>Woven slowly, worn for years.</h2>
+          <p>
+            Two co-ops in Bhagalpur, forty-one weavers, one price list. Every saree is paid for
+            within seven days of leaving the loom — no middlemen, no seasonal discounting.
+          </p>
+          <p>
+            The campaign was shot over three days in our Bengaluru studio: no retouching,
+            no studio lights beyond one window.
+          </p>
+          <Link className="btn" to="/shop?cat=suits"><span>Shop the handloom edit</span><Icon.arrow /></Link>
+        </div>
+      </section>
+
+      {/* manifesto */}
+      <section className="manifesto">
+        <p className="label">Our position</p>
+        <h2>“We would rather make sixteen things properly than six hundred things badly.”</h2>
+        <span>Nira Atelier — house note, 2026</span>
+      </section>
 
       {/* ticker */}
       <div className="container sec">
@@ -268,24 +306,6 @@ export default function Home() {
       </div>
 
       <Depth>
-      {/* recommended */}
-      <div className="container sec">
-        <div className="slab">
-          <div className="sec-head">
-            <div>
-              <h2>You may also like</h2>
-              <p>Picked from what people browse after this</p>
-            </div>
-            <Link className="link-arrow" to="/shop">View all <Icon.arrow /></Link>
-          </div>
-          <div className="pgrid">
-            {rest.map((p, i) => <TiltCard key={p.id}><ProductCard product={p} index={i} /></TiltCard>)}
-          </div>
-        </div>
-      </div>
-
-      </Depth>
-
       {/* service promises */}
       <div className="container sec">
         <div className="trust">
@@ -315,6 +335,7 @@ export default function Home() {
           </form>
         </div>
       </div>
+      </Depth>
     </>
   )
 }

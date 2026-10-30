@@ -54,7 +54,8 @@ export default function Header() {
           </div>
           <div className="util__links">
             <Link to="/contact">Help centre</Link>
-            <Link to="/contact">Track order</Link>
+            <Link to="/offers">Offers</Link>
+            <Link to="/account">Track order</Link>
             <Link to="/about">Our story</Link>
             <span>IN / INR</span>
           </div>
@@ -73,7 +74,18 @@ export default function Header() {
           </Link>
 
           <form className="searchbar" onSubmit={submit} role="search">
-            <select value={cat} onChange={(e) => setCat(e.target.value)} aria-label="Category">
+            <select
+              value={cat}
+              onChange={(e) => {
+                const v = e.target.value
+                setCat(v)
+                const p = new URLSearchParams()
+                if (v) p.set('cat', v)
+                if (q.trim()) p.set('q', q.trim())
+                navigate('/shop' + (p.toString() ? '?' + p.toString() : ''))
+              }}
+              aria-label="Category"
+            >
               <option value="">All categories</option>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
@@ -87,7 +99,7 @@ export default function Header() {
           </form>
 
           <div className="hdr__acts">
-            <Link className="hact" to="/contact"><Icon.user /><span>Account</span></Link>
+            <Link className="hact" to="/account"><Icon.user /><span>Account</span></Link>
             <Link className="hact" to="/shop?wish=1">
               <Icon.heart /><span>Wishlist</span>
               {wish.length > 0 && <span className="badge">{wish.length}</span>}

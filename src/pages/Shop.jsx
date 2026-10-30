@@ -20,6 +20,8 @@ export default function Shop() {
   const q = (params.get('q') || '').toLowerCase().trim()
   const [sort, setSort] = useState(params.get('sort') || 'featured')
   const onlyWish = params.get('wish') === '1'
+  const PER_PAGE = 10
+  const page = Math.max(1, parseInt(params.get('page') || '1', 10) || 1)
 
   const list = useMemo(() => {
     let out = products.filter((p) => cat === 'all' || p.cat === cat)
@@ -31,11 +33,24 @@ export default function Shop() {
     return out
   }, [cat, sort, onlyWish, wish, q])
 
+  const pageCount = Math.max(1, Math.ceil(list.length / PER_PAGE))
+  const current = Math.min(page, pageCount)
+  const shown = list.slice((current - 1) * PER_PAGE, current * PER_PAGE)
+
+  const goPage = (n) => {
+    const next = new URLSearchParams(params)
+    if (n <= 1) next.delete('page')
+    else next.set('page', String(n))
+    setParams(next)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const setCat = (id) => {
     const next = new URLSearchParams(params)
     if (id === 'all') next.delete('cat')
     else next.set('cat', id)
     next.delete('wish')
+    next.delete('page')
     setParams(next)
   }
 
@@ -63,7 +78,16 @@ export default function Shop() {
       </div>
 
       <div className="shopbar">
-        <div className="chips">
+        <div className="shop-search">
+            <Icon.search />
+            <input
+              value={q}
+              onChange={(e) => setParams((prev) => { const n = new URLSearchParams(prev); if (e.target.value) n.set('q', e.target.value); else n.delete('q'); return n })}
+              placeholder="Search products, categories…"
+              aria-label="Search"
+            />
+          </div>
+          <div className="chips">
           <button className={`chip ${cat === 'all' && !onlyWish ? 'on' : ''}`} onClick={() => setCat('all')}>All</button>
           {categories.map((c) => (
             <button key={c.id} className={`chip ${cat === c.id ? 'on' : ''}`} onClick={() => setCat(c.id)}>
@@ -102,11 +126,31 @@ export default function Shop() {
           </div>
         </Reveal>
       ) : (
-        <motion.div className="pgrid" layout style={{ padding: 'clamp(20px,3vw,40px) 0 var(--sec)' }}>
-          {list.map((p, i) => (
+        <motion.div className="pgrid pgrid--big" layout style={{ padding: 'clamp(20px,3vw,40px) 0 var(--sec)' }}>
+          {shown.map((p, i) => (
             <ProductCard key={p.id} product={p} index={i} />
           ))}
         </motion.div>
+      )}
+
+      {pageCount > 1 && (
+        <nav className="pager" aria-label="Pagination">
+          <button onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="Previous page">
+            <Icon.arrow style={{ transform: 'rotate(180deg)' }} />
+          </button>
+          {Array.from({ length: pageCount }, (_, n) => (
+            <button
+              key={n}
+              className={n + 1 === current ? 'on' : ''}
+              onClick={() => goPage(n + 1)}
+            >
+              {n + 1}
+            </button>
+          ))}
+          <button onClick={() => goPage(current + 1)} disabled={current === pageCount} aria-label="Next page">
+            <Icon.arrow />
+          </button>
+        </nav>
       )}
 
       <div style={{ paddingBottom: 'var(--sec)', display: 'flex', gap: 12, flexWrap: 'wrap' }}>

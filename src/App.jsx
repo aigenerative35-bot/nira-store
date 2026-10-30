@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -15,6 +15,8 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Account from './pages/Account'
+import Offers from './pages/Offers'
 import NotFound from './pages/NotFound'
 import { useShop } from './store'
 
@@ -46,11 +48,15 @@ export default function App() {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/product" element={<Navigate to="/product/p1" replace />} />
+          <Route path="/p/:id" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/offers" element={<Offers />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

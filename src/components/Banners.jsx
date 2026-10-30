@@ -159,8 +159,13 @@ export function WideSlider({ items }) {
       <div className="bs-wide-vp">
         <div className="bs-wide-track" style={{ transform: `translateX(calc(-${i} * (50% + 5px)))` }}>
           {items.map((b) => (
-            <Link className="bs-wide-item" to={b.to} key={b.title}>
-              <img src={b.img} alt="" loading="lazy" />
+            <Link className={`bs-wide-item ${b.video ? 'is-video' : ''}`} to={b.to} key={b.title}>
+              {b.video ? (
+                <video src={b.video} poster={b.img} autoPlay muted loop playsInline preload="metadata" />
+              ) : (
+                <img src={b.img} alt="" loading="lazy" />
+              )}
+              <span className="bs-wide-grain" />
               <div className="bs-wide-in">
                 <span>{b.kicker}</span>
                 <b>{b.title}</b>
